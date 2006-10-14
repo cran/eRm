@@ -1,4 +1,4 @@
-"datprep_LPCM" <-
+`datprep_LPCM` <-
 function(X,W,mpoints,Groups)
 {
   #TFrow <- (rowSums(X)==0)                       #el. persons with 0 rawscore
@@ -36,13 +36,15 @@ function(X,W,mpoints,Groups)
         t_mp <- factor(t_mp1)
         g_ng1 <- rep(rep(1:ngroups,rep(ZW,ngroups)),mpoints)
         g_ng <- factor(g_ng1)
-        W2 <- model.matrix(~t_mp+g_ng+t_mp*g_ng)[,-1]     #full design (main effects g and mp, interactions)
+        W2 <- model.matrix(~t_mp+g_ng)[,-1]               #main effects g and mp
+        W2[1:(ZW*ngroups),] <- 0                          #remove main effects for the first test occasion 
       } else {                                    #1 group/more mpoints
         t_mp <- gl(mpoints,ZW)             #factor for measurement points
         W2 <- model.matrix(~t_mp)[,-1] }
     } else if (ngroups > 1) {                     #1 mpoint/more groups
         g_ng <- gl(ngroups,ZW)
         W2 <- model.matrix(~g_ng)[,-1] 
+        warning("Group contrasts without repeated measures can not be estimated!")
     } else if (ngroups == 1) W2 <- NULL           #1 mpoint/1 group
         
   catvek <- sequence(mt_vek)

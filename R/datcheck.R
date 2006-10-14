@@ -1,4 +1,4 @@
-"datcheck" <-
+`datcheck` <-
 function(X,W)
 {
   if (is.data.frame(X)==TRUE) X <- as.matrix(X)                  #X as data frame allowed

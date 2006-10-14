@@ -1,3 +1,3 @@
-"model.matrix.eRm" <-
+`model.matrix.eRm` <-
 function(object,...) object$W                 #design matrix
 

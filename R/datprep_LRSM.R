@@ -1,4 +1,4 @@
-"datprep_LRSM" <-
+`datprep_LRSM` <-
 function(X,W,mpoints,Groups)
 {
   #TFrow <- (rowSums(X)==0)                       #el. persons with 0 rawscore
@@ -24,8 +24,8 @@ function(X,W,mpoints,Groups)
   #automatized generation of the design matrix W
   if (length(W)==1) {                             #generating design matrix
     e_it <- gl(K,hmax)                            #factor for item parameters
-    c_cat <- gl(hmax,1,K*hmax)                    #factor for category par
-    Xm <- model.matrix(~e_it+c_cat)[,-1]          #design matrix with 0/1 contrasts (without intercept)
+    e_cat <- gl(hmax,1,K*hmax)                    #factor for category par
+    Xm <- model.matrix(~e_it+e_cat)[,-1]          #design matrix with 0/1 contrasts (without intercept)
     catvek <- 1:hmax                              #preparing the item design vectors
     e_itnew <- catvek*Xm[,1:(K-1)]                  
     Xm[,1:(K-1)] <- e_itnew
@@ -41,17 +41,24 @@ function(X,W,mpoints,Groups)
         t_mp <- factor(t_mp1)
         g_ng1 <- rep(rep(1:ngroups,rep(ZW,ngroups)),mpoints)
         g_ng <- factor(g_ng1)
-        W2 <- model.matrix(~t_mp+g_ng+t_mp*g_ng)[,-1]     #full design (main effects g and mp, interactions)
+        W2 <- model.matrix(~t_mp+g_ng)[,-1]               #main effects g and mp
+        W2[1:(ZW*ngroups),] <- 0                          #remove main effects for the first test occasion 
       } else {                                    #1 group/more mpoints
-        t_mp <- gl(mpoints,ZW)             #factor for measurement points
-        W2 <- model.matrix(~t_mp)[,-1] }
+        mp <- gl(mpoints,ZW)             #factor for measurement points
+        W2 <- model.matrix(~mp)[,-1] }
     } else if (ngroups > 1) {                     #1 mpoint/more groups
-        g_ng <- gl(ngroups,ZW)
-        W2 <- model.matrix(~g_ng)[,-1] 
+        g <- gl(ngroups,ZW)
+        W2 <- model.matrix(~g)[,-1] 
+        warning("Group contrasts without repeated measures can not be estimated!")
     } else if (ngroups == 1) W2 <- NULL           #1 mpoint/1 group
         
-  W2_cat <- W2*catvek                             #imposing item categories
-  W <- cbind(W1,W2_cat)                           #design matrix completed
+  
+  contr <- W2*catvek                             #imposing item categories
+  if (is.matrix(contr)==TRUE) {
+     contrrow <- apply(contr,1,function(x) {x*1:dim(contr)[2]})            #imposing multiplicative factor over time & group contrasts
+     W <- cbind(W1,t(contrrow))                     #design matrix completed
+  } else {W <- cbind(W1,contr)}
+  
   }
   
   list(X=X,X01=X01,mt_vek=mt_vek,W=W)

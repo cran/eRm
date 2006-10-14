@@ -1,4 +1,4 @@
-"datprep_PCM" <-
+`datprep_PCM` <-
 function(X,W)
 {
 #... X: data matrix with response categories to be converted into 0/1 matrix

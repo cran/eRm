@@ -1,4 +1,4 @@
-"datprep_RM" <-
+`datprep_RM` <-
 function(X,W)                       #prepares data matrix for Rasch model
 { 
   X01 <- X                                      #X is already X(0,1)

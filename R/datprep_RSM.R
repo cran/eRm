@@ -1,4 +1,4 @@
-"datprep_RSM" <-
+`datprep_RSM` <-
 function(X,W)
 {
 #... X: data matrix with response categories to be converted into 0/1 matrix  
@@ -24,8 +24,8 @@ function(X,W)
   #automatized generation of the design matrix W
   if (length(W)==1) {
     e_it <- gl(K,hmax)                              #factor for item parameters
-    c_cat <- gl(K,1,K*hmax)                         #factor for category par
-    Xm <- model.matrix(~e_it+c_cat)[,-1]            #design matrix with 0/1 contrasts (without intercept)
+    e_cat <- gl(hmax,1,K*hmax)                      #factor for category par
+    Xm <- model.matrix(~e_it+e_cat)[,-1]            #design matrix with 0/1 contrasts (without intercept)
     catvek <- 1:hmax                                #preparing the item design vectors
     e_itnew <- catvek*Xm[,1:(K-1)]                  
     Xm[,1:(K-1)] <- e_itnew

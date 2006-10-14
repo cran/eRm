@@ -15,18 +15,18 @@ and its linear extension (LPCM). The parameters are estimated by conditional max
 \tabular{ll}{
 Package: \tab eRm\cr
 Type: \tab Package\cr
-Version: \tab 0.3\cr
-Date: \tab 2006-07-19\cr
+Version: \tab 0.3.1\cr
+Date: \tab 2006-10-06\cr
 License: \tab GPL2 or higher\cr
 }
 The basic input units for the functions are the person-item-matrix X and the design matrix W. 
 By default, W is generated automatically, but it can be specified by the user as well. The function
-call of the basic models can be achieved through \code{RM(X, W)}, \code{RSM(X, W)}, and \code{PCM(X, W)}.
+call of the basic models is \code{RM(X, W)}, \code{RSM(X, W)}, and \code{PCM(X, W)}.
 
 The linear extensions provide the possibility to fit a more restricted model than its basic complement, but
 also a generalization by imposing repeated measurement designs and group contrasts. These models can 
-be estimated by using e.g. the call \code{LLTM(X, W, mpoints = 2, Groups = G)}, \code{LRSM(X, W, mpoints = 2, Groups = G)}, and
-\code{LPCM(X, W, mpoints = 2, Groups = G)}. \code{G} is a vector with the group membership of each subject.
+be estimated by using e.g. the call \code{LLTM(X, W, mpoints = 2, groupvec = G)}, \code{LRSM(X, W, mpoints = 2, groupvec = G)}, and
+\code{LPCM(X, W, mpoints = 2, groupvec = G)}. \code{G} is a vector with the group membership of each subject.
  
 }
 \author{Patrick Mair, Reinhold Hatzinger

@@ -1,4 +1,4 @@
-"lr" <-
+`lr` <-
 function(likall)
 {
   likvek <- sapply(likall,function(lg) {lik <- (lg[[1]]$minimum)}) #get out vektor of likelihood values
