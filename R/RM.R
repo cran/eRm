@@ -1,4 +1,4 @@
-`RM` <-
+"RM" <-
 function(X,W)
 {
 #...X: 0/1 person*item matrix
@@ -26,7 +26,11 @@ betapar <- as.vector(lres$W%*% etapar)                 #beta estimates
 if (length(LR)>1) {
   etaparG1 <- lres$likall[[2]][[1]]$estimate             #parameter vector group1 in LR-test (needed for plot method)
   etaparG2 <- lres$likall[[3]][[1]]$estimate             #parameter vector group2 
+} else {
+  etaparG1 <- NA
+  etaparG2 <- NA
 }
+
 result <- list(model=model,loglik=loglik,df=dim(lres$W)[2],iter=iter,etapar=etapar,se_eta=se,hessian=likall[[1]]$hessian,betapar=betapar,
                LR=lres$LR,W=lres$W,etaparG1=etaparG1,etaparG2=etaparG2)
 class(result) <- c("Rm","eRm")                         #classes: simple RM and extended RM
