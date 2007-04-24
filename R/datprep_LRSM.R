@@ -1,5 +1,5 @@
 `datprep_LRSM` <-
-function(X,W,mpoints,Groups)
+function(X,W,mpoints,Groups,sum0)
 {
   #TFrow <- (rowSums(X)==0)                       #el. persons with 0 rawscore
   #X <- X[!TFrow,]
@@ -7,7 +7,7 @@ function(X,W,mpoints,Groups)
   ngroups <- max(Groups)                          #number of groups
   N <- dim(X)[1]                                  #number of persons
   K <- dim(X)[2]/mpoints                          #number of items
-  hmax <- max(X)                                  #highest category
+  hmax <- max(X,na.rm=TRUE)                       #highest category
   mt_vek <- rep(hmax,K)                           #number of categories - 1 for each item                  
   mt_vek_0 <- mt_vek+1                            #number of categories for each item
   
@@ -19,13 +19,37 @@ function(X,W,mpoints,Groups)
   imp2 <- rep(1:N,rep(K1,N))
   indmat <- cbind(imp2,imp1)                      #final index matrix for 1 responses
   X01_0[indmat] <- 1                              #0/1 matrix with 0th category
+  
+  d1 <- 1:N
+  d2 <- 1:K1
+  coor <- expand.grid(d2,d1)[,c(2:1)]               #X coordinates
+  resvec <- as.vector(t(X))                         #X as vector (rowwise)
+  NAind <- as.matrix(coor[is.na(resvec),])          #index matrix for NA's in X
+  mt_vek.t <- rep(mt_vek,mpoints)
+   
+  if (length(NAind) > 0) {
+    NAindlist <- apply(NAind,1,function(x){
+                    co <- seq(cummt0[x[2]],cummt0[x[2]]+mt_vek.t[x[2]])
+                    NAind01 <- cbind(rep(x[1],length(co)),co)
+                    data.frame(NAind01,row.names=NULL)                                               #list with NA indices
+                    })
+    indmatNA <- matrix(unlist(lapply(NAindlist, function(x) {t(as.matrix(x))})),ncol=2,byrow=TRUE)   #matrix with NA indices 
+    X01_0[indmatNA] <- NA
+  }
+  
   X01 <- X01_0[,-cummt0]
   
   #automatized generation of the design matrix W
   if (length(W)==1) {                             #generating design matrix
     e_it <- gl(K,hmax)                            #factor for item parameters
     e_cat <- gl(hmax,1,K*hmax)                    #factor for category par
-    Xm <- model.matrix(~e_it+e_cat)[,-1]          #design matrix with 0/1 contrasts (without intercept)
+    
+    if (sum0) {
+      Xm <- model.matrix(~e_it+e_cat, contrasts = list(e_it="contr.sum",e_cat="contr.sum"))[,-1]
+    } else {
+      Xm <- model.matrix(~e_it+e_cat)[,-1]          #design matrix with 0/1 contrasts (without intercept)
+    }
+    
     catvek <- 1:hmax                              #preparing the item design vectors
     e_itnew <- catvek*Xm[,1:(K-1)]                  
     Xm[,1:(K-1)] <- e_itnew

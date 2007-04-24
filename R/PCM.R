@@ -1,38 +1,41 @@
 `PCM` <-
-function(X,W)
+function(X, W, se = TRUE, sum0 = TRUE)
 {
 #...X: person*item scores matrix (starting from 0)
 
 #-------------------main programm-------------------
 model <- "PCM"
-Groups <- 1
+groupvec <- 1
 mpoints <- 1
 if (missing(W)) W <- NA
 else W <- as.matrix(W)
 
-XWcheck <- datcheck(X,W)                              #inital check of X and W
+XWcheck <- datcheck(X,W,mpoints,groupvec,model)                              #inital check of X and W
 X <- XWcheck$X
 
-lres <- likLR(X,W,mpoints,Groups,model)
-likall <- lres$likall[[1]]
-LR <- lres$LR
+lres <- likLR(X,W,mpoints,groupvec,model,st.err=se,sum0)
+parest <- lres$parest                             #full groups for parameter estimation
                                 
-loglik <- -likall[[1]]$minimum                         #log-likelihood value
-iter <- likall[[1]]$iterations                         #number of iterations
-etapar <- likall[[1]]$estimate                         #eta estimates
-se <- sqrt(diag(solve(likall[[1]]$hessian)))           #standard errors
-betapar <- as.vector(lres$W%*% etapar)                 #beta estimates
-
-if (length(LR)>1) {
-  etaparG1 <- lres$likall[[2]][[1]]$estimate             #parameter vector group1 in LR-test (needed for plot method)
-  etaparG2 <- lres$likall[[3]][[1]]$estimate             #parameter vector group2 
+loglik <- -parest$minimum                         #log-likelihood value
+iter <- parest$iterations                         #number of iterations
+etapar <- parest$estimate                         #eta estimates
+if (se) {
+  se <- sqrt(diag(solve(parest$hessian)))         #standard errors
 } else {
-  etaparG1 <- NA
-  etaparG2 <- NA
+  se <- rep(NA,length(etapar))
 }
+betapar <- as.vector(lres$W%*% etapar)            #beta estimates
+X01 <- lres$X01 
 
-result <- list(model=model,loglik=loglik,df=dim(lres$W)[2],iter=iter,etapar=etapar,se_eta=se,hessian=likall[[1]]$hessian,betapar=betapar,
-               LR=lres$LR,W=lres$W,etaparG1=etaparG1,etaparG2=etaparG2)
+npar <- dim(lres$W)[2]                            #number of parameters
+N <- dim(X)[1]                                    #number of persons
+AIC <- -2*loglik + 2*npar
+BIC <- -2*loglik + log(N)*npar
+cAIC <- -2*loglik + log(N)*npar + npar
+IC <- list(AIC=AIC,BIC=BIC,cAIC=cAIC)
+
+result <- list(X=X,X01=X01,model=model,loglik=loglik,IC=IC,npar=npar,iter=iter,
+               etapar=etapar,se.eta=se,hessian=parest$hessian,betapar=betapar,W=lres$W)
 
 class(result) <- c("Rm","eRm")                         #classes: simple RM and extended RM
 result

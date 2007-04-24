@@ -1,0 +1,1 @@
+person.parameter <- function(object,se = TRUE, splineInt = TRUE)UseMethod("person.parameter")

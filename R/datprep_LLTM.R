@@ -1,5 +1,5 @@
 `datprep_LLTM` <-
-function(X,W,mpoints,Groups)
+function(X,W,mpoints,Groups,sum0)
 {
 # Design matrix see Fischer & Molenaar, p. 159  
   
@@ -15,7 +15,11 @@ function(X,W,mpoints,Groups)
   #automatized generation of the design matrix W
   if (length(W)==1) {
     W11diag <- diag(1,(sum(mt_vek)-1))                #build up design matrix
-    w110 <- rep(0,(sum(mt_vek)-1))                    #first item category parameter set to 0
+    if (sum0) {
+      w110 <- rep(-1,(sum(mt_vek)-1))                 #sum0 restriction
+    } else {
+      w110 <- rep(0,(sum(mt_vek)-1))                  #first item category parameter set to 0
+    }
     W11 <- rbind(w110,W11diag)                        #RM design matrix 
     ZW <- dim(W11)[1]
     

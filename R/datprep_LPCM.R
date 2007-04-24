@@ -1,5 +1,5 @@
 `datprep_LPCM` <-
-function(X,W,mpoints,Groups)
+function(X,W,mpoints,Groups,sum0)
 {
   #TFrow <- (rowSums(X)==0)                       #el. persons with 0 rawscore
   #X <- X[!TFrow,]
@@ -7,7 +7,7 @@ function(X,W,mpoints,Groups)
   ngroups <- max(Groups)
   N <- dim(X)[1]                                  #number of persons
   K <- dim(X)[2]/mpoints                          #number of items
-  mt_vek <- apply(X,2,max)[1:K]                   #number of categories - 1 for each item
+  mt_vek <- apply(X,2,max,na.rm=TRUE)[1:K]                   #number of categories - 1 for each item
   mt_vek_0 <- mt_vek+1                            #number of categories for each item
   
   X01_0 <- matrix(rep(0,(N*sum(mt_vek_0)*mpoints)),nrow=N) #empty 0/1 matrix  
@@ -18,12 +18,38 @@ function(X,W,mpoints,Groups)
   imp2 <- rep(1:N,rep(K1,N))
   indmat <- cbind(imp2,imp1)                      #final index matrix for 1 responses
   X01_0[indmat] <- 1                              #0/1 matrix with 0th category
+  
+  
+  d1 <- 1:N
+  d2 <- 1:K1
+  coor <- expand.grid(d2,d1)[,c(2:1)]               #X coordinates
+  resvec <- as.vector(t(X))                         #X as vector (rowwise)
+  NAind <- as.matrix(coor[is.na(resvec),])          #index matrix for NA's in X
+  mt_vek.t <- rep(mt_vek,mpoints)
+    
+  if (length(NAind) > 0) {
+    NAindlist <- apply(NAind,1,function(x){
+                    #x <- unlist(x)
+                    co <- seq(cummt0[x[2]],cummt0[x[2]]+mt_vek.t[x[2]])
+                    NAind01 <- cbind(rep(x[1],length(co)),co)
+                    data.frame(NAind01,row.names=NULL)                                               #list with NA indices
+                    })
+    indmatNA <- matrix(unlist(lapply(NAindlist, function(x) {t(as.matrix(x))})),ncol=2,byrow=TRUE)   #matrix with NA indices 
+    X01_0[indmatNA] <- NA
+  }
+  
   X01 <- X01_0[,-cummt0]
     
   #automatized generation of the design matrix W
   if (length(W)==1) {
     W11diag <- diag(1,(sum(mt_vek)-1))                   #build up design matrix
-    w110 <- rep(0,(sum(mt_vek)-1))                    #first item category parameter set to 0
+    
+    if (sum0) {
+      w110 <- rep(-1,(sum(mt_vek)-1))                 #sum0 restriction
+    } else {
+      w110 <- rep(0,(sum(mt_vek)-1))                  #first item category parameter set to 0
+    }
+    
     W11 <- rbind(w110,W11diag)                               #PCM design matrix 
     ZW <- dim(W11)[1]
     

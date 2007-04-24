@@ -1,22 +1,24 @@
 `print.eRm` <-
 function(x,...)  {                                         #print method for all models
   cat("\n")
-  ll <- x$loglik
-  cat("log-likelihood: ",ll)
-  cat("\n")
+  cat("Basic Parameters eta:")                             #eta parameters
   cat("\n")
   etapar <- x$etapar
-  
   nameeta <- paste("eta",1:dim(x$W)[2])
-  #nameeta <- names(as.data.frame(x$W))                    
-  
-  se <- x$se_eta
-  result <- rbind(etapar, se)                                         #(virtual) item parameters, standard errors
-  
+  se <- x$se.eta
+  result <- rbind(etapar, se)                                         
   colnames(result) <- nameeta
   rownames(result) <- c("Estimate", "Std.Err")
   print(result)
-  cat("\n")
-  invisible(x)
+  cat("\n\n")
+                                                          #(virtual) item parameters beta
+  #cat("Item Parameters beta:")
+  #cat("\n")
+  #betapar <- t(as.matrix(x$betapar))
+  #namebeta <- paste("beta",1:dim(x$W)[1])
+  #colnames(betapar) <- namebeta
+  #rownames(betapar) <- "Estimate"
+  #print(betapar)
+  #cat("\n")
 }
 
