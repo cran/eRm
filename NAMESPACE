@@ -1,3 +1,4 @@
+useDynLib(eRm)
 import("stats", "graphics")
 export(RM)
 export(LLTM)

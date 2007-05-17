@@ -11,9 +11,9 @@ function(x,...)
 
   cat("\nChi-square Itemfit Statistics: \n")
   for (i in 1:length(x$i.fit)) {
-    if (length(x$i.fit) > 1) {cat("Person Group:",i,"\n")}
+    if (length(x$i.fit) > 1) {cat("Person NA Group:",i,"\n")}
     coef.table <- cbind(x$i.fit[[i]],x$i.df[[i]],pvalues[[i]][[1]])
-    dimnames(coef.table) <- list(names(x$i.fit[[1]]),c("Itemfit","df","p.value"))
+    dimnames(coef.table) <- list(names(x$i.fit[[i]]),c("Itemfit","df","p.value"))
     print(coef.table)
     cat("\n")
   }

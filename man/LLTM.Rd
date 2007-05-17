@@ -6,7 +6,7 @@
   for binary item responses by using CML estimation. 
 }
 \usage{
-LLTM(X, W, mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE)
+LLTM(X, W, mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE, etaStart)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,6 +19,7 @@ LLTM(X, W, mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE)
   \item{se}{If \code{TRUE}, the standard errors are computed.} 
   \item{sum0}{If \code{TRUE}, the parameters are normalized to sum-0 by specifying 
   an appropriate \code{W}. If \code{FALSE}, the first parameter is restricted to 0.}
+  \item{etaStart}{A vector of starting values for the eta parameters can be specified. If missing, the 0-vector is used.}
 }
 \details{
   Through appropriate definition of \code{W} the LLTM can be viewed as a more parsimonous 

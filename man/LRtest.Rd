@@ -26,7 +26,7 @@ The parameters for \code{LRtest} which returns an object of class \code{LR} are:
   Optionally \code{splitcr} can also be a vector which assigns each person to a 
   certain subgroup (e.g., following an external criterion). }
   \item{alpha}{Significance level for Chi-square statistic.}
-  \item{se}{If \code{TRUE}, standard errors are computed}
+  \item{se}{If \code{TRUE}, standard errors are computed.}
   
 The parameters for \code{plotGOF} are:   
   \item{x}{Object of class \code{LR} for visualizing the fit of single items.}
@@ -43,12 +43,17 @@ The parameters for \code{plotGOF} are:
 \details{}
 \value{
   \code{LRtest} returns an object of class \code{LR} containing:
+  \item{X}{Data matrix.}
+  \item{X.list}{List of data matrices for the subgroups.}
+  \item{model}{Fitted model}
   \item{LR}{LR-value.}
   \item{df}{Degrees of freedom of the test statistic.}
   \item{Chisq}{Chi-square value with corresponding df and alpha.}
   \item{pvalue}{P-value of the test.}
   \item{likgroup}{Log-likelihood values for the subgroups}
   \item{betalist}{List of beta parameters for the subgroups.}
+  \item{etalist}{List of eta parameters for the subgroups.}
+  \item{selist}{List of standard errors of the eta parameters.}
 }
 \references{
 Andersen, E. B. (1973). A goodness of fit test for the Rasch model. Psychometrika, 38,

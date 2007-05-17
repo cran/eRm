@@ -8,7 +8,7 @@ function(object, item.subset = "all", empirical = FALSE, xlim = c(-4,4), ylim = 
   X <- object$X  
 
   if (empirical) {                                       #empirical ICC for Rasch model only
-    th.est <- person.parameter(object,se=FALSE,splineInt=TRUE)
+    th.est <- person.parameter(object)
     thetapar <- th.est$thetapar
     if (length(thetapar)==1) {                           #Too complicated with NA'groups (for each NAgroup separate plots...)
       emp.plot <- TRUE
@@ -63,10 +63,10 @@ function(object, item.subset = "all", empirical = FALSE, xlim = c(-4,4), ylim = 
          legend(xlim[1],0.5,paste(c("Category"),0:(dim(yp)[2]-1)), col=1:(dim(yp)[2]),lty=1,lwd=1,...)
       }
     } else {
-      if (any(item.subset=="all")) par(mfrow=c(2,2))
+      #if (any(item.subset=="all")) par(mfrow=c(2,2))
       for (i in ivec) {                                 #runs over items
          if (any(item.subset=="all")) {
-           if ((i %% 4) == 0) {
+           if (((i-1) %% 4) == 0) {
               get(getOption("device"))()
               par(mfrow=c(2,2))
            }} else {get(getOption("device"))()}  

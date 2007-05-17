@@ -25,7 +25,6 @@
   \item{ylim}{Range for probability to solve.}
   \item{lty}{Line type.}
   \item{...}{Additional plot parameters.}
-  ...
 }
 \details{}
 \value{}
@@ -42,7 +41,7 @@ res <- RSM(rsmdat)
 plotICC(res)
 
 # Rasch model with empirical ICCs
-newdata <- matrix(sample(0:1, 6000, replace = TRUE), ncol = 6)
+newdata <- matrix(sample(0:1, 1000, replace = TRUE), ncol = 5)
 res <- RM(newdata)
 plotICC(res, empirical = TRUE)
 

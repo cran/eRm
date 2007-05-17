@@ -2,9 +2,10 @@
 function(X,W,sum0)
 {
 #... X: data matrix with response categories to be converted into 0/1 matrix  
-  #TFrow <- (rowSums(X)==0)  #el. persons with 0/K rawscore
-  #X <- X[!TFrow,]
-
+  
+  max.it <- apply(X,2,max,na.rm=TRUE)             #RSM check for equal number of categories
+  if (length(table(max.it)) > 1) stop("RSM can not be computed since number of categories are not the same for each item!\n")
+  
   N <- dim(X)[1]                                  #number of persons
   K <- dim(X)[2]                                  #number of items
   hmax <- max(X,na.rm=TRUE)                       #highest category

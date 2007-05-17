@@ -1,5 +1,5 @@
 `person.parameter.eRm` <-
-function(object, se = TRUE, splineInt = TRUE)
+function(object)
 # estimation of the person parameters with jml
 # object of class eRm 
 # se... whether standard errors should be computed
@@ -7,6 +7,8 @@ function(object, se = TRUE, splineInt = TRUE)
 
 {
 
+se <- TRUE
+splineInt <- TRUE
 options(warn=0)
 X <- object$X
 
@@ -14,7 +16,8 @@ max.it <- apply(X,2,max,na.rm=TRUE)                               #maximum item 
 rp <- rowSums(X,na.rm=TRUE)                                       #person raw scores
 maxrp <- apply(X,1,function(x.i) {sum(max.it[!is.na(x.i)])})      #maximum item raw score for person i 
 TFrow <- ((rp==maxrp) | (rp==0))
-pers.exe <- (1:dim(X)[1])[TFrow]
+pers.exe <- (1:dim(X)[1])[TFrow]                                  #persons excluded from estimation due to 0/full
+#pers.notexe <- (1:dim(X)[1])[!TFrow]
 X.dummy <- X
 if (length(pers.exe) > 0) X <- X[-pers.exe,] 
 
@@ -26,6 +29,7 @@ if (any(is.na(X))) {
 } else {
   gmemb <- rep(1,dim(X)[1])
 }
+
 
 
 beta <- object$betapar
@@ -70,12 +74,15 @@ fitlist <- tapply(rowvec,gmemb,function(rind) {         #list with nlm outputs
     jml <- function(theta) 
     {
         t1t2.list <- tapply(1:(dim(X01beta)[2]),mt_ind, function(xin) {
-                                 xb <- t(X01beta)[xin,]
-                                 beta.i <- c(0,xb[,dim(xb)[2]])                     #item parameter with 0 
-                                 x01.i <- xb[,1:(dim(xb)[2]-1)]                     #0/1 matrix for item i
+                                 #print(xin)
+                                 xb <- (t(X01beta)[xin,]) #0/1 responses and beta parameters
+                                 if (is.vector(xb)) xb <- t(as.matrix(xb))   #if Rasch 
+                                 beta.i <- c(0,xb[,dim(xb)[2]])    #item parameter with 0 
+                                 x01.i <- (xb[,1:(dim(xb)[2]-1)])    #0/1 matrix for item i without beta
+                                 if (is.vector(x01.i)) x01.i <- t(as.matrix(x01.i))
                                  cat0 <- rep(0,dim(x01.i)[2])
                                  cat0[colSums(x01.i)==0] <- 1
-                                 x01.i0 <- rbind(cat0,x01.i)                        #appending response vector for 0th category
+                                 x01.i0 <- rbind(cat0,x01.i)       #appending response vector for 0th category
                                  
                                  ind.h <- 0:(length(beta.i)-1)
                                  theta.h <- ind.h %*% t(theta)
@@ -145,24 +152,9 @@ if (splineInt) {                                           #cubic spline interpo
                        }},xlist,thetapar,SIMPLIFY=FALSE)
   X.n <- object$X
   if (any(sapply(pred.list,is.null)))  pred.list <- NULL                           #no spline interpolation applicable
-  
-  #noth <- (1:length(xlist))[!sapply(xlist, function(xl) {length(unique(xl)) > 3})]         #for these person groups no splinereg
-  #if (length(noth) > 0) {
-  #  cat("Warning message: For the following person-NA-groups no spline regression can be performed since there are not enough observations: \n")
-  #  print(noth)
-    #cat("This affects the following persons: \n")
-    #print(gmemb[gmemb %in% noth])
-  #}                 
-} else {
-  pred.list <- NULL
-  X.n <- X
-  if (length(pers.exe) > 0){
-    cat("Warning Message: The following subjects are deleted from the data matrix due to 0/full person raw score: \n")
-    cat(rownames(object$X)[pers.exe])
-    cat("\n")
-  }
-}
-                               
+   
+} 
+                              
 result <- list(X=X.n,X01=object$X01,loglik=loglik,npar=npar,iter=niter,
                betapar=object$betapar,thetapar=thetapar,se.theta=se.theta,
                pred.list=pred.list,hessian=hessian,mpoints=mpoints,

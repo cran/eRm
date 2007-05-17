@@ -10,14 +10,17 @@ This package estimates extended Rasch models, i.e. the
 ordinary Rasch model for dichotomous data (RM), the linear logistic test model (LLTM),
 the rating scale model (RSM) and its linear extension (LRSM), the partial credit model (PCM)
 and its linear extension (LPCM). The parameters are estimated by conditional maximum 
-likelihood (CML). 
+likelihood (CML). Missing values are allowed in the data matrix. Additional features 
+are the estimation of the person parameters, LR-Model test, item-spefific Wald test, 
+itemfit and personfit statistics, various ICC plots. An eRm platform is provided at 
+http://r-forge.r-project.org.
 }
 \details{
 \tabular{ll}{
 Package: \tab eRm\cr
 Type: \tab Package\cr
-Version: \tab 0.9.0.\cr
-Date: \tab 2007-04-24\cr
+Version: \tab 0.9.1.\cr
+Date: \tab 2007-05-17\cr
 License: \tab GPL\cr
 }
 The basic input units for the functions are the person-item matrix X and the design matrix W. 

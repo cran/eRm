@@ -9,16 +9,29 @@ function(object,...)
     thetaind <- rownames(object$X)
   }
     
+  if (any(is.na(object$X))) {                                       #recompute gmemb without persons excluded
+    dichX <- ifelse(is.na(object$X),1,0)
+    strdata <- apply(dichX,1,function(x) {paste(x,collapse="")})
+    gmemb <- as.vector(data.matrix(data.frame(strdata)))
+  } else {
+    gmemb <- rep(1,dim(object$X)[1])
+  }
+  
   cat("\n")
   cat("Estimation of Person Parameters")
   for (i in 1:length(object$thetapar)) {
     cat("\n\n")
-    if (length(object$thetapar) > 1) {cat("Person Group:",i,"\n")}
+    if (length(object$thetapar) > 1) {
+      cat("Person NA Group:",i,"\n")
+      xvec <- object$X[gmemb==i,][1,]                    #determine NA pattern
+      xvec[!is.na(xvec)] <- "x"
+      cat("NA pattern:",xvec,"\n")
+      }
     cat("Log-likelihood:",object$loglik[[i]],"\n")
     cat("Number of iterations:",object$iter[[i]],"\n")
     cat("Number of parameters:",object$npar[[i]],"\n")
     cat("\n")
-    cat("ML estimated person parameters (without spline approximations): \n")
+    cat("ML estimated person parameters (without spline interpolated values): \n")
     coef.table <- cbind(object$thetapar[[i]],object$se.theta[[i]])
     dimnames(coef.table) <- list(paste("theta",thetaind[object$gmemb==i]),c("Estimate","Std. Error."))
     print(coef.table)

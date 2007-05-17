@@ -6,7 +6,7 @@
   This function computes the parameter estimates of a partial credit model for polytomous 
   item responses by using CML estimation. }
 \usage{
-PCM(X, W, se = TRUE, sum0 = TRUE)
+PCM(X, W, se = TRUE, sum0 = TRUE, etaStart)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -15,6 +15,7 @@ PCM(X, W, se = TRUE, sum0 = TRUE)
   \item{se}{If \code{TRUE}, the standard errors are computed.} 
   \item{sum0}{If \code{TRUE}, the parameters are normed to sum-0 by specifying 
   an appropriate \code{W}. If \code{FALSE}, the first parameter is restricted to 0.}
+  \item{etaStart}{A vector of starting values for the eta parameters can be specified. If missing, the 0-vector is used.}
 }
 \details{
   Through specification in W, the parameters of the categories with 0 responses

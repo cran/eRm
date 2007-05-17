@@ -1,5 +1,5 @@
 `PCM` <-
-function(X, W, se = TRUE, sum0 = TRUE)
+function(X, W, se = TRUE, sum0 = TRUE, etaStart)
 {
 #...X: person*item scores matrix (starting from 0)
 
@@ -7,13 +7,17 @@ function(X, W, se = TRUE, sum0 = TRUE)
 model <- "PCM"
 groupvec <- 1
 mpoints <- 1
+
 if (missing(W)) W <- NA
 else W <- as.matrix(W)
+
+if (missing(etaStart)) etaStart <- NA
+else etaStart <- as.vector(etaStart)
 
 XWcheck <- datcheck(X,W,mpoints,groupvec,model)                              #inital check of X and W
 X <- XWcheck$X
 
-lres <- likLR(X,W,mpoints,groupvec,model,st.err=se,sum0)
+lres <- likLR(X,W,mpoints,groupvec,model,st.err=se,sum0,etaStart)
 parest <- lres$parest                             #full groups for parameter estimation
                                 
 loglik <- -parest$minimum                         #log-likelihood value

@@ -43,33 +43,25 @@ Xlist0 <- lapply(Xlist,function(x) {                                 #eliminate 
                                                !all(is.na(z))})
                          x[,tfvec]})
 
-Xlist.n <- lapply(Xlist0,function(x) {                               #submatrices without 0 and full item scoobject eliminated
+
+#Xlist.n <- lapply(Xlist0,function(x) {       
+
+itdel <- unique(unlist(lapply(Xlist0,function(x) {                         #items which will be deleted
                ri <- apply(x,2,sum,na.rm=TRUE)                       #item raw scoobject
                n.NA <- colSums(apply(x,2,is.na))                     #number of NA's per column
                maxri <- (dim(x)[1]*(apply(x,2,max,na.rm=TRUE)))-n.NA #maximum item raw scoobject with NA
                TFcol <- ((ri==maxri) | (ri==0))                      #full and 0 item scoobject as TRUE
                if (any(TFcol)) {
                  options(warn=0)
-                 
-                 cat("The following items are deleted due to 0/full raw score:",colnames(x)[TFcol],"\n")
-                 warning("Waldtest may not work, choose another split!") 
+                 cat("The following items are not tested since excluded due to 0/full raw score in subgroups:",colnames(x)[TFcol],"\n")
                }
-               x.n <- x[,TFcol==FALSE]
-               if (dim(x.n)[2]==0) x.n <- NULL                        #nothing left to estimate
-               x.n
-              })
-
-Xlist.n <- Xlist.n[!sapply(Xlist.n,is.null)]
-Xmax <- apply(object$X,2,max,na.rm=TRUE)
-lapply(Xlist.n,function(x) {
-                 submax <- apply(x,2,max,na.rm=TRUE)
-                 if (length(submax) != length(Xmax)) {
-                   stop("Number of parameters is different for subgroups. Waldtest cannot be performed, choose another split!")
-                 } else {  
-                   if (any(submax != Xmax)) {
-                     stop("Maximal category responses in subgroups do not match. Waldtest cannot be performed!") 
-                 }}})
-
+               return(colnames(x)[TFcol])
+              })))
+              
+itkeep <- !(colnames(object$X) %in% itdel)                            #boolean which items should be kept
+if (sum(itkeep) == 0) stop("No items left to estimate!")
+Xlist.n <- lapply(Xlist0, function(x) x[,itkeep])
+       
 n.eta <- object$npar
 
 if (object$model=="RM") {
@@ -101,15 +93,32 @@ etapar1 <- unlist(likpar[1,1])
 se1 <- unlist(likpar[2,1])
 etapar2 <- unlist(likpar[1,2])
 se2 <- unlist(likpar[2,2])
+if (length(etapar1) != length(etapar2)) stop("Wald test cannot be performed since number of response item-categories differ over subgroups! \n")
 
 if (object$model == "RM") {                #for RM-print, which beta are not fixed
-  betalab <- colnames(object$X)[-1] #corresponding item labels
+  betalab <- colnames(Xlist.n[[1]])        #corresponding item labels
 } else {
   betalab <- NULL
 }
 
+if (!is.null(betalab)) betalab1 <- betalab[-1]
 
-result <- list(etapar1=etapar1,se1=se1,etapar2=etapar2,se2=se2,betalab=betalab)
+num <- (etapar1-etapar2)                 #numerator in Wald formula
+denom <- sqrt(se1^2 + se2^2)             #denominator
+W.i <- (num/denom)                       #z-values
+pvalues <- 1-pnorm(abs(W.i))
+#pvalues <- 1-pchisq(W.i,1)
+   
+if (!is.null(betalab)) {                     #for Rasch models item labels are printed out
+ coef.table <- as.data.frame(cbind(betalab1,round(W.i,3),round(pvalues,5)))
+ dimnames(coef.table) <- list(paste("eta",1:length(etapar1),sep=""),c("Item","z-value","p-value"))
+} else {
+ coef.table <- cbind(round(W.i,3),round(pvalues,5))
+ dimnames(coef.table) <- list(paste("eta",1:length(etapar1),sep=""),c("z-value","p-value"))
+}
+
+
+result <- list(coef.table=coef.table,etapar1=etapar1,se1=se1,etapar2=etapar2,se2=se2,betalab=betalab)
 class(result) <- "wald"
 result
 }

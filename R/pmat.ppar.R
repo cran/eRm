@@ -1,12 +1,22 @@
 `pmat.ppar` <-
 function(object)
-# computes a list of expected probabilities for objects of class "ppar"
+# computes a list of expected probabilities for objects of class "ppar" for each NA-subgroup
 # without category!
 {
 
 X <- object$X
 mt_vek <- apply(X,2,max,na.rm=TRUE)             #number of categories - 1 for each item
 mt_ind <- rep(1:length(mt_vek),mt_vek)
+
+rp <- rowSums(X,na.rm=TRUE)
+maxrp <- sum(mt_vek)
+TFrow <- ((rp==maxrp) | (rp==0))
+if (any(TFrow)) {
+  cat("Warning message: For the following persons no expected probabilites are computed due to 0/full raw score: \n")
+  cat(rownames(object$X)[TFrow],sep=", ")
+  cat("\n")
+}
+
 
 pmat.l <- lapply(object$thetapar, function(theta1) {   
              theta <- theta1

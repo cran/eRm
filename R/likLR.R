@@ -1,15 +1,6 @@
 `likLR` <-
-function (X,W,mpoints,Groups,model,st.err,sum0)
+function (X,W,mpoints,Groups,model,st.err,sum0,etaStart)
 {
-
-#if (any(is.na(X))) {
- # pcX <- prelim_cat_pm(as.matrix(X))
- # rrow <- as.numeric(rownames(pcX$r))           #frequencies for different NA patterns
- # ogmemb <- rep(1:length(rrow),rrow)
- # gmemb <- ogmemb[pcX$ro]
-#} else {
-#  gmemb <- rep(1,dim(X)[1])
-#}
 
 if (any(is.na(X))) {
   dichX <- ifelse(is.na(X),1,0)
@@ -19,7 +10,7 @@ if (any(is.na(X))) {
   gmemb <- rep(1,dim(X)[1])
 }
 
-#parameter estimation
+#data preparation, design matrix generation for various models
 if (model=="RM") { Xprep <- datprep_RM(X,W,sum0)
 } else if (model=="LLTM") { Xprep <- datprep_LLTM(X,W,mpoints,Groups,sum0)
 } else if (model=="RSM") { Xprep <- datprep_RSM(X,W,sum0)
@@ -28,14 +19,18 @@ if (model=="RM") { Xprep <- datprep_RM(X,W,sum0)
 } else if (model=="LPCM")  {Xprep <- datprep_LPCM(X,W,mpoints,Groups,sum0)
 }
 
+if (any(is.na(etaStart))) etaStart <- rep(0,dim(Xprep$W)[2])       #check starting vector
+if (length(etaStart) != dim(Xprep$W)[2]) stop("Vector with starting values does not match the number of parameters!") 
+
+
 Lprep <- cmlprep(Xprep$X01,Xprep$mt_vek,mpoints,Groups,Xprep$W,gmemb)                   
 parest <- fitcml(Lprep$mt_ind,Lprep$nrlist,Lprep$x_mt,Lprep$rtot,Xprep$W,
                  max(Groups),gind=Lprep$gind,x_mtlist=Lprep$x_mtlist,
-                 Lprep$NAstruc,g_NA=Lprep$g_NA,st.err)      
+                 Lprep$NAstruc,g_NA=Lprep$g_NA,st.err,etaStart)      
 
 W1 <- Xprep$W
 rownames(W1) <- NULL
-colnames(W1) <- NULL
+colnames(W1) <- paste("eta",1:dim(W1)[2],sep="")
 options(warn=0)
                          
 list(W=W1,parest=parest,X01=Xprep$X01)                          #returns design matrix and results

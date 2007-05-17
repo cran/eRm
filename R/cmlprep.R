@@ -71,6 +71,11 @@ function(X01,mt_vek,mpoints,Groups,W,gmemb)
                                     x.u <- unique(x)
                                     as.numeric(as.matrix(x.u))}) #NA's are coded with 0
                                     
+  NAcheck <- sapply(NAstruc,sum)                               #if for certain NAgroups only 1 item was presented
+  if (length(which(NAcheck == 1) > 0)) {
+    stop("Estimation cannot be performed: Eliminate persons which have been presented one item only! \n")
+  }
+                                    
 list(x_mt=x_mt,mt_ind=mt_ind,x_tmt=x_tmt,rtot=rtot,nrlist=nrlist,gind=gind,x_mtlist=x_mtlist,
      NAstruc=NAstruc,g_NA=g_NA)
 }

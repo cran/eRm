@@ -26,6 +26,7 @@ in each subgroup the same item-category parameters occur.
 }
 \value{
 Returns an object of class \code{wald} containing:   
+  \item{coef.table}{Data frame with test statistics, z- and p-values.}
   \item{etapar1}{Eta parameters for first subgroup}
   \item{se1}{Standard errors for first subgroup}
   \item{etapar2}{Eta parameters for second subgroup}

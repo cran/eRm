@@ -19,18 +19,18 @@ beta2 <- x$betalist[[2]]
 if (is.character(beta.subset)) {
   if (beta.subset=="all") {
     beta.subset <- 1:length(beta1)
-    textlab <- colnames(beta1)
+    textlab <- names(beta1)
   } else {
     textlab <- beta.subset
   }
 } else {
-  textlab <- colnames(beta1)[beta.subset]
+  textlab <- names(beta1)[beta.subset]
 }
 yshift <- (ylim[2]-ylim[1])/30
 
-plot(beta1[,beta.subset],beta2[,beta.subset],main="Graphical Model Check",xlab=xlab,
+plot(beta1[beta.subset],beta2[beta.subset],main="Graphical Model Check",xlab=xlab,
 ylab=ylab,ylim=ylim,xlim=xlim,type=type,...)
-text(beta1[,beta.subset],beta2[,beta.subset]+yshift,labels=textlab,...)
+text(beta1[beta.subset],beta2[beta.subset]+yshift,labels=textlab,...)
 abline(0,1)
 
 }

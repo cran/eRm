@@ -1,5 +1,5 @@
 `fitcml` <-
-function (mt_ind,nrlist,x_mt,rtot,W,ngroups,gind,x_mtlist,NAstruc,g_NA,st.err)
+function (mt_ind,nrlist,x_mt,rtot,W,ngroups,gind,x_mtlist,NAstruc,g_NA,st.err,etaStart)
 {
 
 #cml function for call in nlm
@@ -10,17 +10,9 @@ beta <- as.vector(W%*%eta)
 
 beta.list <- split(beta,gind)      
 
-#---------------- NEW -----------------------
-#if (length(g_NA) > 1) {
-#  beta.vec1 <- unlist(mapply(function(bl,gn) {
-#                         rep(bl,gn)
-#                       },beta.list,g_NA,SIMPLIFY=TRUE))
-#  bl.ind <- rep(1:sum(g_NA), each = length(beta.list[[1]]))
-#  beta.list1 <- split(beta.vec1,bl.ind)
-#} else {
 beta.list1 <- beta.list
-#}
-#---------------- end NEW -------------------
+
+
 
 betaNA <- mapply(function(x,y) {rbind(x,y)},beta.list1,NAstruc,SIMPLIFY=FALSE)         #beta and NAstructure as list (over Groups)
 
@@ -80,9 +72,9 @@ Lg <- lapply(betaNA, function(betaNAmat) {        #gamma functions for each Grou
 
 L1 <- sum(mapply(function(x,z) {
                    x[!is.na(z)]%*%na.exclude(z)
-                   },nrlist,lapply(Lg,log)))          #sum up L1-terms (group-wise)
+                   },nrlist,lapply(Lg,log)))        #sum up L1-terms (group-wise)
 
-L2 <- sum(mapply("%*%",x_mtlist,beta.list1))           #sum up L2-terms (group-wise)
+L2 <- sum(mapply("%*%",x_mtlist,beta.list1))        #sum up L2-terms (group-wise)
 
 L1-L2                                               #actual likelihood value
 #print(L1-L2)                                              
@@ -90,10 +82,10 @@ L1-L2                                               #actual likelihood value
 }
 
 
-eta <- rep(0,dim(W)[2])                                   #starting values for eta parameters
+eta <- etaStart                                     #starting values for eta parameters
 
-options(warn=-1)                                          #turn off warnings for NA/Inf
-fit <- nlm(cml,eta,hessian=st.err)                        #NLM optimizer
+options(warn=-1)                                    #turn off warnings for NA/Inf
+fit <- nlm(cml,eta,hessian=st.err)                  #NLM optimizer
 
 #options(warn=0)
 

@@ -7,7 +7,7 @@
   for polytomuous item responses by using CML estimation. 
 }
 \usage{
-LRSM(X, W , mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE)
+LRSM(X, W , mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE, etaStart)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -17,7 +17,8 @@ LRSM(X, W , mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE)
   \item{groupvec}{Vector of length N which determines the group membership of each subject, starting from 1}
   \item{se}{If \code{TRUE}, the standard errors are computed.} 
   \item{sum0}{If \code{TRUE}, the parameters are normalized to sum-0 by specifying 
-  an appropriate \code{W}. If \code{FALSE}, the first parameter is restricted to 0.} 
+  an appropriate \code{W}. If \code{FALSE}, the first parameter is restricted to 0.}
+  \item{etaStart}{A vector of starting values for the eta parameters can be specified. If missing, the 0-vector is used.}
 }
 \details{
   Through appropriate definition of \code{W} the LRSM can be viewed as a more parsimonous 

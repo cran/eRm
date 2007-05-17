@@ -6,7 +6,7 @@
   This function computes the parameter estimates of a Rasch model for binary item responses by using CML estimation. 
 }
 \usage{
-RM(X, W, se = TRUE, sum0 = TRUE)
+RM(X, W, se = TRUE, sum0 = TRUE, etaStart)
 }
 \arguments{
   \item{X}{Input 0/1 data matrix or data frame; rows represent individuals, columns represent items. Missing values are inserted as \code{NA}.}
@@ -14,6 +14,7 @@ RM(X, W, se = TRUE, sum0 = TRUE)
   \item{se}{If \code{TRUE}, the standard errors are computed.} 
   \item{sum0}{If \code{TRUE}, the parameters are normed to sum-0 by specifying 
   an appropriate \code{W}. If \code{FALSE}, the first parameter is restricted to 0.}
+  \item{etaStart}{A vector of starting values for the eta parameters can be specified. If missing, the 0-vector is used.}
 }
 \details{
   For estimating the item parameters the CML method is used. 

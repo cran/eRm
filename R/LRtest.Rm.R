@@ -50,16 +50,21 @@ Xlist0 <- lapply(Xlist,function(x) {                                 #eliminate 
                          x[,tfvec]})
 
 Xlist.n <- lapply(Xlist0,function(x) {                               #submatrices without 0 and full item scoobject eliminated
+               x <- as.matrix(x)
                ri <- apply(x,2,sum,na.rm=TRUE)                       #item raw scoobject
-               n.NA <- colSums(apply(x,2,is.na))                     #number of NA's per column
+               n.NA <- colSums(as.matrix((apply(x,2,is.na))))        #number of NA's per column
                maxri <- (dim(x)[1]*(apply(x,2,max,na.rm=TRUE)))-n.NA #maximum item raw scoobject with NA
                TFcol <- ((ri==maxri) | (ri==0))                      #full and 0 item scoobject as TRUE
                x.n <- x[,TFcol==FALSE]
-               if (dim(x.n)[2]==0) x.n <- NULL                        #nothing left to estimate
+               if (length(x.n) == 0) {
+                 x.n <- NULL 
+               } else {
+                 if (dim(x.n)[2]==0) x.n <- NULL                     #nothing left to estimate
+               }
                x.n
               })
 
-Xlist.n <- Xlist.n[!sapply(Xlist.n,is.null)]
+Xlist.n <- Xlist.n[!sapply(Xlist.n,is.null)]                        #delete NULL elements in Xlist.n
 
 
 if (object$model=="RM") {
@@ -67,7 +72,8 @@ if (object$model=="RM") {
                                objectg <- RM(x,se=se)
                                likg <- objectg$loglik
                                nparg <- length(objectg$etapar)
-                               list(likg,nparg,objectg$betapar)
+                               betalab <- colnames(objectg$X)
+                               list(likg,nparg,objectg$betapar,betalab,objectg$etapar,objectg$se.eta)
                                })
        }
 if (object$model=="PCM") {
@@ -75,7 +81,7 @@ if (object$model=="PCM") {
                                objectg <- PCM(x,se=se)
                                likg <- objectg$loglik
                                nparg <- length(objectg$etapar)
-                               list(likg,nparg,objectg$betapar)
+                               list(likg,nparg,objectg$betapar,NULL,objectg$etapar,objectg$se.eta)
                                })
        }
 if (object$model=="RSM") {
@@ -83,7 +89,7 @@ if (object$model=="RSM") {
                                objectg <- RSM(x,se=se)
                                likg <- objectg$loglik
                                nparg <- length(objectg$etapar)
-                               list(likg,nparg,objectg$betapar)
+                               list(likg,nparg,objectg$betapar,NULL,objectg$etapar,objectg$se.eta)
                                })
        }
        
@@ -94,15 +100,15 @@ Chisq <- qchisq(1-alpha,df)
 pvalue <- 1-pchisq(LR,df)                             #pvalue
 
 betalist <- likpar[3,]                                #organizing betalist
-betalist <- lapply(lapply(betalist,as.matrix),t)
-#Xcn <- lapply(Xlist,colnames)
-#betalist.n <- mapply(function(b,n) {
-#                       colnames(b) <- n
-#                       return(b)
-#                       },betalist,Xcn,SIMPLIFY=FALSE)
-
-result <- list(X=object$X,model=object$model,LR=LR,Chisq=Chisq,df=df,pvalue=pvalue,likgroup=unlist(likpar[1,],use.names=FALSE),
-               betalist=betalist)
+#betalist <- lapply(lapply(betalist,as.matrix),t)
+if (object$model == "RM") {                           #label betalist
+  betalab <- likpar[4,] 
+  for (i in 1:length(betalist)) names(betalist[[i]]) <- betalab[[i]] 
+}
+         
+result <- list(X=object$X, X.list=Xlist.n, model=object$model,LR=LR,
+               Chisq=Chisq, df=df, pvalue=pvalue, likgroup=unlist(likpar[1,],use.names=FALSE),
+               betalist=betalist, etalist=likpar[5,],selist=likpar[6,])
 class(result) <- "LR"
 result
 }

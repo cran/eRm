@@ -44,9 +44,23 @@ function(x,...)
     coef.list <- lapply(coef.list,function(cl) {cbind(cl,NA)})
   }
   
+  if (any(is.na(x$X))) {                                       #recompute gmemb without persons excluded
+    dichX <- ifelse(is.na(x$X),1,0)
+    strdata <- apply(dichX,1,function(x) {paste(x,collapse="")})
+    gmemb <- as.vector(data.matrix(data.frame(strdata)))
+  } else {
+    gmemb <- rep(1,dim(x$X)[1])
+  }
+  
+  
   for (i in 1:length(x$thetapar)) {
     cat("\n")
-    if (length(x$thetapar) > 1) {cat("Person Group:",i,"\n")}
+    if (length(x$thetapar) > 1) {
+      cat("Person NA Group:",i,"\n")
+      xvec <- x$X[gmemb==i,][1,]                    #determine NA pattern
+      xvec[!is.na(xvec)] <- "x"
+      cat("NA pattern:",xvec,"\n")
+    }
     colnames(coef.list[[i]]) <- c("Raw Score","Estimate","Std.Error")
     rownames(coef.list[[i]]) <- rep("",dim(coef.list[[i]])[1])
     print(coef.list[[i]])  
