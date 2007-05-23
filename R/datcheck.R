@@ -66,8 +66,8 @@ if (length(item.ex) > 0) {
 }}  
 
 if ((model=="PCM") || (model=="LPCM")) {                         #check if there are missing categories for PCM (for RSM doesn't matter)
-  tablist <- apply(X,2,table)
-  tablen <- sapply(tablist,length)
+  tablist <- apply(X,2,function(x) list(as.vector(table(x))))
+  tablen <- sapply(tablist,function(x) length(x[[1]]))
   xmax <- apply(X,2,max)+1
   indwrong <- which(tablen != xmax)
   if (length(indwrong) > 0) {

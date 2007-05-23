@@ -104,7 +104,9 @@ betalist <- likpar[3,]                                #organizing betalist
 if (object$model == "RM") {                           #label betalist
   betalab <- likpar[4,] 
   for (i in 1:length(betalist)) names(betalist[[i]]) <- betalab[[i]] 
-}
+} else {
+  for (i in 1:length(betalist)) names(betalist[[i]]) <- 1:length(betalist[[i]])
+} 
          
 result <- list(X=object$X, X.list=Xlist.n, model=object$model,LR=LR,
                Chisq=Chisq, df=df, pvalue=pvalue, likgroup=unlist(likpar[1,],use.names=FALSE),
