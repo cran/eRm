@@ -3,30 +3,28 @@ summary.LR <- function(object,...)
 {
   cat("\n")
   cat("Andersen LR-test: \n")
-  cat("LR-value:", object$LR,"\n")
-  cat("Critical Chi-squared value: ",object$Chisq,"\n")
-  cat("df:",object$df,"\n")
-  cat("p-value: ",object$pvalue,"\n")
+  cat("LR-value:", round(object$LR,3),"\n")
+  cat("Chi-square df:",object$df,"\n")
+  cat("p-value: ",round(object$pvalue,3),"\n")
   cat("\n")
   
   mt_vek <- apply(object$X,2,max,na.rm=TRUE) 
-  #if ((object$model=="RSM") || (object$model=="PCM")) {       #PCM and RSM
-  #  catnames <- sequence(mt_vek)
-  #  itnames <- rep(colnames(object$X),mt_vek)
-  #  betanames <- paste("beta",paste(itnames,catnames,sep="."))
-  #}
-  
   
   for (i in 1:length(object$betalist)) {
     cat("\n")
-    cat("Splitted person subgroup",i)
+    cat("Subject subgroup ",i,":",sep="")
     cat("\n")
     cat("Log-likelihood: ",object$likgroup[i])
     cat("\n\n")
     cat("Beta Parameters: \n")
     betavec <- object$betalist[[i]]
-    #if (is.null(names(betavec))) names(betavec) <- betanames
-    print(betavec)
+    if (!all(is.na(object$selist[[i]]))) {
+      coeftable <- rbind(betavec,object$selist[[i]])
+      rownames(coeftable) <- c("Estimate","Std.Err.")
+      print(coeftable)
+    } else {
+      print(betavec)
+    }
     cat("\n")
   }
 }

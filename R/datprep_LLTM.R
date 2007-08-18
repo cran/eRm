@@ -43,7 +43,9 @@ function(X,W,mpoints,Groups,sum0)
         warning("Group contrasts without repeated measures can not be estimated!")
     } else if (ngroups == 1) W2 <- NULL                   #1 mpoint/1 group
         
-  W <- cbind(W1,W2) 
+  W <- cbind(W1,W2)
+  colnames(W) <- NULL
+  rownames(W) <- NULL 
   }
   
   list(X=X,X01=X01,mt_vek=mt_vek,W=W)

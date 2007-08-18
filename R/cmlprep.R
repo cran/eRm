@@ -2,11 +2,6 @@
 function(X01,mt_vek,mpoints,Groups,W,gmemb)
 {
 
-  #if ((max(Groups) > 1) && (max(gmemb) > 1))
-  #{
-  #  gmemb <- unique(gmemb)[gmemb]                  #ordering the group membership from pcX
-  #}
-  
   levs <- (gmemb-1)*max(Groups)+Groups              #merge Groups and gmemb vector into level vector
   
   if (length(Groups)==1) {                          #if no group contrast
@@ -72,9 +67,6 @@ function(X01,mt_vek,mpoints,Groups,W,gmemb)
                                     as.numeric(as.matrix(x.u))}) #NA's are coded with 0
                                     
   NAcheck <- sapply(NAstruc,sum)                               #if for certain NAgroups only 1 item was presented
-  if (length(which(NAcheck == 1) > 0)) {
-    stop("Estimation cannot be performed: Eliminate persons which have been presented one item only! \n")
-  }
                                     
 list(x_mt=x_mt,mt_ind=mt_ind,x_tmt=x_tmt,rtot=rtot,nrlist=nrlist,gind=gind,x_mtlist=x_mtlist,
      NAstruc=NAstruc,g_NA=g_NA)

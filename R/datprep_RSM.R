@@ -22,6 +22,7 @@ function(X,W,sum0)
   X01_0[indmat] <- 1                              #0/1 matrix with 0th category
   
   NAindmat <- rbind(imp2,rep(1:K,N),c(t(X)))         #impose NA structure
+  rownames(NAindmat) <- NULL
   NAind <- t(NAindmat[1:2,is.na(NAindmat[3,])])      #index matrix for NA's in X
    
   if (length(NAind) > 0) {
@@ -42,7 +43,8 @@ function(X,W,sum0)
     e_cat <- gl(hmax,1,K*hmax)                      #factor for category par
     
     if (sum0) {
-      Xm <- model.matrix(~e_it+e_cat, contrasts = list(e_it="contr.sum",e_cat="contr.sum"))[,-1]
+      Xm <- model.matrix(~e_it+e_cat)[,-1]          #dummy coding
+      Xm[1:hmax,1:(K-1)] <- -1                      #first item to be sum0 normalized
     } else {
       Xm <- model.matrix(~e_it+e_cat)[,-1]          #design matrix with 0/1 contrasts (without intercept)
     }
@@ -51,6 +53,8 @@ function(X,W,sum0)
     e_itnew <- catvek*Xm[,1:(K-1)]                  
     Xm[,1:(K-1)] <- e_itnew
     W <- Xm                                         #final design matrix    
+    colnames(W) <- NULL
+    rownames(W) <- NULL 
   }
                                                                     
   list(X=X,X01=X01,mt_vek=mt_vek,W=W)

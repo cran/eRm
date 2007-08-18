@@ -39,13 +39,13 @@ LPCM(X, W , mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE, etaStart)
 \value{
   Returns on object of class \code{eRm} containing:
   
-  \item{loglik}{The log-likelihood.}
+  \item{loglik}{Conditional log-likelihood.}
   \item{iter}{Number of iterations.}
   \item{etapar}{Estimated basic item parameters.}
   \item{se.eta}{Standard errors of the estimated basic item parameters.}
-  \item{betapar}{Estimated item parameters.}
+  \item{betapar}{Estimated item (easiness) parameters.}
+  \item{se.beta}{Standard errors of item parameters.}
   \item{hessian}{Hessian matrix if \code{se = TRUE}.}
-  \item{IC}{List of AIC, BIC, and cAIC.}
   \item{W}{Design matrix.}
   \item{X}{Data matrix.}
   \item{X01}{Dichotomized data matrix.}

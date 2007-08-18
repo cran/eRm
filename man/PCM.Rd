@@ -27,17 +27,16 @@ PCM(X, W, se = TRUE, sum0 = TRUE, etaStart)
 \value{
   Returns an object of class \code{Rm, eRm} containing.
   
-  \item{loglik}{The log-likelihood.}
+  \item{loglik}{Conditional log-likelihood.}
   \item{iter}{Number of iterations.}
   \item{etapar}{Estimated basic item parameters.}
   \item{se.eta}{Standard errors of the estimated basic item parameters.}
-  \item{betapar}{Estimated item parameters.}
+  \item{betapar}{Estimated item-category (easiness) parameters.}
+  \item{se.beta}{Standard errors of item parameters.}
   \item{hessian}{Hessian matrix if \code{se = TRUE}.}
-  \item{IC}{List of AIC, BIC, and cAIC.}
   \item{W}{Design matrix.}
   \item{X}{Data matrix.}
   \item{X01}{Dichotomized data matrix.}
-  ...
 }
 \references{
 Fischer, G. H., and Molenaar, I. (1995). Rasch Models - Foundations, 
@@ -56,8 +55,9 @@ Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch model
 ##PCM with 10 subjects, 3 items
 data(pcmdat)
 res <- PCM(pcmdat)
-print(res)  
-summary(res)            
+res  
+summary(res)                #eta and beta parameters with CI
+thresholds(res)             #threshold parameters            
 }
 
 \keyword{models}

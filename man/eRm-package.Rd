@@ -13,14 +13,14 @@ and its linear extension (LPCM). The parameters are estimated by conditional max
 likelihood (CML). Missing values are allowed in the data matrix. Additional features 
 are the estimation of the person parameters, LR-Model test, item-spefific Wald test, 
 itemfit and personfit statistics, various ICC plots. An eRm platform is provided at 
-http://r-forge.r-project.org.
+http://r-forge.r-project.org/projects/erm/.
 }
 \details{
 \tabular{ll}{
 Package: \tab eRm\cr
 Type: \tab Package\cr
-Version: \tab 0.9.1.1\cr
-Date: \tab 2007-05-23\cr
+Version: \tab 0.9-2\cr
+Date: \tab 2007-08-18\cr
 License: \tab GPL\cr
 }
 The basic input units for the functions are the person-item matrix X and the design matrix W. 

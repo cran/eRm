@@ -5,22 +5,25 @@
 \alias{model.matrix.eRm}
 \alias{coef.eRm}
 \alias{logLik.eRm}
+\alias{confint.eRm}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Methods for extended Rasch models}
 \description{}
 \usage{
 \method{print}{eRm}(x, ...)
-\method{summary}{eRm}(object, labels = TRUE, ...)
+\method{summary}{eRm}(object, ...)
 \method{coef}{eRm}(object, ...)
 \method{model.matrix}{eRm}(object, ...)
 \method{vcov}{eRm}(object, ...)
 \method{logLik}{eRm}(object, ...)
+\method{confint}{eRm}(object, parm, level = 0.95, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{Object of class \code{eRm}.}
   \item{object}{Object of class \code{eRm}.}
-  \item{labels}{If \code{TRUE}, items are labeled.}
+  \item{parm}{Either \code{"eta"} or \code{"beta"}.}
+  \item{level}{Alpha-level.}
   \item{...}{Further arguments to be passed to or from other methods. They are ignored in this function.}
 }
 \details{

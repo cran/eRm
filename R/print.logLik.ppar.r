@@ -1,8 +1,7 @@
-`print.logLik.eRm` <-
+`print.logLik.ppar` <-
 function (x, digits = getOption("digits"),...)
 {
-    cat("'Conditional log Lik.' ", format(c(x), digits = digits), " (df=",
+    cat("'Unconditional (joint) log Lik.' ", format(c(x), digits = digits), " (df=",
         format(attr(x, "df")), ")\n", sep = "")
     invisible(x)
 }
-

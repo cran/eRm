@@ -32,6 +32,7 @@ function(X,W,mpoints,Groups,sum0)
                     #x <- unlist(x)
                     co <- seq(cummt0[x[2]],cummt0[x[2]]+mt_vek.t[x[2]])
                     NAind01 <- cbind(rep(x[1],length(co)),co)
+                    rownames(NAind01) <- NULL
                     data.frame(NAind01,row.names=NULL)                                               #list with NA indices
                     })
     indmatNA <- matrix(unlist(lapply(NAindlist, function(x) {t(as.matrix(x))})),ncol=2,byrow=TRUE)   #matrix with NA indices 
@@ -76,6 +77,8 @@ function(X,W,mpoints,Groups,sum0)
   catvek <- sequence(mt_vek)
   W2_cat <- W2*catvek                             #imposing item categories
   W <- cbind(W1,W2_cat)                           #design matrix completed
+  colnames(W) <- NULL
+  rownames(W) <- NULL 
   }
   
    

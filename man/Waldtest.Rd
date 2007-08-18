@@ -20,39 +20,40 @@
   \item{x}{Object of class \code{wald}.}
   \item{...}{Further arguments passed to or from other methods. They are ignored in this function.}
 }
-\details{The Wald test only works if both subgroups have the same parameters. For instance,
-for small samples in RSM or PCM the user must find an appropriate split such that
-in each subgroup the same item-category parameters occur.
+\details{Items are eliminated if they not have the same number of categories in each subgroup. 
+To avoid this problem, for RSM and PCM it is considered to use a random or another user-defined split.
 }
 \value{
 Returns an object of class \code{wald} containing:   
   \item{coef.table}{Data frame with test statistics, z- and p-values.}
-  \item{etapar1}{Eta parameters for first subgroup}
-  \item{se1}{Standard errors for first subgroup}
-  \item{etapar2}{Eta parameters for second subgroup}
-  \item{se2}{Standard errors for second subgroup}
+  \item{betapar1}{Beta parameters for first subgroup}
+  \item{se.beta1}{Standard errors for first subgroup}
+  \item{betapar2}{Beta parameters for second subgroup}
+  \item{se.beta2}{Standard errors for second subgroup}
 }
 \references{
 Fischer, G. H., and Molenaar, I. (1995). Rasch Models - Foundations, 
 Recent Developements, and Applications. Springer.
 
-Fischer, G. H., and Scheiblechner, H. (1970). Algorithmen und Programme für das
+Fischer, G. H., and Scheiblechner, H. (1970). Algorithmen und Programme fuer das
 probabilistische Testmodell von Rasch [Algorithms and programs for Rasch's
-probabilistic test model]. Psychologische Beiträge, 12, 23-51.
+probabilistic test model]. Psychologische Beitraege, 12, 23-51.
 }
 \author{Patrick Mair, Reinhold Hatzinger}
 \note{}
-\seealso{\code{\link{Waldtest}}}
+\seealso{\code{\link{LRtest}}}
 \examples{
 
-#Wald test for dichotomous Rasch model with median subject split
-data(raschdat1)
-res <- RM(raschdat1)
-Waldtest(res)
-
-#Wald test with user-defined subject split
-splitvec <- sample(1:2,100,replace=TRUE)
+#Wald test for Rasch model with user-defined subject split
+data(raschdat2)
+res <- RM(raschdat2)
+splitvec <- sample(1:2,25,replace=TRUE)
 Waldtest(res, splitcr = splitvec)
+
+#Wald test for RSM eliminates 4 items (with median split)
+data(rsmdat)
+res <- RSM(rsmdat)
+Waldtest(res)
 
 }
 

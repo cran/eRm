@@ -20,6 +20,7 @@ function(X,W,sum0)
   X01_0[indmat] <- 1                              #0/1 matrix with 0th category
   
   NAindmat <- rbind(imp2,rep(1:K,N),c(t(X)))         #impose NA structure
+  rownames(NAindmat) <- NULL
   NAind <- t(NAindmat[1:2,is.na(NAindmat[3,])])      #index matrix for NA's in X
    
   if (length(NAind) > 0) {
@@ -44,6 +45,8 @@ function(X,W,sum0)
       w1 <- rep(0,(sum(mt_vek)-1))                          #first item parameter set to 0
     }
     W <- rbind(w1,W1)                               #PCM design matrix 
+    colnames(W) <- NULL
+    rownames(W) <- NULL 
   }
 
   list(X=X,X01=X01,mt_vek=mt_vek,W=W)

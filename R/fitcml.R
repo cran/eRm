@@ -7,30 +7,25 @@ cml <- function(eta)
 {
 
 beta <- as.vector(W%*%eta)
-
 beta.list <- split(beta,gind)      
-
 beta.list1 <- beta.list
-
-
 
 betaNA <- mapply(function(x,y) {rbind(x,y)},beta.list1,NAstruc,SIMPLIFY=FALSE)         #beta and NAstructure as list (over Groups)
 
 
 Lg <- lapply(betaNA, function(betaNAmat) {        #gamma functions for each Group x NAgroup combination 
 
+         #print(betaNAmat)
          beta.vec <- betaNAmat[1,]                #get parameter vector beta
          
          Lg.NA <- apply(matrix(betaNAmat[-1,],ncol=length(beta.vec)),1, function(NAvec) {                 #likelihood for each NAgroup within Groups                                          
             
             beta_list <- as.list(split(beta.vec[NAvec==1],mt_ind[1:(length(beta.vec[NAvec==1]))]))        #list of virtual item-category parameters per item
-                      
             parlist <- lapply(beta_list,exp)                                #initial epsilon as list
       
-            #gamma functions
+            #------------------gamma functions----------------------
             g_iter <- NULL                                                  #computation of the gamma functions
             K <- length(parlist)
-      
             for (t in 1:(K-1)) {                                            #building up J1,...,Jt,...,Js
       
               if (t==1) {                                                   #first iteration step
@@ -53,11 +48,13 @@ Lg <- lapply(betaNA, function(betaNAmat) {        #gamma functions for each Grou
               gmat_new <- gmat*emat                                                 #merge matrices
               g_iter <- rowSums(gmat_new)                                           #gamma functions in current iteration are rowsums
             }
+           #----------------- end gamma functions ------------------
       
            Lg.NA <- as.vector(g_iter[2:(rtot+1)])                                                 #final gamma vector stored in gamma (without gamma0)
            return(Lg.NA)
-           }) })          
-#----------------- end gamma functions ------------------
+           }) 
+})          
+
 
 #----------------- log-likelihood -----------------------
                                

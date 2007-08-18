@@ -13,7 +13,8 @@ if (is.numeric(splitcr)){
   if (length(splitcr) != dim(object$X)[1]) {
     stop("Mismatch between length of split vector and number of persons!")
   } else {
-    Xlist <- by(object$X,splitcr, function(x) x)
+    rvind <- splitcr
+    Xlist <- by(object$X,rvind, function(x) x)
     names(Xlist) <- as.list(sort(unique(splitcr)))
   }}
 
@@ -38,38 +39,35 @@ if (!is.numeric(splitcr)) {
     
 }
 
-Xlist0 <- lapply(Xlist,function(x) {                                 #eliminate complete NA objectponses
-                         tfvec <- apply(x,2,function(z) {
-                                               !all(is.na(z))})
-                         x[,tfvec]})
+del.pos.l <- lapply(Xlist, function(x) {
+                    it.sub <- datcheck.LRtest(x,object$X,object$model)  #items to be removed within subgroup
+                    })
 
+del.pos <- unique(unlist(del.pos.l)) 
+if ((length(del.pos)) >= (dim(object$X)[2]-1)) {
+  stop("\nNo items with appropriate response patterns left to perform Wald-test!\n")
+}
 
-#Xlist.n <- lapply(Xlist0,function(x) {       
+if (length(del.pos) > 0) {
+    warning("\nThe following items were excluded due to inappropriate response patterns within subgroups: ",immediate.=TRUE) 
+    cat(colnames(object$X)[del.pos], sep=" ","\n")
+    cat("Subgroup models are estimated without these items!\n")
+}
 
-itdel <- unique(unlist(lapply(Xlist0,function(x) {                         #items which will be deleted
-               ri <- apply(x,2,sum,na.rm=TRUE)                       #item raw scoobject
-               n.NA <- colSums(apply(x,2,is.na))                     #number of NA's per column
-               maxri <- (dim(x)[1]*(apply(x,2,max,na.rm=TRUE)))-n.NA #maximum item raw scoobject with NA
-               TFcol <- ((ri==maxri) | (ri==0))                      #full and 0 item scoobject as TRUE
-               if (any(TFcol)) {
-                 options(warn=0)
-                 cat("The following items are not tested since excluded due to 0/full raw score in subgroups:",colnames(x)[TFcol],"\n")
-               }
-               return(colnames(x)[TFcol])
-              })))
-              
-itkeep <- !(colnames(object$X) %in% itdel)                            #boolean which items should be kept
-if (sum(itkeep) == 0) stop("No items left to estimate!")
-Xlist.n <- lapply(Xlist0, function(x) x[,itkeep])
-       
-n.eta <- object$npar
+if (length(del.pos) > 0) {
+  X.el <- object$X[,-(del.pos)]
+} else {
+  X.el <- object$X
+}                    
+Xlist.n <- by(X.el,rvind,function(y) y)
+names(Xlist.n) <- names(Xlist)
 
 if (object$model=="RM") {
        likpar <- sapply(Xlist.n,function(x) {                       #matrix with loglik and npar for each subgroup
                                objectg <- RM(x)
                                parg <- objectg$etapar
                                seg <- objectg$se.eta
-                               list(parg,seg)
+                               list(parg,seg,objectg$betapar,objectg$se.beta)
                                })
        }
 if (object$model=="PCM") {
@@ -77,7 +75,7 @@ if (object$model=="PCM") {
                                objectg <- PCM(x)
                                parg <- objectg$etapar
                                seg <- objectg$se.eta
-                               list(parg,seg)
+                               list(parg,seg,objectg$betapar,objectg$se.beta)
                                })
        }
 if (object$model=="RSM") {
@@ -85,40 +83,49 @@ if (object$model=="RSM") {
                                objectg <- RSM(x)
                                parg <- objectg$etapar
                                seg <- objectg$se.eta
-                               list(parg,seg)
+                               list(parg,seg,objectg$betapar,objectg$se.beta)
                                })
        }
 
-etapar1 <- unlist(likpar[1,1])
-se1 <- unlist(likpar[2,1])
-etapar2 <- unlist(likpar[1,2])
-se2 <- unlist(likpar[2,2])
-if (length(etapar1) != length(etapar2)) stop("Wald test cannot be performed since number of response item-categories differ over subgroups! \n")
+#etapar1 <- unlist(likpar[1,1])
+#se1 <- unlist(likpar[2,1])
+#etapar2 <- unlist(likpar[1,2])
+#se2 <- unlist(likpar[2,2])
+#if (length(etapar1) != length(etapar2)) stop("Wald test cannot be performed since number of response item-categories differ over subgroups! \n")
 
-if (object$model == "RM") {                #for RM-print, which beta are not fixed
-  betalab <- colnames(Xlist.n[[1]])        #corresponding item labels
-} else {
-  betalab <- NULL
-}
+##if (object$model == "RM") {                #for RM-print, which beta are not fixed
+##  betapar1 <- likpar[5,1][[1]]
+##  betapar2 <- likpar[5,2][[1]]
+##  betalab <- colnames(Xlist.n[[1]])        #corresponding item labels
+##  hes1 <- likpar[3,1][[1]]                 #Hessian matrices
+##  hes2 <- likpar[3,2][[1]]
+##  W1 <- likpar[4,1][[1]]                   #design matrixces
+##  W2 <- likpar[4,2][[1]]                   
+##  beta1.se <- sqrt(diag(W1%*%solve(hes1)%*%t(W1))) #standard errors for beta1
+##  beta2.se <- sqrt(diag(W2%*%solve(hes2)%*%t(W2))) #standard errors for beta2
+##} else {
+##  betalab <- NULL
+##  betapar1 <- NULL
+##  betapar2 <- NULL
+##  beta1.se <- NULL
+##  beta2.se <- NULL
+##}
 
-if (!is.null(betalab)) betalab1 <- betalab[-1]
-
-num <- (etapar1-etapar2)                 #numerator in Wald formula
-denom <- sqrt(se1^2 + se2^2)             #denominator
-W.i <- (num/denom)                       #z-values
+#if (!is.null(betalab)) betalab1 <- betalab[-1]
+betapar1 <- likpar[3,][[1]]
+beta1.se <- likpar[4,][[1]]
+betapar2 <- likpar[3,][[2]]
+beta2.se <- likpar[4,][[2]]
+num <- (betapar1-betapar2)
+denom <- sqrt(beta1.se^2 + beta2.se^2)
+W.i <- num/denom
 pvalues <- 1-pnorm(abs(W.i))
-#pvalues <- 1-pchisq(W.i,1)
-   
-if (!is.null(betalab)) {                     #for Rasch models item labels are printed out
- coef.table <- as.data.frame(cbind(betalab1,round(W.i,3),round(pvalues,5)))
- dimnames(coef.table) <- list(paste("eta",1:length(etapar1),sep=""),c("Item","z-value","p-value"))
-} else {
- coef.table <- cbind(round(W.i,3),round(pvalues,5))
- dimnames(coef.table) <- list(paste("eta",1:length(etapar1),sep=""),c("z-value","p-value"))
-}
 
-
-result <- list(coef.table=coef.table,etapar1=etapar1,se1=se1,etapar2=etapar2,se2=se2,betalab=betalab)
+coef.table <- cbind(W.i,pvalues)
+dimnames(coef.table) <- list(names(betapar1),c("z-statistic","p-value"))
+ 
+result <- list(coef.table=coef.table,betapar1=betapar1,se.beta1=beta1.se,betapar2=betapar2,
+se.beta2=beta2.se)
 class(result) <- "wald"
 result
 }

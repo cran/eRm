@@ -1,44 +1,37 @@
 `summary.eRm` <-
-function(object,labels = TRUE,...)
+function(object,...)
 {
 
 #labels...whether the item parameters should be labelled
 
-cat("\n\n")
-cat("Results of",object$model,"fit: \n")
+cat("\n")
+cat("Results of",object$model,"estimation: \n")
 cat("\n")
 
-cat("Log-likelihood:",object$loglik,"\n")
+cat("Conditional log-likelihood:",object$loglik,"\n")
 cat("Number of iterations:",object$iter,"\n")
 cat("Number of parameters:",object$npar,"\n")
 cat("\n")
-cat("AIC:",object$IC$AIC,"\n")
-cat("BIC:",object$IC$BIC,"\n")
-cat("cAIC:",object$IC$cAIC,"\n")
-cat("\n")
-
 
 X <- object$X
 X01 <- object$X01
 mt_vek <- apply(X,2,max,na.rm=TRUE) 
-if (labels) {                 #label beta parameters
-  if (object$model=="RM") {                                   #Rasch model
-    betanames <- paste("beta",colnames(object$X)) }
-  if ((object$model=="RSM") || (object$model=="PCM")) {       #PCM and RSM
-    catnames <- sequence(mt_vek)
-    itnames <- rep(colnames(object$X),mt_vek)
-    betanames <- paste("beta",paste(itnames,catnames,sep="."))
-  }
-  if ((object$model=="LRSM") || (object$model=="LPCM") || (object$model=="LLTM")) {
-    betanames <- paste("beta",colnames(object$X))
-  }
-} else {                                                      #LLTM, LRSM, LPCM
-  betanames <- paste("beta",1:dim(object$W)[1])
-}
-  
-cat("\nItem Parameters (beta):\n")
-coeftable <- as.data.frame(cbind(betanames,round(object$betapar,5)))
-colnames(coeftable) <- c("Parameter","Estimate")
+
+ci <- confint(object,"eta")
+cat("Basic Parameters (eta) with 0.95 CI:\n")
+coeftable <- as.data.frame(cbind(round(object$etapar,3),
+                           round(object$se.eta,3),round(ci,3)))
+colnames(coeftable) <- c("Estimate","Std. Error","lower CI","upper CI")
+rownames(coeftable) <- names(object$etapar)
+print(coeftable)
+
+
+ci <- confint(object,"beta")
+cat("\nItem Parameters (beta) with 0.95 CI:\n")
+coeftable <- as.data.frame(cbind(round(object$betapar,3),
+                           round(object$se.beta,3),round(ci,3)))
+colnames(coeftable) <- c("Estimate","Std. Error","lower CI","upper CI")
+rownames(coeftable) <- names(object$betapar)
 print(coeftable)
 cat("\n")
 }

@@ -18,11 +18,11 @@ function(object,...)
   }
   
   cat("\n")
-  cat("Estimation of Person Parameters")
+  cat("Estimation of Ability Parameters")
   for (i in 1:length(object$thetapar)) {
     cat("\n\n")
     if (length(object$thetapar) > 1) {
-      cat("Person NA Group:",i,"\n")
+      cat("Subject NA Group:",i,"\n")
       xvec <- object$X[gmemb==i,][1,]                    #determine NA pattern
       xvec[!is.na(xvec)] <- "x"
       cat("NA pattern:",xvec,"\n")
@@ -31,9 +31,9 @@ function(object,...)
     cat("Number of iterations:",object$iter[[i]],"\n")
     cat("Number of parameters:",object$npar[[i]],"\n")
     cat("\n")
-    cat("ML estimated person parameters (without spline interpolated values): \n")
-    coef.table <- cbind(object$thetapar[[i]],object$se.theta[[i]])
-    dimnames(coef.table) <- list(paste("theta",thetaind[object$gmemb==i]),c("Estimate","Std. Error."))
+    cat("ML estimated ability parameters (without spline interpolated values): \n")
+    coef.table <- cbind(object$thetapar[[i]],object$se.theta[[i]],confint(object)[[i]])
+    dimnames(coef.table) <- list(paste("theta",thetaind[object$gmemb==i]),c("Estimate","Std. Err.",colnames(confint(object)[[i]])))
     print(coef.table)
   }
 }

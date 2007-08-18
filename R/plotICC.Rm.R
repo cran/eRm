@@ -1,11 +1,13 @@
 `plotICC.Rm` <-
 function(object, item.subset = "all", empirical = FALSE, xlim = c(-4,4), ylim = c(0,1), 
-         xlab = "Latent Dimension", ylab = "Probability to Solve",...)
+         xlab = "Latent Dimension", ylab = "Probability to Solve", col = NA, lty = 1, 
+         legpos = "left",...)
 # produces ICC plots
 # object of class Rm
 {
   
   X <- object$X  
+  if (is.na(col)) col <- 1:(max(apply(X,2,max,na.rm=TRUE))+1)
 
   if (empirical) {                                       #empirical ICC for Rasch model only
     th.est <- person.parameter(object)
@@ -52,36 +54,38 @@ function(object, item.subset = "all", empirical = FALSE, xlim = c(-4,4), ylim = 
     text.ylab <- p.mat[(1:length(theta))[theta==median(theta)],]
   }
   
-    if (object$model != "RM"){ 
-      for (i in ivec) {                                 #runs over items
-         yp <- as.matrix(p.list[[i]])
-         yy <- yp[th.ord,]
-         get(getOption("device"))()
-         matplot(sort(theta),yy,type="l",lty=1,col=1:(dim(yp)[2]),
-                 main=paste("ICC plot for item ",textlab[i]),xlim=xlim,
-                 ylim=ylim,xlab=xlab,ylab=ylab)
-         legend(xlim[1],0.5,paste(c("Category"),0:(dim(yp)[2]-1)), col=1:(dim(yp)[2]),lty=1,lwd=1,...)
-      }
-    } else {
-      #if (any(item.subset=="all")) par(mfrow=c(2,2))
-      for (i in ivec) {                                 #runs over items
-         if (any(item.subset=="all")) {
-           if (((i-1) %% 4) == 0) {
-              get(getOption("device"))()
-              par(mfrow=c(2,2))
-           }} else {get(getOption("device"))()}  
-         yp <- as.matrix(p.list[[i]])
-         yy <- yp[th.ord,]
-         matplot(sort(theta),yy,type="l",lty=1,col=1:(dim(yp)[2]),
-                 main=paste("ICC plot for item ",textlab[i]),xlim=xlim,
-                 ylim=ylim,xlab=xlab,ylab=ylab,...)
-         if (emp.plot) {
-           freq.table <- as.matrix(table(rowSums(X),X[,i]))   
-           rel.freq <- freq.table[,2]/rowSums(freq.table) 
-           idx <- as.numeric(rownames(freq.table))
-           lines(th.est$pred.list[[1]]$y[idx+1],rel.freq,type="l",...)
-         }    
-      }
+  if (object$model != "RM"){ 
+    for (i in ivec) {                                 #runs over items
+       yp <- as.matrix(p.list[[i]])
+       yy <- yp[th.ord,]
+       #get(getOption("device"))()
+       par("ask"=TRUE)
+       matplot(sort(theta),yy,type="l",lty=lty,col=col,
+               main=paste("ICC plot for item ",textlab[i]),xlim=xlim,
+               ylim=ylim,xlab=xlab,ylab=ylab,...)
+       legend(legpos,legend=paste(c("Category"),0:(dim(yp)[2]-1)), col=col,lty=lty, ...)
+       #legend(xlim[1],0.5,paste(c("Category"),0:(dim(yp)[2]-1)), col=col,lty=lty, ...)
     }
+  } else {
+    #if (any(item.subset=="all")) par(mfrow=c(2,2))
+    for (i in ivec) {                                 #runs over items
+         if (((i-1) %% 4) == 0) {
+            #get(getOption("device"))()
+            par("ask"=TRUE)
+            par(mfrow=c(2,2))
+        }  
+       yp <- as.matrix(p.list[[i]])
+       yy <- yp[th.ord,]
+       matplot(sort(theta),yy,type="l",lty=lty,col=col,
+               main=paste("ICC plot for item ",textlab[i]),xlim=xlim,
+               ylim=ylim,xlab=xlab,ylab=ylab,"ask"=TRUE,...)
+       if (emp.plot) {
+         freq.table <- as.matrix(table(rowSums(X),X[,i]))   
+         rel.freq <- freq.table[,2]/rowSums(freq.table) 
+         idx <- as.numeric(rownames(freq.table))
+         lines(th.est$pred.list[[1]]$y[idx+1],rel.freq,type="l",...)
+       }    
+    }
+  }
 }
 

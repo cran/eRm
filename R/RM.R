@@ -23,23 +23,26 @@ parest <- lres$parest                             #full groups for parameter est
 loglik <- -parest$minimum                         #log-likelihood value
 iter <- parest$iterations                         #number of iterations
 etapar <- parest$estimate                         #eta estimates
-if (se) {
-  se <- sqrt(diag(solve(parest$hessian)))         #standard errors
-} else {
-  se <- rep(NA,length(etapar))
-}
 betapar <- as.vector(lres$W%*% etapar)            #beta estimates
-X01 <- lres$X01 
+if (se) {
+  se.eta <- sqrt(diag(solve(parest$hessian)))         #standard errors
+  se.beta <- sqrt(diag(lres$W%*%solve(parest$hessian)%*%t(lres$W)))   #se beta
+} else {
+  se.eta <- rep(NA,length(etapar))
+  se.beta <- rep(NA,length(betapar))
+}
+
+X01 <- lres$X01
+labs <- labeling.internal(model,X,X01,lres$W,etapar,betapar,mpoints,max(groupvec))    #labeling for L-models
+W <- labs$W
+etapar <- labs$etapar
+betapar <- labs$betapar
 
 npar <- dim(lres$W)[2]                            #number of parameters
-N <- dim(X)[1]                                    #number of persons
-AIC <- -2*loglik + 2*npar
-BIC <- -2*loglik + log(N)*npar
-cAIC <- -2*loglik + log(N)*npar + npar
-IC <- list(AIC=AIC,BIC=BIC,cAIC=cAIC)
 
-result <- list(X=X,X01=X01,model=model,loglik=loglik,IC=IC,npar=npar,iter=iter,
-               etapar=etapar,se.eta=se,hessian=parest$hessian,betapar=betapar,W=lres$W)
+result <- list(X=X,X01=X01,model=model,loglik=loglik,npar=npar,iter=iter,
+               etapar=etapar,se.eta=se.eta,hessian=parest$hessian,betapar=betapar,
+               se.beta=se.beta,W=W)
 class(result) <- c("dRm","Rm","eRm")                    #classes: dichotomous RM, RM (RM, PCM, RSM), and extended RM (all)
 result
 }

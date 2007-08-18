@@ -25,7 +25,7 @@ function(X,W,mpoints,groupvec,model)
     stop("Group vector is specified wrongly!")}
   
   if ((max(groupvec) > 1) && (mpoints==1)) {
-    stop("Model not identifiable!") }
+    stop("Model not identifiable! Group contrasts can only be imposed for repeated measurement designs.") }
   
   if ((length(groupvec) > 1) && any(is.na(X))) {
     stop("Model with repeated measures, group specification and NAs cannot be computed!") }
@@ -36,6 +36,9 @@ if (any(allna.vec)) {stop("There are items with full NA responses which must be 
 
 allna.vec <- apply(X,1,function(y) {all(is.na(y))})                 #eliminate items with all NA's
 if (any(allna.vec)) {stop("There are persons with full NA responses which must be deleted!")}
+
+allna.vec <- apply(X,1,function(y) {sum(is.na(y))})
+if (any(allna.vec == (dim(X)[2]-1))) {stop("Subjects with only 1 valid response must be removed!")}
 
 ri.min <- apply(X,2,min,na.rm=TRUE)                                 #if no 0 responses
 if (any(ri.min > 0)) {
@@ -109,8 +112,7 @@ if ((model=="RM") || (model=="LLTM")) {
     } 
 }}
 #----------------------- end ill-conditioned check -------------------------------   
-
-  
+ 
 list(X=X.n,groupvec=groupvec)
 }
 

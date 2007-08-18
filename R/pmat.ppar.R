@@ -11,11 +11,13 @@ mt_ind <- rep(1:length(mt_vek),mt_vek)
 rp <- rowSums(X,na.rm=TRUE)
 maxrp <- sum(mt_vek)
 TFrow <- ((rp==maxrp) | (rp==0))
-if (any(TFrow)) {
-  cat("Warning message: For the following persons no expected probabilites are computed due to 0/full raw score: \n")
-  cat(rownames(object$X)[TFrow],sep=", ")
-  cat("\n")
-}
+#if (any(TFrow)) {
+  #cat("Warning message: For the following persons no expected probabilites are computed due to 0/full raw score: \n")
+#  cat(rownames(object$X)[TFrow],sep=", ")
+#  cat("\n")
+  #X <- X[!TFrow,]
+#}
+
 
 
 pmat.l <- lapply(object$thetapar, function(theta1) {   
@@ -33,8 +35,22 @@ pmat.l <- lapply(object$thetapar, function(theta1) {
     pmat <- matrix(unlist(p.list0),nrow=length(theta1))      #save as matrix
     return(pmat)
 }) 
-pmat <- pmat.l
-#if (length(pmat) == 1) pmat <- pmat[[1]]                       #as matrix               
+
+#----------labels----------
+#names(pmat.l) <- paste("NAgroup",1:length(pmat.l),sep="")
+cnames <- substr(names(object$betapar),6,40)
+for (i in 1:length(pmat.l)) {
+      dimnames(pmat.l[[i]]) <- list(names(object$thetapar[[i]]),cnames)}
+#-----------end labels-------   
+NApos <- tapply(1:length(object$gmemb),object$gmemb,function(ind) {   #positions for NA replacement
+                       xvec <- X[ind,][1,]
+                       which(is.na(xvec))
+                       })
+pmat <- NULL
+for (i in 1:length(pmat.l)) {
+       pmat.l[[i]][,NApos[[i]]] <- NA            #insert NA's
+       pmat <- rbind(pmat,pmat.l[[i]])
+       }
 return(pmat)
 }
 

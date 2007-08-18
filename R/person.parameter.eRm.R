@@ -30,9 +30,7 @@ if (any(is.na(X))) {
   gmemb <- rep(1,dim(X)[1])
 }
 
-
-
-beta <- object$betapar
+beta.all <- object$betapar
 
 if (!is.null(object$ngroups))
   if (object$ngroups > 1) stop("Estimation of person parameters for models with group contrasts not possible!")
@@ -51,50 +49,53 @@ rowvec <- 1:(dim(X01)[1])
 fitlist <- tapply(rowvec,gmemb,function(rind) {         #list with nlm outputs
     
     if (length(rind) > 1) {
-       r.i <- colSums(X[rind,],na.rm=TRUE)          #item raw scores
+       ivec <- !is.na(X[rind[1],])                      #non-NA elements
+       r.i <- colSums(X[rind,ivec],na.rm=TRUE)          #item raw scores
     } else {                                        #if only one person belongs to raw score group
        r.i <- X[rind,]
        r.i[is.na(r.i)] <- 0
     }
-    #r.i <- colSums(object$X[rind,],na.rm=TRUE)          #item raw scores
+    #r.i <- colSums(object$X[rind,],na.rm=TRUE)         #item raw scores
     r.p <- r.pall[rind]                                 #person raw scores for current NA group
     X01g <- X01[rind,]
-    X01beta <- rbind(X01g,beta)
+    beta <- beta.all[!is.na(X01g[1,])]
+    X01beta <- rbind(X01g,beta.all)
     theta <- rep(0,length(r.p))
     
     #==================== ML routines ===================================
-    jml.rasch <- function(theta)
+    jml.rasch <- function(theta)         #efficient ML for RM only
     { 
       ksi <- exp(theta)
-      denom <- 1/exp(beta)
-      lnL <- sum(r.p*theta)-sum(r.i*beta)-sum(log(1+outer(ksi,denom)))
+      denom <- 1/exp(-beta)              #-beta instead of beta since beta are easiness parameter
+      lnL <- sum(r.p*theta)-sum(r.i*(-beta))-sum(log(1+outer(ksi,denom)))
       -lnL
     }
     
-    jml <- function(theta) 
+    jml <- function(theta)               #ML for all other models
     {
         t1t2.list <- tapply(1:(dim(X01beta)[2]),mt_ind, function(xin) {
-                                 #print(xin)
-                                 xb <- (t(X01beta)[xin,]) #0/1 responses and beta parameters
-                                 if (is.vector(xb)) xb <- t(as.matrix(xb))   #if Rasch 
-                                 beta.i <- c(0,xb[,dim(xb)[2]])    #item parameter with 0 
-                                 x01.i <- (xb[,1:(dim(xb)[2]-1)])    #0/1 matrix for item i without beta
-                                 if (is.vector(x01.i)) x01.i <- t(as.matrix(x01.i))
-                                 cat0 <- rep(0,dim(x01.i)[2])
-                                 cat0[colSums(x01.i)==0] <- 1
-                                 x01.i0 <- rbind(cat0,x01.i)       #appending response vector for 0th category
-                                 
-                                 ind.h <- 0:(length(beta.i)-1)
-                                 theta.h <- ind.h %*% t(theta)
-                                 term1 <- (theta.h+beta.i)*x01.i0 
-                                 t1.i <- sum(colSums(term1))                        #sum over categories and persons
-                                                                  
-                                 term2 <- exp(theta.h+beta.i)
-                                 t2.i <- sum(log(colSums(term2)))                    #sum over categories and persons
-                                                              
-                                 return(c(t1.i,t2.i))
-                               })
-      st1st2 <- colSums(matrix(unlist(t1t2.list),ncol=2,byrow=TRUE))                      #sum term1, term2
+                     #print(xin)
+                     xb <- (t(X01beta)[xin,]) #0/1 responses and beta parameters
+                     if (is.vector(xb)) xb <- t(as.matrix(xb))   #if Rasch 
+                     #FIXME: nicht sicher, aber !is.na(beta)
+                     beta.i <- c(0,xb[,dim(xb)[2]])    #item parameter with 0 
+                     x01.i <- (xb[,1:(dim(xb)[2]-1)])    #0/1 matrix for item i without beta
+                     if (is.vector(x01.i)) x01.i <- t(as.matrix(x01.i))
+                     cat0 <- rep(0,dim(x01.i)[2])
+                     cat0[colSums(x01.i)==0] <- 1
+                     x01.i0 <- rbind(cat0,x01.i)        #appending response vector for 0th category
+                     
+                     ind.h <- 0:(length(beta.i)-1)
+                     theta.h <- ind.h %*% t(theta)
+                     term1 <- (theta.h+beta.i)*x01.i0 
+                     t1.i <- sum(colSums(term1))        #sum over categories and persons
+                                                      
+                     term2 <- exp(theta.h+beta.i)
+                     t2.i <- sum(log(colSums(term2)))   #sum over categories and persons
+                                                  
+                     return(c(t1.i,t2.i))
+                   })
+      st1st2 <- colSums(matrix(unlist(t1t2.list),ncol=2,byrow=TRUE)) #sum term1, term2
       lnL <- st1st2[1]-st1st2[2]
       -lnL
     }
@@ -106,7 +107,7 @@ fitlist <- tapply(rowvec,gmemb,function(rind) {         #list with nlm outputs
     } else {
       fit <- nlm(jml,theta,hessian=se)
     }
-    #fit <- optim(theta,jml,method="BFGS",hessian=TRUE)
+    #fit2 <- optim(theta,jml.rasch,method="BFGS",hessian=TRUE)
     
     #=================== end call optimizer ==============================
     loglik <- -fit$minimum
@@ -154,8 +155,14 @@ if (splineInt) {                                           #cubic spline interpo
   if (any(sapply(pred.list,is.null)))  pred.list <- NULL                           #no spline interpolation applicable
    
 } 
+
+#---------labels----------------------
+names(thetapar) <- names(se.theta) <- paste("NAgroup",1:length(thetapar),sep="")
+thetaind <- rownames(X)
+for (i in 1:length(thetapar)) {names(thetapar[[i]]) <- names(se.theta[[i]]) <- thetaind[gmemb==i] }
+#--------end labels------------------
                               
-result <- list(X=X.n,X01=object$X01,loglik=loglik,npar=npar,iter=niter,
+result <- list(X=X.n,X01=object$X01,W=object$W,model=object$model,loglik=loglik,npar=npar,iter=niter,
                betapar=object$betapar,thetapar=thetapar,se.theta=se.theta,
                pred.list=pred.list,hessian=hessian,mpoints=mpoints,
                pers.ex=pers.exe,gmemb=gmemb)

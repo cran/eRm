@@ -1,3 +1,3 @@
 `LRtest` <-
-function(object,splitcr="median",alpha=0.05,se=TRUE)UseMethod("LRtest")
+function(object,splitcr="median",se=FALSE)UseMethod("LRtest")
 

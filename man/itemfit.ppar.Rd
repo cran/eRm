@@ -23,7 +23,6 @@ statistics can be obtained by using \code{itemfit} and \code{personfit}.
 \method{residuals}{ppar}(object,...)
 \method{print}{ifit}(x, ...)
 \method{print}{pfit}(x, ...)
-\method{print}{resid}(x, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -34,19 +33,17 @@ statistics can be obtained by using \code{itemfit} and \code{personfit}.
 \details{}
 \value{
 Function \code{pmat}:
-  \item{pmat}{Matrix of theoretical probabilities}
+  \item{pmat}{Matrix of theoretical probabilities.}
   
-\code{itemfit} returns a list of class \code{ifit} with components:  
-  \item{i.fit}{Itemfit}
-  \item{i.df}{Degrees of freedom for itemfit statistics}
+Function \code{itemfit} returns a list of class \code{ifit} with components:  
+  \item{i.fit}{Itemfit statistics.}
+  \item{i.df}{Degrees of freedom for itemfit statistics.}
+  \item{st.res}{Standardized residuals.}
   
-\code{personfit} returns a list of class \code{pfit} with components:  
-  \item{p.fit}{Personfit}
-  \item{p.df}{Degrees of freedom for personfit statistics}
-  
-\code{residuals} returns an object of class \code{resid} with components:
-  \item{st.res}{Standardized residuals}
-  \item{sq.res}{Squared standardized residuals}
+Function \code{personfit} returns a list of class \code{pfit} with components:  
+  \item{p.fit}{Personfit.}
+  \item{p.df}{Degrees of freedom for personfit statistics.}
+  \item{st.res}{Standardized residuals.}
   
 }
 \references{
@@ -60,8 +57,8 @@ JAM press.
 \examples{
 
 # Rasch model, estimation of item and person parameters
-data(raschdat1)
-res <- RM(raschdat1)
+data(raschdat2)
+res <- RM(raschdat2)
 p.res <- person.parameter(res)
 
 # Matrix with expected probabilities and corresponding residuals

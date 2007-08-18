@@ -20,7 +20,9 @@ if (model=="RM") { Xprep <- datprep_RM(X,W,sum0)
 }
 
 if (any(is.na(etaStart))) etaStart <- rep(0,dim(Xprep$W)[2])       #check starting vector
-if (length(etaStart) != dim(Xprep$W)[2]) stop("Vector with starting values does not match the number of parameters!") 
+if (length(etaStart) != dim(Xprep$W)[2]) stop("Vector with starting values does not match number of parameters!") 
+ng <- max(Groups)
+if ((dim(Xprep$W)[1]) != ((dim(Xprep$X01)[2])*ng)) stop("Mismatch between number of rows (beta's) in W and number of items (categories) in X!")
 
 
 Lprep <- cmlprep(Xprep$X01,Xprep$mt_vek,mpoints,Groups,Xprep$W,gmemb)                   
@@ -29,8 +31,8 @@ parest <- fitcml(Lprep$mt_ind,Lprep$nrlist,Lprep$x_mt,Lprep$rtot,Xprep$W,
                  Lprep$NAstruc,g_NA=Lprep$g_NA,st.err,etaStart)      
 
 W1 <- Xprep$W
-rownames(W1) <- NULL
-colnames(W1) <- paste("eta",1:dim(W1)[2],sep="")
+#rownames(W1) <- NULL
+#colnames(W1) <- paste("eta",1:dim(W1)[2],sep="")
 options(warn=0)
                          
 list(W=W1,parest=parest,X01=Xprep$X01)                          #returns design matrix and results

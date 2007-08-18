@@ -31,6 +31,7 @@ function(X,W,mpoints,Groups,sum0)
     NAindlist <- apply(NAind,1,function(x){
                     co <- seq(cummt0[x[2]],cummt0[x[2]]+mt_vek.t[x[2]])
                     NAind01 <- cbind(rep(x[1],length(co)),co)
+                    rownames(NAind01) <- NULL
                     data.frame(NAind01,row.names=NULL)                                               #list with NA indices
                     })
     indmatNA <- matrix(unlist(lapply(NAindlist, function(x) {t(as.matrix(x))})),ncol=2,byrow=TRUE)   #matrix with NA indices 
@@ -45,7 +46,8 @@ function(X,W,mpoints,Groups,sum0)
     e_cat <- gl(hmax,1,K*hmax)                    #factor for category par
     
     if (sum0) {
-      Xm <- model.matrix(~e_it+e_cat, contrasts = list(e_it="contr.sum",e_cat="contr.sum"))[,-1]
+      Xm <- model.matrix(~e_it+e_cat)[,-1]          #dummy coding
+      Xm[1:hmax,1:(K-1)] <- -1                      #first item to be sum0 normalized
     } else {
       Xm <- model.matrix(~e_it+e_cat)[,-1]          #design matrix with 0/1 contrasts (without intercept)
     }
@@ -83,6 +85,8 @@ function(X,W,mpoints,Groups,sum0)
      W <- cbind(W1,t(contrrow))                     #design matrix completed
   } else {W <- cbind(W1,contr)}
   
+  colnames(W) <- NULL
+  rownames(W) <- NULL 
   }
   
   list(X=X,X01=X01,mt_vek=mt_vek,W=W)

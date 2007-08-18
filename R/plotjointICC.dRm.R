@@ -1,6 +1,6 @@
 `plotjointICC.dRm` <-
 function(object, item.subset = "all", legend=TRUE, xlim=c(-4,4),ylim=c(0,1),
-         xlab="Latent Dimension",ylab="Probability to Solve",lty=1,...)
+         xlab="Latent Dimension",ylab="Probability to Solve",lty=1,legpos="left",...)
 
 #produces one common ICC plot for Rasch models only
 #object of class "dRm"
@@ -40,7 +40,7 @@ function(object, item.subset = "all", legend=TRUE, xlim=c(-4,4),ylim=c(0,1),
   if (!legend) {
     text(x=median(theta),y=text.ylab,labels=paste("I",1:(dim(p.mat)[2]),sep=""),col=1:(dim(p.mat)[2]))
   } else {
-    legend(xlim[1],ylim[2],paste("Item",it.legend),col=1:(dim(p.mat)[2]),lty=lty,...)
+    legend(legpos,legend=paste("Item",it.legend),col=1:(dim(p.mat)[2]),lty=lty,...)
   }
 }
 

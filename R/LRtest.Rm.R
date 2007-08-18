@@ -1,5 +1,5 @@
 `LRtest.Rm` <-
-function(object, splitcr="median",alpha=0.05,se=TRUE)
+function(object, splitcr="median", se=FALSE)
 {
 # performs Andersen LR-test
 # object... object of class RM
@@ -11,8 +11,8 @@ function(object, splitcr="median",alpha=0.05,se=TRUE)
 
 if (!is.numeric(splitcr)) {
   if (splitcr=="all.r") {                                    #full raw score split
-    rv <- apply(object$X,1,sum,na.rm=TRUE)                      #person raw scoobject
-    Xlist <- by(object$X,rv,function(x) x)
+    rvind <- apply(object$X,1,sum,na.rm=TRUE)                      #person raw scoobject
+    Xlist <- by(object$X,rvind,function(x) x)
     names(Xlist) <- as.list(sort(unique(rv)))
     }
 
@@ -40,40 +40,44 @@ if (is.numeric(splitcr)) {                                 #manual raw score spl
   if (length(splitcr)!=dim(object$X)[1]){
     stop("Mismatch between length of split vector and number of persons!")
   } else {
-    Xlist <- by(object$X,splitcr, function(x) x) 
+    rvind <- splitcr
+    Xlist <- by(object$X,rvind, function(x) x) 
     names(Xlist) <- as.list(sort(unique(splitcr)))
     }}
     
-Xlist0 <- lapply(Xlist,function(x) {                                 #eliminate complete NA objectponses
-                         tfvec <- apply(x,2,function(z) {
-                                               !all(is.na(z))})
-                         x[,tfvec]})
+#----------item to be deleted---------------
+del.pos.l <- lapply(Xlist, function(x) {
+                    it.sub <- datcheck.LRtest(x,object$X,object$model)  #items to be removed within subgroup
+                    })
 
-Xlist.n <- lapply(Xlist0,function(x) {                               #submatrices without 0 and full item scoobject eliminated
-               x <- as.matrix(x)
-               ri <- apply(x,2,sum,na.rm=TRUE)                       #item raw scoobject
-               n.NA <- colSums(as.matrix((apply(x,2,is.na))))        #number of NA's per column
-               maxri <- (dim(x)[1]*(apply(x,2,max,na.rm=TRUE)))-n.NA #maximum item raw scoobject with NA
-               TFcol <- ((ri==maxri) | (ri==0))                      #full and 0 item scoobject as TRUE
-               x.n <- x[,TFcol==FALSE]
-               if (length(x.n) == 0) {
-                 x.n <- NULL 
-               } else {
-                 if (dim(x.n)[2]==0) x.n <- NULL                     #nothing left to estimate
-               }
-               x.n
-              })
+del.pos <- unique(unlist(del.pos.l)) 
+if ((length(del.pos)) >= (dim(object$X)[2]-1)) {
+  stop("\nNo items with appropriate response patterns left to perform LR-test!\n")
+}
 
-Xlist.n <- Xlist.n[!sapply(Xlist.n,is.null)]                        #delete NULL elements in Xlist.n
+if (length(del.pos) > 0) {
+  warning("\nThe following items were excluded due to inappropriate response patterns within subgroups: ",immediate.=TRUE) 
+    cat(colnames(object$X)[del.pos], sep=" ","\n")
+    cat("Full and subgroup models are estimated without these items!\n")
+}
+            
 
-
+if (length(del.pos) > 0) {
+  X.el <- object$X[,-(del.pos)]
+} else {
+  X.el <- object$X
+}                    
+Xlist.n <- by(X.el,rvind,function(y) y)
+names(Xlist.n) <- names(Xlist)
+if (length(del.pos) > 0) Xlist.n <- c(Xlist.n,list(X.el))
+              
 if (object$model=="RM") {
        likpar <- sapply(Xlist.n,function(x) {                       #matrix with loglik and npar for each subgroup
                                objectg <- RM(x,se=se)
                                likg <- objectg$loglik
                                nparg <- length(objectg$etapar)
-                               betalab <- colnames(objectg$X)
-                               list(likg,nparg,objectg$betapar,betalab,objectg$etapar,objectg$se.eta)
+                              # betalab <- colnames(objectg$X)
+                               list(likg,nparg,objectg$betapar,objectg$etapar,objectg$se.beta)
                                })
        }
 if (object$model=="PCM") {
@@ -81,7 +85,7 @@ if (object$model=="PCM") {
                                objectg <- PCM(x,se=se)
                                likg <- objectg$loglik
                                nparg <- length(objectg$etapar)
-                               list(likg,nparg,objectg$betapar,NULL,objectg$etapar,objectg$se.eta)
+                               list(likg,nparg,objectg$betapar,objectg$etapar,objectg$se.beta)
                                })
        }
 if (object$model=="RSM") {
@@ -89,28 +93,31 @@ if (object$model=="RSM") {
                                objectg <- RSM(x,se=se)
                                likg <- objectg$loglik
                                nparg <- length(objectg$etapar)
-                               list(likg,nparg,objectg$betapar,NULL,objectg$etapar,objectg$se.eta)
+                               list(likg,nparg,objectg$betapar,objectg$etapar,objectg$se.beta)
                                })
        }
        
+if (length(del.pos) > 0) {                  #re-estimate full model
+  pos <- length(Xlist.n)                    #position of the full model
+  loglik.all <- likpar[1,pos][[1]]          #loglik full model
+  etapar.all <- rep(0,likpar[2,pos])         #etapar full model (filled with 0 for df computation)
+  likpar <- likpar[,-pos]
+  Xlist.n <- Xlist.n[-pos]
+} else {
+  loglik.all <- object$loglik
+  etapar.all <- object$etapar 
+}     
+       
 loglikg <- sum(unlist(likpar[1,]))                    #sum of likelihood value for subgroups
-LR <- 2*(abs(loglikg-object$loglik))                  #LR value
-df = sum(unlist(likpar[2,]))-(length(object$etapar))  #final degrees of freedom
-Chisq <- qchisq(1-alpha,df)
+LR <- 2*(abs(loglikg-loglik.all))                  #LR value
+df = sum(unlist(likpar[2,]))-(length(etapar.all))  #final degrees of freedom
 pvalue <- 1-pchisq(LR,df)                             #pvalue
 
 betalist <- likpar[3,]                                #organizing betalist
-#betalist <- lapply(lapply(betalist,as.matrix),t)
-if (object$model == "RM") {                           #label betalist
-  betalab <- likpar[4,] 
-  for (i in 1:length(betalist)) names(betalist[[i]]) <- betalab[[i]] 
-} else {
-  for (i in 1:length(betalist)) names(betalist[[i]]) <- 1:length(betalist[[i]])
-} 
          
 result <- list(X=object$X, X.list=Xlist.n, model=object$model,LR=LR,
-               Chisq=Chisq, df=df, pvalue=pvalue, likgroup=unlist(likpar[1,],use.names=FALSE),
-               betalist=betalist, etalist=likpar[5,],selist=likpar[6,])
+               df=df, pvalue=pvalue, likgroup=unlist(likpar[1,],use.names=FALSE),
+               betalist=betalist, etalist=likpar[4,],selist=likpar[5,])
 class(result) <- "LR"
 result
 }

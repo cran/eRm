@@ -14,7 +14,9 @@ function(X,W,sum0)                       #prepares data matrix for Rasch model
     } else {
       w1 <- rep(0,(K-1))                          #first item parameter set to 0
     }
-    W <- rbind(w1,W1)                             #RM design matrix   
+    W <- rbind(w1,W1)                             #RM design matrix  
+    colnames(W) <- NULL
+    rownames(W) <- NULL  
   }                                                     
   list(X=X,X01=X01,mt_vek=mt_vek,W=W)
 #Output: X01      ... 0/1 response matrix of dimension N*rtot

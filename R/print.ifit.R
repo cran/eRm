@@ -3,20 +3,12 @@ function(x,...)
 # print method for itemfit
 # x...object of class "ifit" from (itemfit)
 {
-
-  pvalues <- mapply(function(inf,idf) {                                  #p-values for item infit and outfit statistics
-                      p.infit <- 1-pchisq(inf,idf)
-                      list(p.infit)
-                    },x$i.fit,x$i.df,SIMPLIFY=FALSE)
-
+  pvalues <- 1-pchisq(x$i.fit,x$i.df)
+  coef.table <- cbind(round(x$i.fit,3),x$i.df,round(pvalues,3))
+  colnames(coef.table) <- c("Chisq","df","p-value")
+  rownames(coef.table) <- names(x$i.fit)
   cat("\nChi-square Itemfit Statistics: \n")
-  for (i in 1:length(x$i.fit)) {
-    if (length(x$i.fit) > 1) {cat("Person NA Group:",i,"\n")}
-    coef.table <- cbind(x$i.fit[[i]],x$i.df[[i]],pvalues[[i]][[1]])
-    dimnames(coef.table) <- list(names(x$i.fit[[i]]),c("Itemfit","df","p.value"))
-    print(coef.table)
-    cat("\n")
-  }
-  
+  print(coef.table)
+  cat("\n")
 }
 

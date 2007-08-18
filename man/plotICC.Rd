@@ -8,8 +8,12 @@
 \description{Various plot functions for visualizing the item characteristic curves
 }
 \usage{
-\method{plotICC}{Rm}(object, item.subset = "all", empirical = FALSE, xlim = c(-4, 4), ylim = c(0, 1), xlab = "Latent Dimension", ylab = "Probability to Solve", ...)
-\method{plotjointICC}{dRm}(object, item.subset = "all", legend = TRUE, xlim = c(-4, 4), ylim = c(0, 1), xlab = "Latent Dimension", ylab = "Probability to Solve", lty = 1, ...)
+\method{plotICC}{Rm}(object, item.subset = "all", empirical = FALSE, 
+                     xlim = c(-4, 4), ylim = c(0, 1), xlab = "Latent Dimension", 
+                     ylab = "Probability to Solve", col = NA, lty = 1, legpos = "left", ...)
+\method{plotjointICC}{dRm}(object, item.subset = "all", legend = TRUE, 
+                           xlim = c(-4, 4), ylim = c(0, 1), xlab = "Latent Dimension", 
+                           ylab = "Probability to Solve", lty = 1, legpos = "left", ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,7 +27,11 @@
   \item{ylab}{Label of the y-axis.}
   \item{xlim}{Range of person parameters.}
   \item{ylim}{Range for probability to solve.}
+  \item{col}{If \code{NA}, line color is determined automatically.}
   \item{lty}{Line type.}
+  \item{legpos}{Position of the legend with possible values \code{"bottomright"}, 
+  \code{"bottom"}, \code{"bottomleft"}, \code{"left"}, \code{"topleft"}, \code{"top"}, 
+  \code{"topright"}, \code{"right"} and \code{"center"}.} 
   \item{...}{Additional plot parameters.}
 }
 \details{}
@@ -38,6 +46,7 @@
 # Rating scale model, ICC plot for all items
 data(rsmdat)
 res <- RSM(rsmdat)
+thresholds(res)
 plotICC(res)
 
 # Rasch model with empirical ICCs
@@ -48,7 +57,7 @@ plotICC(res, empirical = TRUE)
 # Joint ICC plot for items 2, 6, 8, and 15 for a Rasch model
 data(raschdat1)
 res <- RM(raschdat1)
-plotjointICC(res, item.subset = c(2,6,8,15))
+plotjointICC(res, item.subset = c(2,6,8,15), legpos = "left")
 
 }
 \keyword{models}
