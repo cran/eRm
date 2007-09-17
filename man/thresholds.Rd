@@ -27,13 +27,16 @@ Arguments for \code{print}, \code{summary}, and \code{confint} methods:
   \item{...}{Further arguments to be passed to methods. They are ignored.}
 }
 \details{For dichotomous models (i.e., RM and LLTM) threshold parameters are not computed.
-The \code{print} method returns a location parameter for each item which is the mean of the corresponding
-threshold parameters.}
+The \code{print} method returns a location parameter for each item which is the 
+mean of the corresponding threshold parameters. For LPCM and LRSM the thresholds are
+computed for each design matrix block (i.e., measurement point/group) separately  
+(PCM and RSM have only 1 block).}
 
 \value{
 The function \code{thresholds} returns an object of class \code{threshold} containing:
   \item{threshpar}{Vector with threshold parameters.}
   \item{se.thresh}{Vector with standard errors.}
+  \item{threshtable}{Data frame with location and threshold parameters.}
 }
 
 \references{
@@ -46,17 +49,26 @@ Andrich, D. (1978). Application of a psychometric rating model to ordered catego
 #Threshold parameterization for a rating scale model
 data(rsmdat)
 res <- RSM(rsmdat)
-thres <- thresholds(res)
-thres
-confint(thres)
-summary(thres)
+th.res <- thresholds(res)
+th.res
+confint(th.res)
+summary(th.res)
 
 #Threshold parameters for a PCM with ICC plot
 data(pcmdat)
 res <- PCM(pcmdat)
-thres <- thresholds(res)
-thres
+th.res <- thresholds(res)
+th.res
 plotICC(res)
+
+#Threshold parameters for a LPCM:
+#Block 1: t1, g1; Block 2: t1, g2; ...; Block 6: t2,g3 
+
+data(lpcmdat)
+G <- c(rep(1,7),rep(2,7),rep(3,6))                   #group vector for 3 groups
+res <- LPCM(lpcmdat, mpoints = 2, groupvec = G)
+th.res <- thresholds(res)
+th.res
 
 }
 \keyword{models}

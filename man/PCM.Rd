@@ -29,6 +29,8 @@ PCM(X, W, se = TRUE, sum0 = TRUE, etaStart)
   
   \item{loglik}{Conditional log-likelihood.}
   \item{iter}{Number of iterations.}
+  \item{npar}{Number of parameters.}
+  \item{convergence}{See \code{code} output in \code{\link{nlm}}.}
   \item{etapar}{Estimated basic item parameters.}
   \item{se.eta}{Standard errors of the estimated basic item parameters.}
   \item{betapar}{Estimated item-category (easiness) parameters.}
@@ -37,6 +39,7 @@ PCM(X, W, se = TRUE, sum0 = TRUE, etaStart)
   \item{W}{Design matrix.}
   \item{X}{Data matrix.}
   \item{X01}{Dichotomized data matrix.}
+  \item{call}{The matched call.}
 }
 \references{
 Fischer, G. H., and Molenaar, I. (1995). Rasch Models - Foundations, 

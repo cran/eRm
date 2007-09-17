@@ -85,6 +85,7 @@ if ((model=="PCM") || (model=="LPCM")) {                         #check if there
 
 #-------------------------- ill conditioned for RM and LLTM --------------
 if ((model=="RM") || (model=="LLTM")) {
+  if (length(table(X.n)) != 2) stop("Dichotomous data matrix required!")
   k.t <- dim(X.n)[2]/mpoints                                    #check for each mpoint separately
   t.ind <- rep(1:mpoints,1,each=k.t)                            
   X.nlv <- split(t(X.n),t.ind)                                  #split X due to mpoints

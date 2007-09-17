@@ -24,13 +24,21 @@ if (mpoints == 1) {                                     #no mpoints labels
   indmt <- rep(apply(X,2,max,na.rm=TRUE),ngroups)
   catnames <- sequence(indmt)                                            #category names
   if (substr(colnames(X)[1],1,2)=="I1") {                                #if item names specified by user
-    itemind <- rep(paste("I",1:(dim(X)[2]/mpoints),sep=""),mpoints)
-    itnames <- rep(itemind,indmt0)
+    itemind <- rep(paste("I",1:(dim(X)[2]/mpoints),sep=""),mpoints)      #item labels
   } else {
-    itnames <- rep(colnames(X),indmt0)
+    itemind <- colnames(X)
   }
+  
+  itnames <- rep(itemind,indmt0) 
+  
+  if (ngroups > 1) {
+    ind.it <- rep(1:mpoints,each = length(itnames)/mpoints)           #item label index
+    itnames <- as.vector(unlist(tapply(itnames, ind.it, function(x) rep(x, ngroups)))) 
+  }
+    
+  
   if (model == "LLTM") {
-    icnames <- itnames
+    icnames <- rep(itnames,(dim(W)[1]/length(itnames)))
   } else {
     icnames <- paste(itnames,catnames,sep=".c")
   }

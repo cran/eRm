@@ -7,6 +7,8 @@ function(object,...)
 cat("\n")
 cat("Results of",object$model,"estimation: \n")
 cat("\n")
+cat("Call: ", deparse(object$call), "\n")
+cat("\n")
 
 cat("Conditional log-likelihood:",object$loglik,"\n")
 cat("Number of iterations:",object$iter,"\n")
@@ -15,7 +17,7 @@ cat("\n")
 
 X <- object$X
 X01 <- object$X01
-mt_vek <- apply(X,2,max,na.rm=TRUE) 
+mt_vek <- apply(X,2,max,na.rm=TRUE)
 
 ci <- confint(object,"eta")
 cat("Basic Parameters (eta) with 0.95 CI:\n")

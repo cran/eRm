@@ -4,6 +4,8 @@ function(X, W, se = TRUE, sum0 = TRUE, etaStart)
 #...X: 0/1 person*item matrix
 
 #-------------------main programm-------------------
+
+call<-match.call()
 groupvec <- 1
 mpoints <- 1
 model <- "RM"
@@ -19,9 +21,10 @@ X <- XWcheck$X
 
 lres <- likLR(X,W,mpoints,groupvec,model,st.err=se,sum0,etaStart)
 parest <- lres$parest                             #full groups for parameter estimation
-                                
+
 loglik <- -parest$minimum                         #log-likelihood value
 iter <- parest$iterations                         #number of iterations
+convergence <- parest$code
 etapar <- parest$estimate                         #eta estimates
 betapar <- as.vector(lres$W%*% etapar)            #beta estimates
 if (se) {
@@ -40,9 +43,9 @@ betapar <- labs$betapar
 
 npar <- dim(lres$W)[2]                            #number of parameters
 
-result <- list(X=X,X01=X01,model=model,loglik=loglik,npar=npar,iter=iter,
+result <- list(X=X,X01=X01,model=model,loglik=loglik,npar=npar,iter=iter,convergence=convergence,
                etapar=etapar,se.eta=se.eta,hessian=parest$hessian,betapar=betapar,
-               se.beta=se.beta,W=W)
+               se.beta=se.beta,W=W,call=call)
 class(result) <- c("dRm","Rm","eRm")                    #classes: dichotomous RM, RM (RM, PCM, RSM), and extended RM (all)
 result
 }
