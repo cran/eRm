@@ -19,7 +19,7 @@ parameters. These can be interpreted by means of log-odds as visualized in ICC p
 \arguments{
 Arguments for \code{thresholds}:
   \item{object}{Object of class \code{eRm}.}
-  
+
 Arguments for \code{print}, \code{summary}, and \code{confint} methods:
   \item{x}{Object of class \code{threshold}.}
   \item{parm}{Parameter specification (ignored).}
@@ -27,9 +27,9 @@ Arguments for \code{print}, \code{summary}, and \code{confint} methods:
   \item{...}{Further arguments to be passed to methods. They are ignored.}
 }
 \details{For dichotomous models (i.e., RM and LLTM) threshold parameters are not computed.
-The \code{print} method returns a location parameter for each item which is the 
+The \code{print} method returns a location parameter for each item which is the
 mean of the corresponding threshold parameters. For LPCM and LRSM the thresholds are
-computed for each design matrix block (i.e., measurement point/group) separately  
+computed for each design matrix block (i.e., measurement point/group) separately
 (PCM and RSM have only 1 block).}
 
 \value{
@@ -42,7 +42,8 @@ The function \code{thresholds} returns an object of class \code{threshold} conta
 \references{
 Andrich, D. (1978). Application of a psychometric rating model to ordered categories which are scored with successive integers. Applied Psychological Measurement, 2, 581-594.
 }
-\seealso{\code{\link{plotICC.Rm}}}
+\seealso{
+      \code{\link{plotICC.Rm}}
 }
 \examples{
 
@@ -62,7 +63,7 @@ th.res
 plotICC(res)
 
 #Threshold parameters for a LPCM:
-#Block 1: t1, g1; Block 2: t1, g2; ...; Block 6: t2,g3 
+#Block 1: t1, g1; Block 2: t1, g2; ...; Block 6: t2,g3
 
 data(lpcmdat)
 G <- c(rep(1,7),rep(2,7),rep(3,6))                   #group vector for 3 groups

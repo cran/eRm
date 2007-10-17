@@ -11,7 +11,7 @@
 }
 \usage{
 \method{LRtest}{Rm}(object, splitcr = "median", se = FALSE)
-\method{plotGOF}{LR}(x, beta.subset = "all", xlab = "Beta Group 1", 
+\method{plotGOF}{LR}(x, beta.subset = "all", xlab = "Beta Group 1",
 ylab = "Beta Group 2", ylim = c(-3, 3), xlim = c(-3, 3), type = "p", ...)
 \method{print}{LR}(x,...)
 \method{summary}{LR}(object,...)
@@ -19,15 +19,15 @@ ylab = "Beta Group 2", ylim = c(-3, 3), xlim = c(-3, 3), type = "p", ...)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{Object of class \code{Rm}.}
-  \item{splitcr}{Split criterion for subject raw score splitting. \code{all.r} corresponds to a 
-  full raw score split, \code{median} uses the median as split criterion, \code{mean} performs a mean-split. 
-  Optionally \code{splitcr} can also be a vector which assigns each person to a 
+  \item{splitcr}{Split criterion for subject raw score splitting. \code{all.r} corresponds to a
+  full raw score split, \code{median} uses the median as split criterion, \code{mean} performs a mean-split.
+  Optionally \code{splitcr} can also be a vector which assigns each person to a
   certain subgroup (e.g., following an external criterion). }
   \item{se}{If \code{TRUE} standard errors for beta's are computed.}
-  
+
 Arguments for \code{plotGOF}:
   \item{x}{Object of class \code{LR} for visualizing the fit of single items.}
-  \item{beta.subset}{If \code{"all"}, all items are plotted. Otherwise numeric subset vector can be specified.} 
+  \item{beta.subset}{If \code{"all"}, all items are plotted. Otherwise numeric subset vector can be specified.}
   \item{xlab}{Label on x-axis.}
   \item{ylab}{Label on y-axis.}
   \item{xlim}{Limits on x-axis.}
@@ -35,7 +35,9 @@ Arguments for \code{plotGOF}:
   \item{type}{Plotting type.}
   \item{...}{Additional graphical parameters.}
 }
-\details{}
+\details{If the data set contains missing values and \code{mean} or \code{median} is specified as splitcriterion,
+         means or medians are calculated for each missing value subgroup and consequently used for raw score splitting.
+}
 \value{
 \code{LRtest} returns an object of class \code{LR} containing:
   \item{LR}{LR-value.}
@@ -61,9 +63,9 @@ Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch model
 
 # LR-test on dichotomous Rasch model with user-defined split
 splitvec <- sample(1:3, 100, replace = TRUE)
-data(raschdat1, splitcr = splitvec)
+data(raschdat1)
 res <- RM(raschdat1)
-lrres <- LRtest(res)
+lrres <- LRtest(res, splitcr = splitvec)
 lrres
 summary(lrres)
 plotGOF(lrres)

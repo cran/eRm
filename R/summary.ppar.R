@@ -27,7 +27,7 @@ function(object,...)
       xvec[!is.na(xvec)] <- "x"
       cat("NA pattern:",xvec,"\n")
       }
-    cat("Log-likelihood:",object$loglik[[i]],"\n")
+    cat("Collapsed log-likelihood:",object$loglik[[i]],"\n")
     cat("Number of iterations:",object$iter[[i]],"\n")
     cat("Number of parameters:",object$npar[[i]],"\n")
     cat("\n")

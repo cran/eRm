@@ -5,9 +5,50 @@ function(object, splitcr="median", se=FALSE)
 # object... object of class RM
 # splitcr... splitting criterion for LR-groups. "all.r" corresponds to a complete
 #            raw score split (r=1,...,k-1), "median" to a median raw score split,
-#            "mean" corresponds to the mean raw score split. 
+#            "mean" corresponds to the mean raw score split.
 #            optionally also a vector of length n for group split can be submitted.
 # se...whether standard errors should be computed
+
+X.original<-object$X
+numsplit<-is.numeric(splitcr)
+if (any(is.na(object$X))) {
+  if (!numsplit && splitcr=="mean") {                                   #mean split
+#    cat("Warning message: Persons with median raw scores are assigned to the lower raw score group!\n")
+    X<-object$X
+    # calculates index for NA groups
+    # from person.parameter.eRm
+      dichX <- ifelse(is.na(X),1,0)
+      strdata <- apply(dichX,1,function(x) {paste(x,collapse="")})
+      gmemb <- as.vector(data.matrix(data.frame(strdata)))
+    gindx<-unique(gmemb)
+    rsum.all<-rowSums(X,na.rm=T)
+    grmeans<-tapply(rsum.all,gmemb,mean)      #sorted
+    ngr<-table(gmemb)                         #sorted
+    m.all<-rep(grmeans,ngr)                   #sorted,expanded
+    rsum.all<-rsum.all[order(gmemb)]
+    spl<-ifelse(rsum.all<m.all,1,2)
+    splitcr<-spl
+    object$X<-X[order(gmemb),]
+  }
+  if (!numsplit && splitcr=="median") {                                   #median split
+    cat("Warning message: Persons with median raw scores are assigned to the lower raw score group!\n")
+    X<-object$X
+    # calculates index for NA groups
+    # from person.parameter.eRm
+      dichX <- ifelse(is.na(X),1,0)
+      strdata <- apply(dichX,1,function(x) {paste(x,collapse="")})
+      gmemb <- as.vector(data.matrix(data.frame(strdata)))
+    gindx<-unique(gmemb)
+    rsum.all<-rowSums(X,na.rm=T)
+    grmed<-tapply(rsum.all,gmemb,median)      #sorted
+    ngr<-table(gmemb)                         #sorted
+    m.all<-rep(grmed,ngr)                     #sorted,expanded
+    rsum.all<-rsum.all[order(gmemb)]
+    spl<-ifelse(rsum.all<=m.all,1,2)
+    splitcr<-spl
+    object$X<-X[order(gmemb),]
+  }
+}
 
 if (!is.numeric(splitcr)) {
   if (splitcr=="all.r") {                                    #full raw score split
@@ -27,7 +68,7 @@ if (!is.numeric(splitcr)) {
     }
 
   if (splitcr=="mean") {                                     #mean split
-    rv <- apply(object$X,1,sum,na.rm=TRUE)                     
+    rv <- apply(object$X,1,sum,na.rm=TRUE)
     rvsplit <- mean(rv)
     rvind <- rep(0,length(rv))
     rvind[rv > rvsplit] <- 1                                 #group with highraw scoobject
@@ -41,36 +82,36 @@ if (is.numeric(splitcr)) {                                 #manual raw score spl
     stop("Mismatch between length of split vector and number of persons!")
   } else {
     rvind <- splitcr
-    Xlist <- by(object$X,rvind, function(x) x) 
+    Xlist <- by(object$X,rvind, function(x) x)
     names(Xlist) <- as.list(sort(unique(splitcr)))
     }}
-    
+
 #----------item to be deleted---------------
 del.pos.l <- lapply(Xlist, function(x) {
                     it.sub <- datcheck.LRtest(x,object$X,object$model)  #items to be removed within subgroup
                     })
 
-del.pos <- unique(unlist(del.pos.l)) 
+del.pos <- unique(unlist(del.pos.l))
 if ((length(del.pos)) >= (dim(object$X)[2]-1)) {
   stop("\nNo items with appropriate response patterns left to perform LR-test!\n")
 }
 
 if (length(del.pos) > 0) {
-  warning("\nThe following items were excluded due to inappropriate response patterns within subgroups: ",immediate.=TRUE) 
+  warning("\nThe following items were excluded due to inappropriate response patterns within subgroups: ",immediate.=TRUE)
     cat(colnames(object$X)[del.pos], sep=" ","\n")
     cat("Full and subgroup models are estimated without these items!\n")
 }
-            
+
 
 if (length(del.pos) > 0) {
   X.el <- object$X[,-(del.pos)]
 } else {
   X.el <- object$X
-}                    
+}
 Xlist.n <- by(X.el,rvind,function(y) y)
 names(Xlist.n) <- names(Xlist)
 if (length(del.pos) > 0) Xlist.n <- c(Xlist.n,list(X.el))
-              
+
 if (object$model=="RM") {
        likpar <- sapply(Xlist.n,function(x) {                       #matrix with loglik and npar for each subgroup
                                objectg <- RM(x,se=se)
@@ -96,7 +137,7 @@ if (object$model=="RSM") {
                                list(likg,nparg,objectg$betapar,objectg$etapar,objectg$se.beta)
                                })
        }
-       
+
 if (length(del.pos) > 0) {                  #re-estimate full model
   pos <- length(Xlist.n)                    #position of the full model
   loglik.all <- likpar[1,pos][[1]]          #loglik full model
@@ -105,17 +146,17 @@ if (length(del.pos) > 0) {                  #re-estimate full model
   Xlist.n <- Xlist.n[-pos]
 } else {
   loglik.all <- object$loglik
-  etapar.all <- object$etapar 
-}     
-       
+  etapar.all <- object$etapar
+}
+
 loglikg <- sum(unlist(likpar[1,]))                    #sum of likelihood value for subgroups
 LR <- 2*(abs(loglikg-loglik.all))                  #LR value
 df = sum(unlist(likpar[2,]))-(length(etapar.all))  #final degrees of freedom
 pvalue <- 1-pchisq(LR,df)                             #pvalue
 
 betalist <- likpar[3,]                                #organizing betalist
-         
-result <- list(X=object$X, X.list=Xlist.n, model=object$model,LR=LR,
+
+result <- list(X=X.original, X.list=Xlist.n, model=object$model,LR=LR,
                df=df, pvalue=pvalue, likgroup=unlist(likpar[1,],use.names=FALSE),
                betalist=betalist, etalist=likpar[4,],selist=likpar[5,])
 class(result) <- "LR"

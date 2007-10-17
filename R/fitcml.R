@@ -82,7 +82,7 @@ L1-L2                                               #actual likelihood value
 eta <- etaStart                                     #starting values for eta parameters
 
 options(warn=-1)                                    #turn off warnings for NA/Inf
-fit <- nlm(cml,eta,hessian=st.err)                  #NLM optimizer
+fit <- nlm(cml,eta,hessian=st.err,iterlim=5000)     #NLM optimizer
 
 #options(warn=0)
 

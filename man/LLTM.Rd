@@ -36,7 +36,6 @@ LLTM(X, W, mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE, etaStart)
   Available methods for LLTM-objects are \code{print}, \code{coef},
   \code{model.matrix}, \code{vcov},\code{summary}, \code{logLik}, \code{person.parameters}.
 }
-}
 \value{
   Returns on object of class \code{eRm} containing:
 

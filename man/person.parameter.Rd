@@ -11,7 +11,7 @@
 \alias{confint.ppar}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Estimation of Person Parameters}
-\description{Maximum likelihood estimation of the person parameters with spline 
+\description{Maximum likelihood estimation of the person parameters with spline
 interpolation for non-observed and 0/full responses. Extraction of information criteria such
 as AIC, BIC, and cAIC based on unconditional log-likelihood.}
 \usage{
@@ -27,31 +27,30 @@ as AIC, BIC, and cAIC based on unconditional log-likelihood.}
 
 \arguments{
   \item{object}{Object of class \code{eRm} in \code{person.parameter} and object of class \code{ppar} in \code{IC}.}
-  
+
 Arguments for \code{print} and \code{plot} methods:
   \item{x}{Object of class \code{ppar}.}
   \item{xlab}{Label of the x-axis.}
   \item{ylab}{Label of the y-axis.}
   \item{main}{Title of the plot.}
   \item{...}{Further arguments to be passed to or from other methods. They are ignored in this function.}
-  
+
 Arguments for \code{confint}:
   \item{parm}{Parameter specification (ignored).}
   \item{level}{Alpha-level.}
 }
-\details{If the data set contains missing values, person parameters are estimated 
-for each missing value subgroup.}
-
+\details{If the data set contains missing values, person parameters are estimated
+for each missing value subgroup.
 }
 \value{
 The function \code{person.parameter} returns an object of class \code{ppar} containing:
-  \item{loglik}{Conditional log-likelihood value.}
+  \item{loglik}{Log-likelihood of the collapsed data (for faster estimation persons with the same raw score are collapsed).}
   \item{npar}{Number of parameters.}
   \item{niter}{Number of iterations.}
   \item{thetapar}{Person parameter estimates.}
   \item{se.theta}{Standard errors of the person parameters.}
   \item{hessian}{Hessian matrix.}
-  
+
 The function \code{IC} returns an object of class \code{ICr} containing:
   \item{j.loglik}{Unconditional (joint) log-likelihood value.}
   \item{AIC}{AIC criterion.}
@@ -60,7 +59,7 @@ The function \code{IC} returns an object of class \code{ICr} containing:
 }
 
 \references{
-Fischer, G. H., and Molenaar, I. (1995). Rasch Models - Foundations, 
+Fischer, G. H., and Molenaar, I. (1995). Rasch Models - Foundations,
 Recent Developements, and Applications. Springer.
 
 Mair, P., and Hatzinger, R. (2007). Extended Rasch modeling: The eRm package for the application of IRT models in R. Journal of Statistical Software, 20(9), 1-20.
@@ -69,7 +68,8 @@ Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch model
 }
 \author{Patrick Mair, Reinhold Hatzinger}
 \note{}
-\seealso{\code{\link{itemfit.ppar}},\code{\link{personfit.ppar}}}
+\seealso{
+    \code{\link{itemfit.ppar}},\code{\link{personfit.ppar}}
 }
 \examples{
 
