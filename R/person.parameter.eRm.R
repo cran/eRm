@@ -20,9 +20,17 @@ rp <- rowSums(X,na.rm=TRUE)                                       #person raw sc
 maxrp <- apply(X,1,function(x.i) {sum(max.it[!is.na(x.i)])})      #maximum item raw score for person i 
 TFrow <- ((rp==maxrp) | (rp==0))
 pers.exe <- (1:dim(X)[1])[TFrow]                                  #persons excluded from estimation due to 0/full
-X.dummy <- X
-if (length(pers.exe) > 0) X <- X[-pers.exe,] 
 
+if (any(is.na(X))) {
+  dichX <- ifelse(is.na(X),1,0)
+  strdata <- apply(dichX,1,function(x) {paste(x,collapse="")})
+  gmemb.X <- as.vector(data.matrix(data.frame(strdata)))
+} else {
+  gmemb.X <- rep(1,dim(X)[1])
+}
+
+if (length(pers.exe) > 0) X <- X[-pers.exe,] 
+X.dummy <- X
 
 if (any(is.na(X))) {
   dichX <- ifelse(is.na(X),1,0)
@@ -37,10 +45,14 @@ if (any(is.na(X))) {
 mt_vek <- apply(X,2,max,na.rm=TRUE)             #number of categories - 1 for each item
 mt_ind <- rep(1:length(mt_vek),mt_vek)          #index i for items
 
-indvec <- unlist(tapply(1:dim(X)[1], gmemb, function(p.ind) {        #index vector for X collapsing
-                      !duplicated(rowSums(X[p.ind,],na.rm = TRUE))}))
-n.pall <- as.vector(unlist(tapply(1:dim(X)[1], gmemb, function(nr) {
-                      table(rowSums(X[nr,], na.rm = TRUE))})))
+indvec <- NULL
+for (i in unique(gmemb)) indvec <- c(indvec,!duplicated(rowSums(X[gmemb==i,],na.rm = TRUE)))
+
+#indvec <- unlist(tapply(1:dim(X)[1], gmemb, function(p.ind) {        #index vector for X collapsing
+#                      !duplicated(rowSums(X[p.ind,],na.rm = TRUE))}))
+
+#n.pall <- as.vector(unlist(tapply(1:dim(X)[1], gmemb, function(nr) {
+#                      table(rowSums(X[nr,], na.rm = TRUE))})))
 X <- X[indvec,]                                      #collapsing X
 
 beta.all <- object$betapar
@@ -181,18 +193,13 @@ names(thetapar) <- names(se.theta) <- paste("NAgroup",1:length(thetapar),sep="")
 
 #---------expand theta and se.theta, labeling -------------------
 for (i in unique(gmemb)) {
-  o.r <- rowSums(object$X[gmemb1==i,], na.rm = TRUE)             #orginal raw scores
+  #o.r <- rowSums(object$X[gmemb.X==i,], na.rm = TRUE)             #orginal raw scores
+  o.r <- rowSums(X.dummy[gmemb1==i,], na.rm = TRUE)             #orginal raw scores
   c.r <- rowSums(X[gmemb==i,], na.rm = TRUE)                     #collapsed raw scores
   match.ind <- match(o.r, c.r)
-  if (length(pers.exe) != 0) { 
-    thetapar[[i]] <- thetapar[[i]][match.ind][-pers.exe]           #de-collapse theta's
-    se.theta[[i]] <- se.theta[[i]][match.ind][-pers.exe]            #de-collapse se's
-    names(thetapar[[i]]) <- names(se.theta[[i]]) <- rownames(object$X[-pers.exe])[gmemb1==i]
-  } else {
-    thetapar[[i]] <- thetapar[[i]][match.ind]           #de-collapse theta's
-    se.theta[[i]] <- se.theta[[i]][match.ind]           #de-collapse se's
-    names(thetapar[[i]]) <- names(se.theta[[i]]) <- rownames(object$X)[gmemb1==i]
-  }
+  thetapar[[i]] <- thetapar[[i]][match.ind]           #de-collapse theta's
+  se.theta[[i]] <- se.theta[[i]][match.ind]           #de-collapse se's
+  names(thetapar[[i]]) <- names(se.theta[[i]]) <- names(o.r)
 }
 #--------------- end expand, labeling ---------------------------
 

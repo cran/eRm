@@ -11,10 +11,10 @@
 \alias{print.resid}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Residuals, Personfit and Itemfit Statistics}
-\description{\code{pmat} computes the expected person-item matrix with corresponding 
-probabilities. \code{residuals} computes the squared and standardized residuals based on 
+\description{\code{pmat} computes the expected person-item matrix with corresponding
+probabilities. \code{residuals} computes the squared and standardized residuals based on
 the observed and the expected person-item matrix. Chi-square based itemfit and personfit
-statistics can be obtained by using \code{itemfit} and \code{personfit}. 
+statistics can be obtained by using \code{itemfit} and \code{personfit}.
 }
 \usage{
 \method{pmat}{ppar}(object)
@@ -30,28 +30,28 @@ statistics can be obtained by using \code{itemfit} and \code{personfit}.
   \item{x}{Object of class \code{ifit}, \code{pfit}, or \code{resid}.}
   \item{...}{Further arguments passed to or from other methods. They are ignored in this function.}
 }
-\details{}
+%\details{}
 \value{
 Function \code{pmat}:
   \item{pmat}{Matrix of theoretical probabilities.}
-  
-Function \code{itemfit} returns a list of class \code{ifit} with components:  
+
+Function \code{itemfit} returns a list of class \code{ifit} with components:
   \item{i.fit}{Itemfit statistics.}
   \item{i.df}{Degrees of freedom for itemfit statistics.}
   \item{st.res}{Standardized residuals.}
-  
-Function \code{personfit} returns a list of class \code{pfit} with components:  
+
+Function \code{personfit} returns a list of class \code{pfit} with components:
   \item{p.fit}{Personfit.}
   \item{p.df}{Degrees of freedom for personfit statistics.}
   \item{st.res}{Standardized residuals.}
-  
+
 }
 \references{
-Smith Jr., E. V., and Smith, R. M. (2004). Introduction to Rasch Measurement. 
+Smith Jr., E. V., and Smith, R. M. (2004). Introduction to Rasch Measurement.
 JAM press.
 }
 \author{Patrick Mair, Reinhold Hatzinger}
-\note{}
+%\note{}
 \seealso{\code{\link{person.parameter}}
 }
 \examples{

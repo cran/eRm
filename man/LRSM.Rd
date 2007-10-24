@@ -62,7 +62,7 @@ Mair, P., and Hatzinger, R. (2007). Extended Rasch modeling: The eRm package for
 Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch models with the eRm package in R. Psychology Science, 49, 26-43.
 }
 \author{Patrick Mair, Reinhold Hatzinger}
-\note{}
+%\note{}
 \seealso{\code{\link{LLTM}},\code{\link{LPCM}}}
 \examples{
 

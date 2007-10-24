@@ -8,7 +8,7 @@
 \alias{confint.eRm}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Methods for extended Rasch models}
-\description{}
+\description{Several methods for objects of class \code{eRm}.}
 \usage{
 \method{print}{eRm}(x, ...)
 \method{summary}{eRm}(object, ...)
@@ -27,9 +27,9 @@
   \item{...}{Further arguments to be passed to or from other methods. They are ignored in this function.}
 }
 \details{
-  \code{vcov} returns the variance-covariance matrix of the parameter estimates, 
-  \code{coef}   the estimates of the basic parameters, \code{print} the value of 
-  the log-likelihood and the   parameter estimates and their standard errors, 
+  \code{vcov} returns the variance-covariance matrix of the parameter estimates,
+  \code{coef}   the estimates of the basic parameters, \code{print} the value of
+  the log-likelihood and the   parameter estimates and their standard errors,
   \code{model.matrix} the design matrix, \code{logLik} the log-likelihood value.
 }
 \author{Patrick Mair, Reinhold Hatzinger}

@@ -41,7 +41,7 @@ probabilistische Testmodell von Rasch [Algorithms and programs for Rasch's
 probabilistic test model]. Psychologische Beitraege, 12, 23-51.
 }
 \author{Patrick Mair, Reinhold Hatzinger}
-\note{}
+%\note{}
 \seealso{\code{\link{LRtest}}}
 \examples{
 

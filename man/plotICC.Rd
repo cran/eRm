@@ -8,18 +8,18 @@
 \description{Various plot functions for visualizing the item characteristic curves
 }
 \usage{
-\method{plotICC}{Rm}(object, item.subset = "all", empirical = FALSE, 
-                     xlim = c(-4, 4), ylim = c(0, 1), xlab = "Latent Dimension", 
+\method{plotICC}{Rm}(object, item.subset = "all", empirical = FALSE,
+                     xlim = c(-4, 4), ylim = c(0, 1), xlab = "Latent Dimension",
                      ylab = "Probability to Solve", col = NA, lty = 1, legpos = "left", ...)
-\method{plotjointICC}{dRm}(object, item.subset = "all", legend = TRUE, 
-                           xlim = c(-4, 4), ylim = c(0, 1), xlab = "Latent Dimension", 
+\method{plotjointICC}{dRm}(object, item.subset = "all", legend = TRUE,
+                           xlim = c(-4, 4), ylim = c(0, 1), xlab = "Latent Dimension",
                            ylab = "Probability to Solve", lty = 1, legpos = "left", ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{object of class \code{Rm} or \code{dRm}}
   \item{item.subset}{Subset of items to be plotted. Either a numeric vector indicating
-  the column in \code{X} or a character vector indiciating the column name. 
+  the column in \code{X} or a character vector indiciating the column name.
   If \code{"all"}, all items are plotted.}
   \item{empirical}{Option for plotting the empirical ICCs for objects of class \code{dRm}}
   \item{legend}{If \code{TRUE}, legend is provided, otherwise the ICCs are labeled.}
@@ -29,17 +29,17 @@
   \item{ylim}{Range for probability to solve.}
   \item{col}{If \code{NA}, line color is determined automatically.}
   \item{lty}{Line type.}
-  \item{legpos}{Position of the legend with possible values \code{"bottomright"}, 
-  \code{"bottom"}, \code{"bottomleft"}, \code{"left"}, \code{"topleft"}, \code{"top"}, 
-  \code{"topright"}, \code{"right"} and \code{"center"}.} 
+  
+  \item{legpos}{Position of the legend with possible values \code{"bottomright"},
+  \code{"bottom"}, \code{"bottomleft"}, \code{"left"}, \code{"topleft"}, \code{"top"},
+  \code{"topright"}, \code{"right"} and \code{"center"}.}
   \item{...}{Additional plot parameters.}
 }
-\details{}
-\value{}
-\references{
-}
+%\details{}
+%\value{}
+%\references{}
 \author{Patrick Mair, Reinhold Hatzinger}
-\note{}
+%\note{}
 \seealso{\code{\link{plotGOF}}}
 \examples{
 

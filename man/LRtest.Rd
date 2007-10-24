@@ -12,7 +12,7 @@
 \usage{
 \method{LRtest}{Rm}(object, splitcr = "median", se = FALSE)
 \method{plotGOF}{LR}(x, beta.subset = "all", xlab = "Beta Group 1",
-ylab = "Beta Group 2", ylim = c(-3, 3), xlim = c(-3, 3), type = "p", ...)
+ylab = "Beta Group 2", tlab = "item", ylim = c(-3, 3), xlim = c(-3, 3), type = "p", pos = "4", ...)
 \method{print}{LR}(x,...)
 \method{summary}{LR}(object,...)
 }
@@ -30,9 +30,17 @@ Arguments for \code{plotGOF}:
   \item{beta.subset}{If \code{"all"}, all items are plotted. Otherwise numeric subset vector can be specified.}
   \item{xlab}{Label on x-axis.}
   \item{ylab}{Label on y-axis.}
+  \item{tlab}{Specification of item labels: \code{"item"} prints the item names, \code{"number"} gives integers
+       corresponding to order of the beta parameters, if \code{"none"} no labels are printed.
+       \code{"identify"} allows for an interactive labelling. Initially no labels are printed, after clicking
+       close to an item point the corresponding label is added. The identification process is terminated by clicking
+       the second button and selecting 'Stop' from the menu, or from the 'Stop' menu on the graphics window.
+       For more information see \code{\link{identify}}.
+       }
   \item{xlim}{Limits on x-axis.}
   \item{ylim}{Limits on y-axis.}
-  \item{type}{Plotting type.}
+  \item{type}{Plotting type.(see \code{\link{plot}})}
+  \item{pos}{Position of the item label (see \code{\link{text}})}
   \item{...}{Additional graphical parameters.}
 }
 \details{If the data set contains missing values and \code{mean} or \code{median} is specified as splitcriterion,
@@ -57,7 +65,7 @@ Mair, P., and Hatzinger, R. (2007). Extended Rasch modeling: The eRm package for
 Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch models with the eRm package in R. Psychology Science, 49, 26-43.
 }
 \author{Patrick Mair, Reinhold Hatzinger}
-\note{}
+%\note{}
 \seealso{\code{\link{Waldtest}}}
 \examples{
 
