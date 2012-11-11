@@ -4,10 +4,9 @@
 \alias{summary.ppar}
 \alias{print.ppar}
 \alias{plot.ppar}
+\alias{coef.ppar}
 \alias{logLik.ppar}
 \alias{print.logLik.ppar}
-\alias{IC}
-\alias{IC.ppar}
 \alias{confint.ppar}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Estimation of Person Parameters}
@@ -18,10 +17,10 @@ as AIC, BIC, and cAIC based on unconditional log-likelihood.}
 \method{person.parameter}{eRm}(object)
 \method{summary}{ppar}(object, ...)
 \method{print}{ppar}(x, ...)
-\method{summary}{ppar}(object, ...)
-\method{plot}{ppar}(x, xlab = "Person Raw Scores", ylab = "Person Parameters (Theta)", main = NULL, ...)
+\method{plot}{ppar}(x, xlab = "Person Raw Scores",
+   ylab = "Person Parameters (Theta)", main = NULL, ...)
+\method{coef}{ppar}(object, extrapolated = TRUE, ...)
 \method{logLik}{ppar}(object, ...)
-\method{IC}{ppar}(object)
 \method{confint}{ppar}(object, parm, level = 0.95, ...)
 }
 
@@ -34,6 +33,9 @@ Arguments for \code{print} and \code{plot} methods:
   \item{ylab}{Label of the y-axis.}
   \item{main}{Title of the plot.}
   \item{...}{Further arguments to be passed to or from other methods. They are ignored in this function.}
+
+Arguments for the \code{coef} method:
+  \item{extrapolated}{either returns extrapolated values for raw scores 0 and k or sets them \code{NA}}
 
 Arguments for \code{confint}:
   \item{parm}{Parameter specification (ignored).}
@@ -50,13 +52,22 @@ The function \code{person.parameter} returns an object of class \code{ppar} cont
   \item{thetapar}{Person parameter estimates.}
   \item{se.theta}{Standard errors of the person parameters.}
   \item{hessian}{Hessian matrix.}
+  \item{theta.table}{Matrix with person parameters (ordered according to original data)
+         including NA pattern group.}
+  \item{pers.ex}{Indices with persons excluded due to 0/full raw score}
+  \item{X.ex}{Data matrix with persons excluded}
+  \item{gmemb}{NA group membership vector (0/full persons excluded)}
 
-The function \code{IC} returns an object of class \code{ICr} containing:
-  \item{j.loglik}{Unconditional (joint) log-likelihood value.}
-  \item{AIC}{AIC criterion.}
-  \item{BIC}{BIC criterion.}
-  \item{cAIC}{Consistent AIC criterion.}
+
+The function \code{coef} returns a vector of the person parameter estimates for each person (i.e., the first column
+  of \code{theta.table}).
+
+The function \code{logLik} returns an object of class \code{loglik.ppar} containing:
+  \item{loglik}{Log-likelihood of the collapsed data (see above).}
+  \item{df}{Degrees of freedom.}
+
 }
+
 
 \references{
 Fischer, G. H., and Molenaar, I. (1995). Rasch Models - Foundations,
@@ -72,25 +83,18 @@ Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch model
     \code{\link{itemfit.ppar}},\code{\link{personfit.ppar}}
 }
 \examples{
-
 #Person parameter estimation of a rating scale model
-data(rsmdat)
 res <- RSM(rsmdat)
 pres <- person.parameter(res)
-print(pres)
+pres
 summary(pres)
 plot(pres)
 
 #Person parameter estimation for a Rasch model with missing values
-data(raschdat2)
-res <- RM(raschdat2, se = FALSE)           #Rasch model without standard errors
+res <- RM(raschdat2, se = FALSE) #Rasch model without standard errors
 pres <- person.parameter(res)
-print(pres)                                #person parameters
+pres                             #person parameters
 summary(pres)
-logLik(pres)                               #conditional log-lik value
-
-#Extraction of IC's
-IC(pres)
-
+logLik(pres)                     #log-likelihood of person parameter estimation
 }
 \keyword{models}

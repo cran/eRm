@@ -7,11 +7,25 @@ function(object, splitcr="median")
 #            "mean" corobjectponds to the mean raw score split.
 #            optionally also a vector of length n for group split can be submitted.
 
+call<-match.call()
+
+spl.gr<-NULL
 
 X.original<-object$X
+if (length(splitcr)>1 && is.character(splitcr)){    # if splitcr is character vector, treated as factor
+   splitcr<-as.factor(splitcr)
+}
+if (is.factor(splitcr)){
+   spl.nam<-deparse(substitute(splitcr))
+   spl.lev<-levels(splitcr)
+   spl.gr<-paste(spl.nam,spl.lev,sep=" ")
+   splitcr<-unclass(splitcr)
+}
+
 numsplit<-is.numeric(splitcr)
 if (any(is.na(object$X))) {
   if (!numsplit && splitcr=="mean") {                                   #mean split
+    spl.gr<-c("Raw Scores < Mean", "Raw Scores >= Mean")
     X<-object$X
     # calculates index for NA groups
     # from person.parameter.eRm
@@ -19,7 +33,7 @@ if (any(is.na(object$X))) {
       strdata <- apply(dichX,1,function(x) {paste(x,collapse="")})
       gmemb <- as.vector(data.matrix(data.frame(strdata)))
     gindx<-unique(gmemb)
-    rsum.all<-rowSums(X,na.rm=T)
+    rsum.all<-rowSums(X,na.rm=TRUE)
     grmeans<-tapply(rsum.all,gmemb,mean)      #sorted
     ngr<-table(gmemb)                         #sorted
     m.all<-rep(grmeans,ngr)                   #sorted,expanded
@@ -29,7 +43,9 @@ if (any(is.na(object$X))) {
     object$X<-X[order(gmemb),]
   }
   if (!numsplit && splitcr=="median") {                                   #median split
-    cat("Warning message: Persons with median raw scores are assigned to the lower raw score group!\n")
+    spl.gr<-c("Raw Scores <= Median", "Raw Scores > Median")
+    #removed rh 2010-12-17
+    #cat("Warning message: Persons with median raw scores are assigned to the lower raw score group!\n")
     X<-object$X
     # calculates index for NA groups
     # from person.parameter.eRm
@@ -37,7 +53,7 @@ if (any(is.na(object$X))) {
       strdata <- apply(dichX,1,function(x) {paste(x,collapse="")})
       gmemb <- as.vector(data.matrix(data.frame(strdata)))
     gindx<-unique(gmemb)
-    rsum.all<-rowSums(X,na.rm=T)
+    rsum.all<-rowSums(X,na.rm=TRUE)
     grmed<-tapply(rsum.all,gmemb,median)      #sorted
     ngr<-table(gmemb)                         #sorted
     m.all<-rep(grmed,ngr)                     #sorted,expanded
@@ -50,6 +66,7 @@ if (any(is.na(object$X))) {
 
 
 if (is.numeric(splitcr)){
+  spl.nam<-deparse(substitute(splitcr))
   if (length(table(splitcr)) > 2) stop("Dichotomous person split required!")
   if (length(splitcr) != dim(object$X)[1]) {
     stop("Mismatch between length of split vector and number of persons!")
@@ -57,6 +74,10 @@ if (is.numeric(splitcr)){
     rvind <- splitcr
     Xlist <- by(object$X,rvind, function(x) x)
     names(Xlist) <- as.list(sort(unique(splitcr)))
+    if(is.null(spl.gr)){
+      spl.lev<-names(Xlist)
+      spl.gr<-paste(spl.nam,spl.lev,sep=" ")
+    }
   }}
 
 if (!is.numeric(splitcr)) {
@@ -128,31 +149,7 @@ if (object$model=="RSM") {
                                })
        }
 
-#etapar1 <- unlist(likpar[1,1])
-#se1 <- unlist(likpar[2,1])
-#etapar2 <- unlist(likpar[1,2])
-#se2 <- unlist(likpar[2,2])
-#if (length(etapar1) != length(etapar2)) stop("Wald test cannot be performed since number of response item-categories differ over subgroups! \n")
 
-##if (object$model == "RM") {                #for RM-print, which beta are not fixed
-##  betapar1 <- likpar[5,1][[1]]
-##  betapar2 <- likpar[5,2][[1]]
-##  betalab <- colnames(Xlist.n[[1]])        #corresponding item labels
-##  hes1 <- likpar[3,1][[1]]                 #Hessian matrices
-##  hes2 <- likpar[3,2][[1]]
-##  W1 <- likpar[4,1][[1]]                   #design matrixces
-##  W2 <- likpar[4,2][[1]]
-##  beta1.se <- sqrt(diag(W1%*%solve(hes1)%*%t(W1))) #standard errors for beta1
-##  beta2.se <- sqrt(diag(W2%*%solve(hes2)%*%t(W2))) #standard errors for beta2
-##} else {
-##  betalab <- NULL
-##  betapar1 <- NULL
-##  betapar2 <- NULL
-##  beta1.se <- NULL
-##  beta2.se <- NULL
-##}
-
-#if (!is.null(betalab)) betalab1 <- betalab[-1]
 betapar1 <- likpar[3,][[1]]
 beta1.se <- likpar[4,][[1]]
 betapar2 <- likpar[3,][[2]]
@@ -166,7 +163,7 @@ coef.table <- cbind(W.i,pvalues)
 dimnames(coef.table) <- list(names(betapar1),c("z-statistic","p-value"))
 
 result <- list(coef.table=coef.table,betapar1=betapar1,se.beta1=beta1.se,betapar2=betapar2,
-se.beta2=beta2.se)
+se.beta2=beta2.se, spl.gr=spl.gr, call=call, it.ex = del.pos)
 class(result) <- "wald"
 result
 }

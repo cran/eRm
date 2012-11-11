@@ -6,4 +6,5 @@ print.threshold <- function(x,...)
       print(round(x$threshtable[[i]],5))
       cat("\n")
     }
+    invisible(x$threshtable)
 }

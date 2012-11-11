@@ -31,7 +31,7 @@ RSM(X, W, se = TRUE, sum0 = TRUE, etaStart)
   \item{iter}{Number of iterations.}
   \item{npar}{Number of parameters.}
   \item{convergence}{See \code{code} output in \code{\link{nlm}}.}
-  \item{etapar}{Estimated basic item parameters (item and category parameters).}
+  \item{etapar}{Estimated basic item difficulty parameters (item and category parameters).}
   \item{se.eta}{Standard errors of the estimated basic item parameters.}
   \item{betapar}{Estimated item-category (easiness) parameters.}
   \item{se.beta}{Standard errors of item parameters.}
@@ -55,13 +55,10 @@ Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch model
 \seealso{\code{\link{RM}},\code{\link{PCM}},\code{\link{LRtest}}
 }
 \examples{
-
 ##RSM with 10 subjects, 3 items
-data(rsmdat)
 res <- RSM(rsmdat)
 res
 summary(res)                            #eta and beta parameters with CI
 thresholds(res)                         #threshold parameters
 }
-
 \keyword{models}

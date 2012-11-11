@@ -9,6 +9,39 @@ if (is.null(colnames(W))) {                             #eta labels
     names(etapar) <- colnames(W)
   }
 
+if(model=="RM"){                                                              #  new labelling of
+    if (!is.null(colnames(X)))                                                #  eta parameters for
+       names(etapar) <- colnames(X)[2:ncol(X)]                                #  RM, RSM, PCM
+    else                                                                      #  rh, 25-03-2010
+       names(etapar) <- paste("I",2:ncol(X),sep="")                           #
+}                                                                             #  gives estimated
+                                                                              #  item (RM)
+if(model=="RSM"){                                                             #  item + category (RSM)
+    if (!is.null(colnames(X))) {                                              #  item x category (PCM)
+       names(etapar)[1:(ncol(X)-1)] <- colnames(X)[2:ncol(X)]                 #  parameters
+    } else {                                                                  #
+       names(etapar[1:(ncol(X)-1)]) <- paste("I",2:ncol(X),sep="")            #
+    }                                                                         #
+    maxcat <- max(X,na.rm=TRUE)                                               #
+    if (maxcat>1)                                                             #
+       names(etapar)[ncol(X):length(etapar)] <- paste("Cat ",2:maxcat,sep="") #
+}                                                                             #
+                                                                              #
+                                                                              #
+if(model=="PCM"){                                                             #
+    indmt <- apply(X,2,max,na.rm=TRUE)   # number of categories               #
+    catnames <- sequence(indmt)                                               #
+                                                                              #
+    if (!is.null(colnames(X))) {                                              #
+       itnames <- colnames(X)                                                 #
+    } else {                                                                  #
+       itnames <- paste("I",1:ncol(X),sep="")                                 #
+    }                                                                         #
+    etanames <- rep(itnames, indmt)                                           #
+    etanames <- paste(etanames[-1],catnames[-1],sep=".c")                     #
+    names(etapar) <- etanames                                                 #
+}                                                                             #
+
 if (mpoints == 1) {                                     #no mpoints labels
   if ((model=="RM") || (model=="LLTM")) {               #no category labels
     betanames <- paste("beta",colnames(X))
@@ -28,15 +61,15 @@ if (mpoints == 1) {                                     #no mpoints labels
   } else {
     itemind <- colnames(X)
   }
-  
-  itnames <- rep(itemind,indmt0) 
-  
+
+  itnames <- rep(itemind,indmt0)
+
   if (ngroups > 1) {
     ind.it <- rep(1:mpoints,each = length(itnames)/mpoints)           #item label index
-    itnames <- as.vector(unlist(tapply(itnames, ind.it, function(x) rep(x, ngroups)))) 
+    itnames <- as.vector(unlist(tapply(itnames, ind.it, function(x) rep(x, ngroups))))
   }
-    
-  
+
+
   if (model == "LLTM") {
     icnames <- rep(itnames,(dim(W)[1]/length(itnames)))
   } else {

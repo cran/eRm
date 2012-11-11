@@ -7,12 +7,12 @@ summary.LR <- function(object,...)
   cat("Chi-square df:",object$df,"\n")
   cat("p-value: ",round(object$pvalue,3),"\n")
   cat("\n")
-  
-  mt_vek <- apply(object$X,2,max,na.rm=TRUE) 
-  
+
+  mt_vek <- apply(object$X,2,max,na.rm=TRUE)
+
   for (i in 1:length(object$betalist)) {
     cat("\n")
-    cat("Subject subgroup ",i,":",sep="")
+    cat("Subject Subgroup: ",object$spl.gr[i],":",sep="")
     cat("\n")
     cat("Log-likelihood: ",object$likgroup[i])
     cat("\n\n")
@@ -29,4 +29,4 @@ summary.LR <- function(object,...)
   }
 }
 
-    
+

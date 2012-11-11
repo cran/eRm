@@ -7,7 +7,8 @@
   for polytomuous item responses by using CML estimation.
 }
 \usage{
-LRSM(X, W , mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE, etaStart)
+LRSM(X, W , mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE,
+   etaStart)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -32,7 +33,8 @@ LRSM(X, W , mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE, etaStart)
   specify \code{mpoints} and \code{groupvec}. It is important that first the time contrasts and
   then the group contrasts have to be imposed.
 
-  Available methods for LRSM-objects are \code{print}, \code{coef},
+  Available methods for LRSM-objects are:
+  \code{print}, \code{coef},
   \code{model.matrix}, \code{vcov},\code{summary}, \code{logLik}, \code{person.parameters}.
 }
 \value{
@@ -65,14 +67,11 @@ Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch model
 %\note{}
 \seealso{\code{\link{LLTM}},\code{\link{LPCM}}}
 \examples{
-
 #LRSM for two measurement points
-#20 subjects, 2*3 items, W generated automatically, first parameter set to 0,
-#no standard errors computed.
+#20 subjects, 2*3 items, W generated automatically,
+#first parameter set to 0, no standard errors computed.
 
-data(lrsmdat)
 res <- LRSM(lrsmdat, mpoints = 2, groupvec = 1, sum0 = FALSE, se = FALSE)
-print(res)
+res
 }
-
 \keyword{models}

@@ -41,6 +41,8 @@ W <- labs$W
 etapar <- labs$etapar
 betapar <- labs$betapar
 
+etapar <- -etapar          # output difficulty  rh 25-03-2010
+
 npar <- dim(lres$W)[2]                            #number of parameters
 
 result <- list(X=X,X01=X01,model=model,loglik=loglik,npar=npar,iter=iter,convergence=convergence,

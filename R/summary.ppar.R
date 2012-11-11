@@ -23,7 +23,7 @@ function(object,...)
     cat("\n\n")
     if (length(object$thetapar) > 1) {
       cat("Subject NA Group:",i,"\n")
-      xvec <- object$X[gmemb==i,][1,]                    #determine NA pattern
+      xvec <- rbind(object$X[gmemb==i,])[1,]                    #determine NA pattern
       xvec[!is.na(xvec)] <- "x"
       cat("NA pattern:",xvec,"\n")
       }

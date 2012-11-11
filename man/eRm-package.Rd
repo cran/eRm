@@ -12,16 +12,17 @@ the rating scale model (RSM) and its linear extension (LRSM), the partial credit
 and its linear extension (LPCM). The parameters are estimated by conditional maximum
 likelihood (CML). Missing values are allowed in the data matrix. Additional features
 are the estimation of the person parameters, LR-Model test, item-spefific Wald test,
+Martin-Loef test, nonparametric Monte-Carlo tests,
 itemfit and personfit statistics, various ICC plots. An eRm platform is provided at
 http://r-forge.r-project.org/projects/erm/.
 }
 \details{
 \tabular{ll}{
 Package: \tab eRm\cr
-Type: \tab Package\cr
-Version: \tab 0.9-5\cr
-Date: \tab 2007-10-22\cr
-License: \tab GPL\cr
+Type:    \tab Package\cr
+Version: \tab 0.15-1\cr
+Date:    \tab 2012-11-11\cr
+License: \tab GPL-2\cr
 }
 The basic input units for the functions are the person-item matrix X and the design matrix W.
 Missing values in X are coded with \code{NA}.
@@ -29,20 +30,40 @@ By default, W is generated automatically, but it can be specified by the user as
 The function call of the basic models can be achieved through \code{RM(X, W)},
 \code{RSM(X, W)}, and \code{PCM(X, W)}.
 
-The linear extensions provide the possibility to fit a more restricted model than its basic complement, but
+The linear extensions provide the possibility to fit a more restricted model than its basic complement,
+such as \code{LLTM(X, W)}, \code{LRSM(X, W)},\code{LPCM(X, W)}, but
 also a generalization by imposing repeated measurement designs and group contrasts. These models can
-be estimated by using, e.g., the call \code{LLTM(X, W, mpoints = 2, groupvec = G)}, \code{LRSM(X, W, mpoints = 2, groupvec = G)}, and
-\code{LPCM(X, W, mpoints = 2, groupvec = G)}. \code{G} is a vector with the group membership for each subject
-ordered according to the rows of the data matrix.
+be estimated by using, e.g.,
+\code{LLTM(X, W, mpoints = 2, groupvec = g)},\cr
+\code{LRSM(X, W, mpoints = 2, groupvec = g)},\cr
+\code{LPCM(X, W, mpoints = 2, groupvec = g)},\cr
+and as very flexible multidimensional model for repeated measurements
+\code{LLRA(X, W, mpoints = 2, groups = G)},\cr
+\code{mpoints} specifies the number of measurement or time points,
+\code{g} is a vector with the group membership for each subject,
+ordered according to the rows of the data matrix, and
+\code{G} is a matrix with subject covariates (e.g., treatments),
 
-\code{RM} produces an object belonging to the classes \code{dRM}, \code{RM}, and
+\code{RM} produces an object belonging to the classes \code{dRm}, \code{Rm}, and
 \code{eRm}. \code{PCM} and \code{RSM} produce objects belonging to the classes
-\code{RM} and \code{eRm}, whereas results of \code{LLTM}, \code{LRSM}, and \code{LLTM} are object of class \code{eRm}.
+\code{Rm} and \code{eRm}, whereas results of \code{LLTM}, \code{LRSM}, \code{LLTM}
+and \code{LLRA} are objects of class \code{eRm}. For a detailled overview of all
+classes defined in the package and the functions depending on them see the package's vignette.
 
+We acknowledge Julian Gilbey for writing the \code{plotPWmap} function, Kathrin Gruber
+for the function \code{plotDIF}, and Thomas Rusch for \code{LLRA}, related utilities and
+functionality to calculate and plot item and test information.
+The \code{eRm} package contains functions from the packages \code{sna}, \code{gtools} and \code{ROCR}.
+Thanks to Carter T. Butts, Gregory R. Warnes, and Tobias Sing et al.
 }
-\author{Patrick Mair, Reinhold Hatzinger
+\note{The fitting engine by default is \code{\link{nlm}} unless changed to \code{\link{optim}}.
+      For specification of the optimizer the global variable \code{fitctrl} has to be used, i.e.,
+      \code{fitctrl <- "nlm"} or \code{fitctrl <- "optim"}.}
 
-Maintainer: Patrick Mair <patrick.mair@wu-wien.ac.at>
+
+\author{Patrick Mair, Reinhold Hatzinger, Marco Maier, and others
+
+Maintainer: Patrick Mair <patrick.mair@wu.ac.at>
 }
 \references{
 Fischer, G. H., and Molenaar, I. (1995). Rasch Models - Foundations,

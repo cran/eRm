@@ -17,12 +17,12 @@ pifit.internal <- function(object)
   if ((object$model == "RM") || (object$model == "LLTM")) { 
     Emat <- Emat.cat
   } else {
-    E.list <- tapply(1:length(mt_ind),mt_ind, function(ind) {rowSums(Emat.cat[,ind],na.rm=TRUE)})
+    E.list <- tapply(1:length(mt_ind),mt_ind, function(ind) {rowSums(cbind(Emat.cat[,ind]),na.rm=TRUE)})
     Emat <- matrix(unlist(E.list),ncol=dim(X)[2],dimnames=list(rownames(pmat),colnames(X)))
   } 
   #------------------------variance term for standardized residuals------
   pmat.l0 <- tapply(1:length(mt_ind),mt_ind, function(ind) {
-                            vec0 <- 1-rowSums(as.matrix(pmat[,ind]),na.rm=TRUE)     #prob for 0th category
+                            vec0 <- 1-rowSums(as.matrix(pmat[,ind]))     #prob for 0th category
                             cbind(vec0,pmat[,ind])
                             })
   pmat0 <- matrix(unlist(pmat.l0),nrow=length(gmemb))   #prob matrix 0th category included
@@ -35,6 +35,11 @@ pifit.internal <- function(object)
   V.list <- tapply(1:length(mt_ind0),mt_ind0, function(ind) {rowSums(Vmat.cat[,ind],na.rm=TRUE)})
   Vmat <- matrix(unlist(V.list),ncol=dim(X)[2],dimnames=list(rownames(pmat),colnames(X)))
 
-  result <- list(Emat=Emat,Vmat=Vmat)
+  #------------------------kurtosis term for standardized residuals------
+  Cmat.cat <- (Emat0)^4*pmat0
+  C.list <- tapply(1:length(mt_ind0),mt_ind0, function(ind) {rowSums(Cmat.cat[,ind],na.rm=TRUE)})
+  Cmat <- matrix(unlist(C.list),ncol=dim(X)[2],dimnames=list(rownames(pmat),colnames(X)))
+
+  result <- list(Emat=Emat,Vmat=Vmat,Cmat=Cmat)
 
 }

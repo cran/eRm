@@ -1,4 +1,4 @@
-confint.eRm <- function(object, parm, level = 0.95, ...)
+confint.eRm <- function(object, parm="beta", level = 0.95, ...)
 {
 #parm...either "beta" or "eta"
 #object of class "eRm"

@@ -20,7 +20,8 @@ PCM(X, W, se = TRUE, sum0 = TRUE, etaStart)
 \details{
   Through specification in W, the parameters of the categories with 0 responses
   are set to 0 as well as the first category of the first item. Available methods
-  for PCM-objects are \code{print}, \code{coef}, \code{model.matrix},
+  for PCM-objects are:\cr
+  \code{print}, \code{coef}, \code{model.matrix},
   \code{vcov}, \code{plot}, \code{summary}, \code{logLik}, \code{person.parameters},
   \code{plotICC}, \code{LRtest}.
 }
@@ -31,7 +32,7 @@ PCM(X, W, se = TRUE, sum0 = TRUE, etaStart)
   \item{iter}{Number of iterations.}
   \item{npar}{Number of parameters.}
   \item{convergence}{See \code{code} output in \code{\link{nlm}}.}
-  \item{etapar}{Estimated basic item parameters.}
+  \item{etapar}{Estimated basic item difficulty parameters.}
   \item{se.eta}{Standard errors of the estimated basic item parameters.}
   \item{betapar}{Estimated item-category (easiness) parameters.}
   \item{se.beta}{Standard errors of item parameters.}
@@ -56,7 +57,6 @@ Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch model
 \examples{
 
 ##PCM with 10 subjects, 3 items
-data(pcmdat)
 res <- PCM(pcmdat)
 res
 summary(res)                #eta and beta parameters with CI

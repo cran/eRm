@@ -16,7 +16,7 @@
   \item{splitcr}{Split criterion for subject raw score splitting. \code{median}
   uses the median as split criterion, \code{mean} performs a mean-split.
   Optionally \code{splitcr} can also be a dichotomous vector which assigns each person to a
-  certain subgroup (e.g., following an external criterion). }
+  certain subgroup (e.g., following an external criterion). This vector can be numeric, character or a factor. }
   \item{x}{Object of class \code{wald}.}
   \item{...}{Further arguments passed to or from other methods. They are ignored in this function.}
 }
@@ -31,6 +31,9 @@ Returns an object of class \code{wald} containing:
   \item{se.beta1}{Standard errors for first subgroup}
   \item{betapar2}{Beta parameters for second subgroup}
   \item{se.beta2}{Standard errors for second subgroup}
+  \item{se.beta2}{Standard errors for second subgroup}
+  \item{spl.gr}{Names and levels for \code{splitcr}.}
+  \item{call}{The matched call.}
 }
 \references{
 Fischer, G. H., and Molenaar, I. (1995). Rasch Models - Foundations,
@@ -42,20 +45,15 @@ probabilistic test model]. Psychologische Beitraege, 12, 23-51.
 }
 \author{Patrick Mair, Reinhold Hatzinger}
 %\note{}
-\seealso{\code{\link{LRtest}}}
+\seealso{\code{\link{LRtest}}, \code{\link{MLoef}}}
 \examples{
-
 #Wald test for Rasch model with user-defined subject split
-data(raschdat2)
 res <- RM(raschdat2)
 splitvec <- sample(1:2,25,replace=TRUE)
 Waldtest(res, splitcr = splitvec)
 
 #Wald test for RSM eliminates 4 items (with median split)
-data(rsmdat)
 res <- RSM(rsmdat)
 Waldtest(res)
-
 }
-
 \keyword{models}

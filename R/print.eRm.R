@@ -9,7 +9,14 @@ function(x,...)  {                                         #print method for all
   cat("Number of iterations:", x$iter, "\n")
   cat("Number of parameters:", x$npar, "\n")
   cat("\n")
-  cat("Basic Parameters eta:")                             #eta parameters
+  if (x$model %in% c("RM","RSM","PCM"))                    #eta parameters
+    if(is.null(x$call$W)){                                 # labelling based on whether W was specified mm 2012-05-02
+      cat("Item (Category) Difficulty Parameters (eta):")  # new labelling rh 25-03-2010
+    } else {
+      cat("Item (Category) Parameters (eta):\nBased on design matrix W =", deparse(x$call$W))
+    }
+  else                                                     # now difficulty for RM, RSM, PCM
+      cat("Basic Parameters eta:")
   cat("\n")
   etapar <- x$etapar
   #nameeta <- paste("eta",1:dim(x$W)[2])
@@ -19,5 +26,6 @@ function(x,...)  {                                         #print method for all
   rownames(result) <- c("Estimate", "Std.Err")
   print(result)
   cat("\n\n")
+  invisible(result)
 }
 

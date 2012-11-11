@@ -1,0 +1,34 @@
+\name{llradat3}
+\alias{llradat3}
+\docType{data}
+\title{An Artifical LLRA Data Set
+}
+\description{
+Artificial data set of 3 items, 2 time points and 2 groups for LLRA. It
+is example 6 from Hatzinger and Rusch (2009).
+}
+\usage{llradat3}
+\format{
+  A data frame with 60 observations of 6 variables.
+ \itemize{
+ \item{V1}{ Answers to item 1 at time point 1}
+ \item{V2}{ Answers to item 2 at time point 1}
+ \item{V3}{ Answers to item 3 at time point 1}
+ \item{V4}{ Answers to item 1 at time point 2}
+ \item{V5}{ Answers to item 2 at time point 2}
+ \item{V6}{ Answers to item 3 at time point 2}
+}
+}
+\details{
+This is a data set as described in Hatzinger and Rusch (2009).
+}
+\references{
+Hatzinger, R. and Rusch, T. (2009) IRT models with relaxed assumptions
+in eRm: A manual-like instruction. \emph{Psychology Science Quarterly}, \bold{51},
+pp. 87--120,
+\url{http://erm.r-forge.r-project.org/psq_1_2009_06_87-120.pdf}
+}
+\examples{
+llradat3
+}
+\keyword{datasets}

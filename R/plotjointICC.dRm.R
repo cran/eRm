@@ -1,6 +1,8 @@
 `plotjointICC.dRm` <-
 function(object, item.subset = "all", legend=TRUE, xlim=c(-4,4),ylim=c(0,1),
-         xlab="Latent Dimension",ylab="Probability to Solve",lty=1,legpos="left",...)
+         xlab="Latent Dimension",ylab="Probability to Solve",lty=1,legpos="topleft",
+         main="ICC plot",col=NULL,...)
+
 
 #produces one common ICC plot for Rasch models only
 #object of class "dRm"
@@ -13,7 +15,7 @@ function(object, item.subset = "all", legend=TRUE, xlim=c(-4,4),ylim=c(0,1),
   if (any(item.subset=="all")) {
     it.legend <- 1:dim(object$X)[2]
   } else {
-    if (is.character(item.subset)) { 
+    if (is.character(item.subset)) {
       it.legend <- item.subset
       betatemp <- t(as.matrix(object$betapar))
       colnames(betatemp) <- colnames(object$X)
@@ -22,7 +24,7 @@ function(object, item.subset = "all", legend=TRUE, xlim=c(-4,4),ylim=c(0,1),
       it.legend <- colnames(object$X)[item.subset]
       object$betapar <- object$betapar[item.subset]
     }
-    object$X <- object$X[,item.subset]                            #pick out items defined in itemvec 
+    object$X <- object$X[,item.subset]                            #pick out items defined in itemvec
   }
 
 
@@ -32,15 +34,25 @@ function(object, item.subset = "all", legend=TRUE, xlim=c(-4,4),ylim=c(0,1),
   p.list <- lapply(p.list,function(x) {x[,-1]})               #Delete 0-probabilites
   p.mat <- matrix(unlist(p.list),ncol=length(p.list))
   text.ylab <- p.mat[(1:length(theta))[theta==median(theta)],]
-  
-  get(getOption("device"))()
 
-  matplot(sort(theta),p.mat[th.ord,],type="l",lty=lty,col=1:(dim(p.mat)[2]),
-          main=("ICC plot"),xlim=xlim,ylim=ylim,xlab=xlab,ylab=ylab,...)
-  if (!legend) {
-    text(x=median(theta),y=text.ylab,labels=paste("I",1:(dim(p.mat)[2]),sep=""),col=1:(dim(p.mat)[2]))
-  } else {
-    legend(legpos,legend=paste("Item",it.legend),col=1:(dim(p.mat)[2]),lty=lty,...)
+  #dev.new()
+
+  if(is.null(main)) main=""
+  if(is.null(col)) col=1:(dim(p.mat)[2])
+  #pmICCs<-cbind(sort(theta),p.mat[th.ord,])
+  matplot(sort(theta),p.mat[th.ord,],type="l",lty=lty,col=col,
+          main=main,xlim=xlim,ylim=ylim,xlab=xlab,ylab=ylab,...)
+  if(length(object$betapar)>20) op<-par(cex=0.7) else op<-par(cex=1)
+  if (is.character(legpos)){
+     if (!legend) {
+         sq<-seq(0.65,0.35,length.out=length(object$betapar))
+         x<-qlogis(sq,sort(-object$betapar))
+         text(x=x,y=sq,labels=it.legend[order(-object$betapar)],col=col[order(-object$betapar)],...)
+         par(op)
+     } else {
+         legend(legpos,legend=paste("Item",it.legend[order(-object$betapar)]),lty=lty, col=col[order(-object$betapar)],...)
+         par(op)
+     }
   }
 }
 

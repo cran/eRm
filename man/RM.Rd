@@ -18,9 +18,10 @@ RM(X, W, se = TRUE, sum0 = TRUE, etaStart)
 }
 \details{
   For estimating the item parameters the CML method is used.
-  Available methods for RM-objects are \code{print}, \code{coef}, \code{model.matrix},
-  \code{vcov}, \code{summary}, \code{logLik}, \code{person.parameters}, \code{plotICC}, \code{plotjointICC},
-  \code{LRtest}, \code{Waldtest}.
+  Available methods for RM-objects are:\cr
+  \code{print}, \code{coef}, \code{model.matrix},
+  \code{vcov}, \code{summary}, \code{logLik}, \code{person.parameter}, \code{LRtest},
+  \code{Waldtest}, \code{plotICC}, \code{plotjointICC}.
 }
 \value{
   Returns an object of class \code{dRm, Rm, eRm} and contains the log-likelihood value, the parameter estimates and their standard errors.
@@ -29,7 +30,7 @@ RM(X, W, se = TRUE, sum0 = TRUE, etaStart)
   \item{iter}{Number of iterations.}
   \item{npar}{Number of parameters.}
   \item{convergence}{See \code{code} output in \code{\link{nlm}}.}
-  \item{etapar}{Estimated basic item parameters.}
+  \item{etapar}{Estimated basic item difficulty parameters.}
   \item{se.eta}{Standard errors of the estimated basic item parameters.}
   \item{betapar}{Estimated item (easiness) parameters.}
   \item{se.beta}{Standard errors of item parameters.}
@@ -53,26 +54,21 @@ Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch model
 \seealso{\code{\link{RSM}},\code{\link{PCM}}, \code{\link{LRtest}}, \code{\link{Waldtest}}
 }
 \examples{
-
 # Rasch model with beta.1 restricted to 0
-data(raschdat1)
 res <- RM(raschdat1, sum0 = FALSE)
-print(res)
+res
 summary(res)
 res$W                                       #generated design matrix
 
 # Rasch model with sum-0 beta restriction; no standard errors computed
 res <- RM(raschdat1, se = FALSE, sum0 = TRUE)
-print(res)
+res
 summary(res)
 res$W                                       #generated design matrix
 
 #Rasch model with missing values
-data(raschdat2)
 res <- RM(raschdat2)
-print(res)
+res
 summary(res)
-
 }
-
 \keyword{models}

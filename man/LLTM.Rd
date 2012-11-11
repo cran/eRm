@@ -6,7 +6,8 @@
   for binary item responses by using CML estimation.
 }
 \usage{
-LLTM(X, W, mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE, etaStart)
+LLTM(X, W, mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE,
+   etaStart)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -33,7 +34,8 @@ LLTM(X, W, mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE, etaStart)
   specify \code{mpoints} and \code{groupvec}. It is important that first the time contrasts and
   then the group contrasts have to be imposed.
 
-  Available methods for LLTM-objects are \code{print}, \code{coef},
+  Available methods for LLTM-objects are:\cr
+   \code{print}, \code{coef},
   \code{model.matrix}, \code{vcov},\code{summary}, \code{logLik}, \code{person.parameters}.
 }
 \value{
@@ -68,21 +70,16 @@ with the eRm package in R. Psychology Science, 49, 26-43.
 %\note{}
 \seealso{\code{\link{LRSM}},\code{\link{LPCM}}}
 \examples{
-
 #LLTM for 2 measurement points
 #100 persons, 2*15 items, W generated automatically
-data(lltmdat1)
 res1 <- LLTM(lltmdat1, mpoints = 2)
-print(res1)
+res1
 summary(res1)
 
 #Reparameterized Rasch model as LLTM (more pasimonious)
-data(lltmdat2)
 W <- matrix(c(1,2,1,3,2,2,2,1,1,1),ncol=2)              #design matrix
 res2 <- LLTM(lltmdat2, W = W)
-print(res2)
+res2
 summary(res2)
-
 }
-
 \keyword{models}

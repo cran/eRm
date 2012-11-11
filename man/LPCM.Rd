@@ -7,7 +7,8 @@
   for polytomuous item responses by using CML estimation.
 }
 \usage{
-LPCM(X, W , mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE, etaStart)
+LPCM(X, W , mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE,
+   etaStart)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -33,7 +34,8 @@ LPCM(X, W , mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE, etaStart)
   specify \code{mpoints} and \code{groupvec}. It is important that first the time contrasts and
   then the group contrasts have to be imposed.
 
-  Available methods for LPCM-objects are \code{print}, \code{coef},
+  Available methods for LPCM-objects are:\cr
+  \code{print}, \code{coef},
   \code{model.matrix}, \code{vcov},\code{summary}, \code{logLik}, \code{person.parameters}.
 }
 \value{
@@ -66,14 +68,11 @@ Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch model
 %\note{}
 \seealso{\code{\link{LRSM}},\code{\link{LLTM}}}
 \examples{
-
 #LPCM for two measurement points and two subject groups
 #20 subjects, 2*3 items
-data(lpcmdat)
 G <- c(rep(1,10),rep(2,10))                   #group vector
 res <- LPCM(lpcmdat, mpoints = 2, groupvec = G)
-print(res)
+res
 summary(res)
 }
-
 \keyword{models}

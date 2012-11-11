@@ -8,5 +8,6 @@ function(x,...)
    cat("\nWald test on item level (z-values):\n\n")
    print(round(x$coef.table,3))
    cat("\n")
+   invisible(round(x$coef.table,3))
 }
 

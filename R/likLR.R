@@ -28,7 +28,7 @@ if ((dim(Xprep$W)[1]) != ((dim(Xprep$X01)[2])*ng)) stop("Mismatch between number
 Lprep <- cmlprep(Xprep$X01,Xprep$mt_vek,mpoints,Groups,Xprep$W,gmemb)                   
 parest <- fitcml(Lprep$mt_ind,Lprep$nrlist,Lprep$x_mt,Lprep$rtot,Xprep$W,
                  max(Groups),gind=Lprep$gind,x_mtlist=Lprep$x_mtlist,
-                 Lprep$NAstruc,g_NA=Lprep$g_NA,st.err,etaStart)      
+                 Lprep$NAstruc,g_NA=Lprep$g_NA,st.err,etaStart,gby=Lprep$gby)      
 
 W1 <- Xprep$W
 #rownames(W1) <- NULL
