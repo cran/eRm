@@ -26,9 +26,9 @@ NPtest<-function(obj, n=NULL, method="T1", ...){
    if(!exists("burn_in")) burn_in <- 256
    if(!("step" %in% nn)) step<-32
    if(!exists("seed")) seed<-0
-   if (is.null(n)) n <- 500
+   if(is.null(n)) n <- 500
 
-   if (is.matrix(obj) || is.data.frame(obj)){ # input is datamatrix -  RaschSampler object is generated
+   if(is.matrix(obj) || is.data.frame(obj)){ # input is datamatrix -  RaschSampler object is generated
       if (!all(obj %in% 0:1)) stop("Data matrix must be binary, NAs not allowed")
       itscor<-colSums(obj) # rh 2011-03-03
       itcol<-(itscor==0|itscor==nrow(obj))
@@ -41,26 +41,27 @@ NPtest<-function(obj, n=NULL, method="T1", ...){
       obj<-rsampler(obj,rsctrl(burn_in=burn_in, n_eff=n, step=step, seed=seed))
 #browser()
 
-   } else if(class(obj)!="RSmpl")
+   } else if(class(obj)!="RSmpl"){
         stop("Input object must be data matrix/data frame or output from RaschSampler")
+   }
 
    if(exists("RSinfo")) if(get("RSinfo")) summary(obj)
 
-   switch(method,
-         "T1"=T1(obj, ...),
-         "T1l"=T1l(obj, ...),
-         "T1m"=T1m(obj, ...),
-         "Tmd"=Tmd(obj, ...),
-         "T2"=T2(obj, ...),
-         "T2m"=T2m(obj, ...),
-         "T4"=T4(obj, ...),
-#         "T7"=T7(obj, ...),
-#         "T7a"=T7a(obj, ...),
-         "T10"=T10(obj, ...),
-         "T11"=T11(obj, ...),
-         "Tpbis"=Tpbis(obj, ...),
-         "MLoef"=MLoef.x(obj, ...)
-   )
+  switch(method,
+    "T1"    = T1(obj, ...),
+    "T1l"   = T1l(obj, ...),
+    "T1m"   = T1m(obj, ...),
+    "Tmd"   = Tmd(obj, ...),
+    "T2"    = T2(obj, ...),
+    "T2m"   = T2m(obj, ...),
+    "T4"    = T4(obj, ...),
+#    "T7"    = T7(obj, ...),
+#    "T7a"   = T7a(obj, ...),
+    "T10"   = T10(obj, ...),
+    "T11"   = T11(obj, ...),
+    "Tpbis" = Tpbis(obj, ...),
+    "MLoef" = MLoef.x(obj, ...)
+  )
 }
 
 MLoef.x<-function(rsobj, splitcr=NULL, ...){
@@ -87,38 +88,44 @@ MLoef.x<-function(rsobj, splitcr=NULL, ...){
      class(result)<-"MLobj"
      result
 }
-Tpbis<-function(rsobj, idxt=NULL, idxs=NULL, ...){
-     Tpbis.stat<-function(x){
-        rb<-rowSums(x[,idxs, drop=FALSE])
-        t<-x[,idxt]
-        r<-unlist(tapply(rb,t,sum))
-        n1<-sum(t)
-        corr<-n1*r[2]+(nrow(x)-n1)*r[1]
-        corr
-     }
 
-     if(is.null(idxs))
-         stop("No item(s) for subscale  specified (use idxs!)")
-     if(is.null(idxt))
-         stop("No test item for testing against subscale specified (use idx!)")
-     li1<-length(idxt)
-     li2<-length(idxs)
-     k<-rsobj$k
-     if(li1>1 ||li2>=k || li1+li2>k || any(idxt %in% idxs) || any(c(idxt,idxs)>k))
-         stop("Subscale and/or test item incorrectly specified.")
+Tpbis <- function(rsobj, idxt=NULL, idxs=NULL, ...){ # fixed 2013-08-09
+  Tpbis.stat <- function(x){
+    rb <- rowSums(x[, idxs, drop = FALSE])     # all raw scores
+    t  <- x[, idxt]                            # dichotomous item
+    r  <- tapply(rb, t, sum, simplify = FALSE) # raw scores by item; simplify = FALSE to be on the safe side
+    n1 <- sum(t)                               # n_1 = sum of raw scores with t == 1
+    n0 <- sum(1 - t)                           # n_0 = sum of raw scores with t == 0
+    return(n0 * r[[2L]][1L] - n1*r[[1L]][1L])  # n_0 * sum(r_1) - n_1 * sum(r_0)
+  }
 
-     n_eff<-rsobj$n_eff                         # number of simulated matrices
-     n_tot<-rsobj$n_tot                         # number of simulated matrices
+  if(is.null(idxs)) stop("No item(s) for subscale  specified (use idxs!)")
+  if(is.null(idxt)) stop("No test item for testing against subscale specified (use idx!)")
+  li1 <- length(idxt)
+  li2 <- length(idxs)
+  k   <- rsobj$k
+  if(li1 > 1L ||li2 >= k || (li1 + li2) > k || any(idxt %in% idxs) || any(c(idxt,idxs) > k)){
+    stop("Subscale and/or test item incorrectly specified.")
+  }
 
-     res<-rstats(rsobj,Tpbis.stat)               # calculates statistic for each matrix
-     corrvec<-do.call(cbind, lapply(res,as.vector)) # converts result list to matrix
+  n_eff <- rsobj$n_eff                   # number of simulated matrices
+  n_tot <- rsobj$n_tot                   # number of simulated matrices
 
-     prop<-sum(corrvec[2:(n_tot)]<=corrvec[1])/n_eff
+  res     <- rstats(rsobj, Tpbis.stat)              # calculates statistic for each matrix
+  corrvec <- do.call(cbind, lapply(res, as.vector)) # converts result list to matrix
 
-     result<-list(n_eff=n_eff, prop=prop, idxt=idxt, idxs=idxs, Tpbisvec=corrvec)   # Tpbisobj
-     class(result)<-"Tpbisobj"
-     result
+  prop <- sum(corrvec[2L:(n_tot)] <= corrvec[1L]) / n_eff   # T(A_s) >= T(A_0)
+
+  # Tpbisobj
+  result <- list("n_eff"    = n_eff,
+                 "prop"     = prop,
+                 "idxt"     = idxt,
+                 "idxs"     = idxs,
+                 "Tpbisvec" = corrvec)
+  class(result)<-"Tpbisobj"
+  return(result)
 }
+
 Tmd<-function(rsobj, idx1=NULL, idx2=NULL, ...){
      Tmd.stat<-function(x){
         r1<-rowSums(x[,idx1, drop=FALSE])

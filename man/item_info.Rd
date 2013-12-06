@@ -8,9 +8,9 @@
 Calculates Samejima's (1969) information for all items
 }
 \usage{
-item_info(ermobject, theta=seq(-5,5,0.01))
+item_info(ermobject, theta = seq(-5, 5, 0.01))
 
-i_info(hvec,itembeta,theta=seq(-5,5,0.01))
+i_info(hvec, itembeta, theta)
 }
 \arguments{
   \item{ermobject}{An object of class 'eRm'.

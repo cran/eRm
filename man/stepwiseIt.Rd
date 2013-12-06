@@ -9,7 +9,8 @@
 criteria: itemfit, Wald test, Andersen's LR-test
 }
 \usage{
-\method{stepwiseIt}{eRm}(object, criterion = list("itemfit"), alpha = 0.05, verbose = TRUE, maxstep = NA)
+\method{stepwiseIt}{eRm}(object, criterion = list("itemfit"), alpha = 0.05,
+           verbose = TRUE, maxstep = NA)
 }
 
 \arguments{

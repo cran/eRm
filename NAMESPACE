@@ -1,6 +1,6 @@
 useDynLib("eRm")
 
-import("stats", "graphics")
+import("stats", "graphics", "methods")
 
 importFrom("splines", "interpSpline")
 importFrom("MASS", "mvrnorm")

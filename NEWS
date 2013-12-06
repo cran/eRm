@@ -1,3 +1,11 @@
+Changes in Version 0.15-3
+
+  o an error in test_info() was fixed
+
+Changes in Version 0.15-2
+
+  o an error in Tpbis.stat was fixed
+
 Changes in Version 0.15-1
 
   o a bug in person.parameter() has been fixed that caused the estimation to crash in some cases

@@ -1,4 +1,4 @@
-i_info<-function(hvec,itembeta,theta=seq(-5,5,0.01))
+i_info<-function(hvec,itembeta,theta)
 #calculates information (Samejima, 1969) for an item i as a function of theta
 #
 #@input: hvec...number of categories of item
@@ -8,14 +8,15 @@ i_info<-function(hvec,itembeta,theta=seq(-5,5,0.01))
 #         $c.info...matrix of category information in columns for theta (rows)
 #         $i.info...vector of item information at values of theta
 #@author: Thomas Rusch
-#@date:13.6.2011
+#@date:6.12.2013 Happy Nikolaus! 
 #
   {
+   if(missing(theta)) theta <-seq(-5,5,0.01)
    p.ih<-function(hvec,itembeta,theta)
    #Calculates p.ih of given item i and the weird expression in its first derivative
    #needs categories given (hvec) and the cumulative item parameters of the item (itembeta)
    #@output: a list with
-   #         $p.ih...matrix of probabilities to fall into category h (colums) for given i             tems as a function of theta (rows).
+   #         $p.ih...matrix of probabilities to fall into category h (colums) for given items as a function of theta (rows).
    #         $weird...the weird expression from the derivative
   {
     beta <- c(0,itembeta) #eRm gives itempar with first fixed to zero
@@ -71,8 +72,10 @@ item_info <- function(ermobject,theta=seq(-5,5,0.01))
    itembeta.list <- split(betapar,uu)
    for (i in 1:length(itembeta.list))
      {
-      out.list[[i]] <- i_info(hvec.list[[i]],itembeta.list[[i]])
+      out.list[[i]] <- i_info(hvec.list[[i]],itembeta.list[[i]],theta) #patch
     }
    return(out.list)
  }
+
+#THANK YOU FOR READING THE SOURCE
 

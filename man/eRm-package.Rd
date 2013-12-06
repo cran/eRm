@@ -20,8 +20,8 @@ http://r-forge.r-project.org/projects/erm/.
 \tabular{ll}{
 Package: \tab eRm\cr
 Type:    \tab Package\cr
-Version: \tab 0.15-1\cr
-Date:    \tab 2012-11-11\cr
+Version: \tab 0.15-3\cr
+Date:    \tab 2013-12-06\cr
 License: \tab GPL-2\cr
 }
 The basic input units for the functions are the person-item matrix X and the design matrix W.
