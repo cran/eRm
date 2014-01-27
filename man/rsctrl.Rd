@@ -79,8 +79,8 @@ ctr <- rsctrl(n_eff = 1, seed = 987654321)  # specify new controls
 summary(ctr)
 
 \dontrun{
-ctr2 <- rsctrl(step = -3, n_eff = 10000) # incorrect specifications
-}
+# incorrect specifications will lead to an error
+ctr2 <- rsctrl(step = -3, n_eff = 10000)}
 }
 
 \keyword{misc}

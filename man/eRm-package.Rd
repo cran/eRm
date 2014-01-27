@@ -20,8 +20,8 @@ http://r-forge.r-project.org/projects/erm/.
 \tabular{ll}{
 Package: \tab eRm\cr
 Type:    \tab Package\cr
-Version: \tab 0.15-3\cr
-Date:    \tab 2013-12-06\cr
+Version: \tab 0.15-4\cr
+Date:    \tab 2014-01-27\cr
 License: \tab GPL-2\cr
 }
 The basic input units for the functions are the person-item matrix X and the design matrix W.
@@ -63,8 +63,7 @@ Thanks to Carter T. Butts, Gregory R. Warnes, and Tobias Sing et al.
 
 \author{Patrick Mair, Reinhold Hatzinger, Marco Maier, and others
 
-Maintainer: Patrick Mair <patrick.mair@wu.ac.at>
-}
+Maintainer: Patrick Mair <mair@fas.harvard.edu>}
 \references{
 Fischer, G. H., and Molenaar, I. (1995). Rasch Models - Foundations,
 Recent Developements, and Applications. Springer.

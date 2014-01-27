@@ -123,11 +123,16 @@ if (length(del.pos) >= (ncol(object$X)-1)) {
   stop("\nNo items with appropriate response patterns left to perform LR-test!\n")
 }
 
-if (length(del.pos) > 0) {
-  warning("\nThe following items were excluded due to inappropriate response patterns within subgroups: ",immediate.=TRUE)
-    cat(colnames(object$X)[del.pos], sep=" ","\n")
-    cat("Full and subgroup models are estimated without these items!\n")
-}
+if(length(del.pos) > 0){                                                        ### begin MjM 2013-01-27
+  warning(paste0(
+    "\n", 
+    prettyPaste("The following items were excluded due to inappropriate response patterns within subgroups:"),
+    "\n",
+    paste(colnames(object$X)[del.pos], collapse=" "),
+    "\n\n",
+    prettyPaste("Full and subgroup models are estimated without these items!")
+  ), immediate.=TRUE)
+}                                                                               ### end MjM 2013-01-27
 
 
 if (length(del.pos) > 0) {

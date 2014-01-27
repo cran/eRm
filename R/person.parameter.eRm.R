@@ -5,7 +5,6 @@
 
   se            <- TRUE
   interpolation <- TRUE
-  #options(warn=0)
 
   X <- object$X
   #collapse X

@@ -1,3 +1,2 @@
-`plotICC` <-
-function(object,...)UseMethod("plotICC")
+`plotICC` <- function(object, ...) UseMethod("plotICC")
 

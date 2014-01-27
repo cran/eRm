@@ -1,11 +1,8 @@
 \name{anova.llra}
 \alias{anova.llra}
 
-
-\title{Analysis of Deviance for Linear Logistic Models with Relaxed Assumptions
-}
-\description{Compute an analysis of deviance table for one or more LLRA.
-}
+\title{Analysis of Deviance for Linear Logistic Models with Relaxed Assumptions}
+\description{Compute an analysis of deviance table for one or more LLRA.}
 \usage{
 \method{anova}{llra}(object, ...)
 }
@@ -29,9 +26,7 @@ deviance to the df for each row based on the asymptotic Chi^2-Distribution of th
 \value{
 An object of class \code{"anova"} inheriting from class \code{"data.frame"}.
 }
-\author{
-Thomas Rusch
-}
+\author{Thomas Rusch}
 \section{Warning:}{
 The comparison between two or more models by \code{anova} will only be valid
 if they are fitted to the same dataset and if the models are nested. The
@@ -40,8 +35,7 @@ function does not check if that is the case.
 \seealso{
 The model fitting function \code{\link{LLRA}}.
 }
-\examples{
-\dontrun{
+\examples{\dontrun{
 ##An LLRA with 2 treatment groups and 1 baseline group, 5 items and 4
 ##time points. Item 1 is dichotomous, all others have 3, 4, 5, 6
 ##categories respectively.
@@ -58,6 +52,4 @@ Wnew <- collapse_W(ex2$W,collItems2,newNames2)
 ex2new <- LLRA(llraDat2[1:20],W=Wnew,mpoints=4,groups=llraDat2[21])
 
 #comparing models with likelihood ratio test
-anova(ex2,ex2new)
-}
-}
+anova(ex2,ex2new)}}

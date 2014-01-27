@@ -1,135 +1,100 @@
 %\VignetteIndexEntry{eRm Basics}
-
-\documentclass[article]{Z}
-\usepackage{amsmath, thumbpdf}
+\SweaveOpts{keep.source=FALSE}
+\documentclass[nojss,nofooter]{jss}
 \usepackage{Sweave}
-\usepackage{graphicx}
+\usepackage{amsmath,bm}
 
-\author{Patrick Mair\\Wirtschaftsuniversit\"at Wien \And
-        Reinhold Hatzinger\\Wirtschaftsuniversit\"at Wien}
-\Plainauthor{Patrick Mair, Reinhold Hatzinger}
+\author{Patrick Mair\\Wirtschaftsuniversit\"at Wien\And%
+Reinhold Hatzinger\\Wirtschaftsuniversit\"at Wien\And%
+Marco J.\ Maier\\Wirtschaftsuniversit\"at Wien}
+\Plainauthor{Patrick Mair, Reinhold Hatzinger, Marco J. Maier}
 
-\title{Extended Rasch Modeling: The R Package \pkg{eRm}}
+\title{Extended Rasch Modeling: The \proglang{R} Package \pkg{eRm}}
 \Plaintitle{Extended Rasch Modeling: The R Package eRm}
-\Shorttitle{The R Package \pkg{eRm}}
+\Shorttitle{The \proglang{R} Package \pkg{eRm}}
 
-\Abstract{
-
-This package vignette is an update of the \pkg{eRm} papers by published
-in a special issue on Psychometrics in the Journal of Statistical
-Software and in Psychology Science \citep{Mair+Hatzinger:2007,
-Mair+Hatzinger:2007b}.  Since the publication of these papers various
-extensions and additional features have been incorporated into the
-package.  We start with a methodological introduction to extended
-Rasch models followed by a general program description and application
-topics.  The package allows for the computation of simple Rasch models,
-rating scale models, partial credit models and linear extensions of
-these.  The incorporation of such linear structures allows for modeling
-the effects of covariates and enables the analysis of repeated
-categorical measurements.  The item parameter estimation is
-performed by means of CML, for the person parameters we use ordinary ML.
+\Abstract{\noindent This package vignette is an update of the \pkg{eRm} papers by published in a special issue on Psychometrics in the Journal of Statistical Software and in Psychology Science \citep{Mair+Hatzinger:2007, Mair+Hatzinger:2007b}.
+Since the publication of these papers various extensions and additional features have been incorporated into the package.
+We start with a methodological introduction to extended Rasch models followed by a general program description and application topics.
+The package allows for the computation of simple Rasch models, rating scale models, partial credit models and linear extensions of these.
+The incorporation of such linear structures allows for modeling the effects of covariates and enables the analysis of repeated categorical measurements.
+The item parameter estimation is performed by means of CML, for the person parameters we use ordinary ML.
 The estimation routines work for incomplete data matrices as well.
-Based on these estimators, item-wise and global goodness-of-fit
-statistics are described and various plots are presented.  }
+Based on these estimators, item-wise and global goodness-of-fit statistics are described and various plots are presented.}
 
 \Keywords{eRm package, Rasch model, LLTM, RSM, LRSM, PCM, LPCM, CML estimation}
 
-%\Volume{20}
-%\Issue{9}
-%\Month{April}
-%\Year{2007}
-%FIXME%
-%% \Submitdate{2004-06-21}
-%% \Acceptdate{2004-12-04}
-
-%\Address{
-%  Patrick Mair\\
-%  Department f\"ur Statistik und Mathematik\\
-%  Wirtschaftsuniversit\"at Wien\\
-%  A-1090 Wien, Austria\\
-%  E-mail: \email{patrick.mair@wu-wien.ac.at}\\
-%  URL: \url{http://statmath.wu-wien.ac.at/~mair/}
-%}
-
 \begin{document}
-
+%
+%
+%
+%
+%
 \section{Introduction}
+\citet{Ro:99} claimed in his article that ``even though the Rasch model has been existing for such a long time, 95\% of the current tests in psychology are still constructed by using methods from classical test theory'' (p.\ 140).
+Basically, he quotes the following reasons why the Rasch model (RM) is being rarely used: The Rasch model in its original form \citep{Ra:60}, which was limited to dichotomous items, is arguably too restrictive for practical testing purposes.
+Thus, researchers should focus on extended Rasch models.
+In addition, Rost argues that there is a lack of user-friendly software for the computation of such models.
+Hence, there is a need for a comprehensive, user-friendly software routine.
+Corresponding recent discussions can be found in \citet{Kub:05} and \citet{Bor:06}.
 
-\citet{Ro:99} claimed in his article that ``even though the Rasch model
-has been existing for such a long time, 95\% of the current tests in
-psychology are still constructed by using methods from classical test
-theory" (p. 140).  Basically, he quotes the following reasons why the
-Rasch model (RM) is being rarely used:  The Rasch model in its original form
-\citep{Ra:60}, which was limited to dichotomous items, is arguably too
-restrictive for practical testing purposes.  Thus, researchers should
-focus on extended Rasch models.  In addition, Rost argues that there is
-a lack of user-friendly software for the computation of such models.
-Hence, there is a need for a comprehensive, user-friendly software
-routine.  Corresponding recent discussions can be found in
-\citet{Kub:05} and \citet{Bor:06}.
+In addition to the RM, the models that can be computed by means of the \pkg {eRm} package are: the linear logistic test model \citep{Scheib:72}, the rating scale model \citep{And:78}, the linear rating scale model \citep{FiPa:91}, the partial credit model \citep{Mast:82}, and the linear partial credit model \citep{GlVe:89,FiPo:94}.
+These models and their main characteristics are presented in Section \ref{sec:erm}.
 
-In addition to the RM, the models that can be computed by means of the \pkg {eRm} package are:
-the linear logistic test model \citep{Scheib:72}, the rating scale model
-\citep{And:78}, the linear rating scale model \citep{FiPa:91}, the
-partial credit model \citep{Mast:82}, and the linear partial credit
-model \citep{GlVe:89,FiPo:94}.  These models and their main
-characteristics are presented in Section \ref{sec:erm}.
-
-Concerning parameter estimation, these models have an important feature
-in common:  Separability of item and person parameters.  This implies
-that the item parameters $\mathbf{\beta}$ can be estimated without
-estimating the person parameters achieved by conditioning the likelihood
-on the sufficient person raw score.  This conditional maximum likelihood
-(CML) approach is described in Section \ref{sec:cml}.
+Concerning parameter estimation, these models have an important feature in common:  Separability of item and person parameters.
+This implies that the item parameters $\bm{\beta}$ can be estimated without estimating the person parameters achieved by conditioning the likelihood on the sufficient person raw score.
+This conditional maximum likelihood (CML) approach is described in Section \ref{sec:cml}.
 
 Several diagnostic tools and tests to evaluate model fit are presented in Section \ref{Gof}.
 
-In Section \ref{sec:pack}, the corresponding implementation in
-\proglang{R} \citep{R:06} is described by means of several examples.
-The \pkg{eRm} package uses a design matrix approach which allows
-to reparameterize the item parameters to model common characteristics of
-the items or to enable the
-user to impose repeated measurement designs as well as group contrasts.
-By combining these types of contrasts one allows that the item parameter
-may differ over time with respect to certain subgroups.  To illustrate
-the flexibility of the \pkg{eRm} package some examples are given to show
-how suitable design matrices can be constructed.
-
+In Section \ref{sec:pack}, the corresponding implementation in \proglang{R} \citep{R:06} is described by means of several examples.
+The \pkg{eRm} package uses a design matrix approach which allows to reparameterize the item parameters to model common characteristics of the items or to enable the user to impose repeated measurement designs as well as group contrasts.
+By combining these types of contrasts one allows that the item parameter may differ over time with respect to certain subgroups.
+To illustrate the flexibility of the \pkg{eRm} package some examples are given to show how suitable design matrices can be constructed.
+%
+%
+%
+%
 %----------------- end introduction ----------------
 \section{Extended Rasch models}
 \label{sec:erm}
-
+%
+%
+%
 \subsection{General expressions}
-Briefly after the first publication of the basic Rasch Model \citep{Ra:60}, the author worked on polytomous generalizations which can be found in \citet{Ra:61}. \citet{And:95} derived the representations below which are based on Rasch's general expression for polytomous data. The data matrix is denoted as $\mathbf{X}$ with the persons in the rows and the items in the columns. In total there are $v=1,...,n$ persons and $i=1,...,k$ items. A single element in the data matrix $\mathbf{X}$ is indexed by $x_{vi}$. Furthermore, each item $I_i$ has a certain number of response categories, denoted by $h=0,...,m_i$. The corresponding probability of response $h$ on item $i$ can be derived in terms of the following two expressions \citep{And:95}:
-
-\begin{equation}
-\label{eq1}
-    P(X_{vi}=h)=\frac{\exp[\phi_h(\theta_v+\beta_i)+\omega_h]}{\sum_{l=0}^{m_i} \exp[\phi_l (\theta_v+\beta_i)+\omega_l]}
+Briefly after the first publication of the basic Rasch Model \citep{Ra:60}, the author worked on polytomous generalizations which can be found in \citet{Ra:61}.
+\citet{And:95} derived the representations below which are based on Rasch's general expression for polytomous data.
+The data matrix is denoted as $\bm{X}$ with the persons in the rows and the items in the columns.
+In total there are $v=1,\,\ldots,\,n$ persons and $i=1,\,\ldots,\,k$ items.
+A single element in the data matrix $\bm{X}$ is indexed by $x_{vi}$.
+Furthermore, each item $I_i$ has a certain number of response categories, denoted by $h=0,\,\ldots,\,m_i$.
+The corresponding probability of response $h$ on item $i$ can be derived in terms of the following two expressions \citep{And:95}:
+\begin{equation}\label{eq1}
+  P(X_{vi}=h)=\frac{\exp[\phi_h(\theta_v+\beta_i)+\omega_h]}{\sum_{l=0}^{m_i} \exp[\phi_l (\theta_v+\beta_i)+\omega_l]}
 \end{equation}
-
 or
-
-\begin{equation}
-\label{eq2}
-    P(X_{vi}=h)=\frac{\exp[\phi_h \theta_v+\beta_{ih}]}{\sum_{l=0}^{m_i} \exp[\phi_l \theta_v+\beta_{il}]}.
+\begin{equation}\label{eq2}
+  P(X_{vi}=h)=\frac{\exp[\phi_h \theta_v+\beta_{ih}]}{\sum_{l=0}^{m_i} \exp[\phi_l \theta_v+\beta_{il}]}.
 \end{equation}
-
-Here, $\phi_h$ are scoring functions for the item parameters, $\theta_v$ are the uni-dimensional person parameters, and $\beta_i$ are the item parameters. In Equation \ref{eq1}, $\omega_h$ corresponds to category parameters, whereas in Equation \ref{eq2} $\beta_{ih}$ are the item-category parameters. The meaning of these parameters will be discussed in detail below. Within the framework of these two equations, numerous models have been suggested that retain the basic properties of the Rasch model so that CML estimation can be applied.
-
-
+Here, $\phi_h$ are scoring functions for the item parameters, $\theta_v$ are the uni-dimensional person parameters, and $\beta_i$ are the item parameters.
+In Equation \ref{eq1}, $\omega_h$ corresponds to category parameters, whereas in Equation \ref{eq2} $\beta_{ih}$ are the item-category parameters.
+The meaning of these parameters will be discussed in detail below.
+Within the framework of these two equations, numerous models have been suggested that retain the basic properties of the Rasch model so that CML estimation can be applied.
+%
+%
+%
 \subsection{Representation of extended Rasch models}
 \label{Rep}
 For the ordinary Rasch model for dichotomous items, Equation \ref{eq1} reduces to
-\begin{equation}
-\label{eq:rasch}
+\begin{equation}\label{eq:rasch}
   P(X_{vi}=1)=\frac{\exp(\theta_v - \beta_i)}{1+\exp(\theta_v-\beta_i)}.
 \end{equation}
-The main assumptions, which hold as well for the generalizations presented in this paper, are: uni-dimensionality of the latent trait, sufficiency of the raw score, local independence, and parallel item characteristic curves (ICCs). Corresponding explanations can be found, e.g., in \citet{Fisch:74} and mathematical derivations and proofs in \citet{Fisch:95a}.
-
-\begin{figure}[hbt]
-\centering
+The main assumptions, which hold as well for the generalizations presented in this paper, are: uni-dimensionality of the latent trait, sufficiency of the raw score, local independence, and parallel item characteristic curves (ICCs).
+Corresponding explanations can be found, e.g., in \citet{Fisch:74} and mathematical derivations and proofs in \citet{Fisch:95a}.
+\begin{figure}[hbt]\centering%
 \includegraphics[height=60mm, width=40mm]{modelhierarchy.pdf}
-\caption{\label{fig1} Model hierarchy}
+\caption{Model hierarchy}
+\label{fig1}
 \end{figure}
 
 For dichotomous items, \citet{Scheib:72} proposed the (even more restricted) linear logistic test model (LLTM), later formalized by \citet{Fisch:73}, by splitting up the item parameters into the linear combination
@@ -139,155 +104,165 @@ For dichotomous items, \citet{Scheib:72} proposed the (even more restricted) lin
   \beta_i=\sum_{j=1}^p w_{ij} \eta_j.
 \end{equation}
 
-\citet{Scheib:72} explained the dissolving process of items in a test for logics (``Mengenrechentest") by so-called ``cognitive operations" $\eta_j$ such as negation, disjunction, conjunction, sequence, intermediate result, permutation, and material. Note that the weights $w_{ij}$ for item $i$ and operation $j$ have to be fixed a priori. Further elaborations about the cognitive operations can be found in \citet[p.~361ff.]{Fisch:74}. Thus, from this perspective the LLTM is more parsimonous than the Rasch model.
+\citet{Scheib:72} explained the dissolving process of items in a test for logics (``Mengenrechentest'') by so-called ``cognitive operations'' $\eta_j$ such as negation, disjunction, conjunction, sequence, intermediate result, permutation, and material.
+Note that the weights $w_{ij}$ for item $i$ and operation $j$ have to be fixed a priori.
+Further elaborations about the cognitive operations can be found in \citet[p.~361ff.]{Fisch:74}.
+Thus, from this perspective the LLTM is more parsimonous than the Rasch model.
 
-Though, there exists another way to look at the LLTM: A generalization of the basic Rasch model in terms of repeated measures and group contrasts. It should be noted that both types of reparameterization also apply to the linear rating scale model (LRSM) and the linear partial credit model (LPCM) with respect to the basic rating scale model (RSM) and the partial credit model (PCM) presented below. Concerning the LLTM, the possibility to use it as a generalization of the Rasch model for repeated measurements was already introduced by \citet{Fisch:74}. Over the intervening years this suggestion has been further elaborated. \citet{Fisch:95b} discussed certain design matrices which will be presented in Section \ref{sec:design} and on the basis of examples in Section \ref{sec:pack}.
+Though, there exists another way to look at the LLTM: A generalization of the basic Rasch model in terms of repeated measures and group contrasts.
+It should be noted that both types of reparameterization also apply to the linear rating scale model (LRSM) and the linear partial credit model (LPCM) with respect to the basic rating scale model (RSM) and the partial credit model (PCM) presented below.
+Concerning the LLTM, the possibility to use it as a generalization of the Rasch model for repeated measurements was already introduced by \citet{Fisch:74}.
+Over the intervening years this suggestion has been further elaborated.
+\citet{Fisch:95b} discussed certain design matrices which will be presented in Section \ref{sec:design} and on the basis of examples in Section \ref{sec:pack}.
 
-At this point we will focus on a simple polytomous generalization of the Rasch model, the RSM \citep{And:78}, where each item $I_i$ must have the same number of categories. Pertaining to Equation \ref{eq1}, $\phi_h$ may be set to $h$ with $h=0,...,m$. Since in the RSM the number of item categories is constant, $m$ is used instead of $m_i$. Hence, it follows that
-
-\begin{equation}
-\label{eq5}
-    P(X_{vi}=h)=\frac{\exp[h(\theta_v+\beta_i)+\omega_h]}{\sum_{l=0}^m \exp[l(\theta_v+ \beta_i)+\omega_l]},
+At this point we will focus on a simple polytomous generalization of the Rasch model, the RSM \citep{And:78}, where each item $I_i$ must have the same number of categories.
+Pertaining to Equation \ref{eq1}, $\phi_h$ may be set to $h$ with $h=0,\,\ldots,\,m$.
+Since in the RSM the number of item categories is constant, $m$ is used instead of $m_i$.
+Hence, it follows that
+\begin{equation}\label{eq5}
+  P(X_{vi}=h)=\frac{\exp[h(\theta_v+\beta_i)+\omega_h]}{\sum_{l=0}^m \exp[l(\theta_v+ \beta_i)+\omega_l]},
 \end{equation}
+with $k$ item parameters $\beta_1,\,\ldots,\,\beta_k$ and $m+1$ category parameters $\omega_0,\,\ldots,\,\omega_m$.
+This parameterization causes a scoring of the response categories $C_h$ which is constant over the single items.
+Again, the item parameters can be split up in a linear combination as in Equation \ref{eq4}.
+This leads to the LRSM proposed by \citet{FiPa:91}.
 
-with $k$ item parameters $\beta_1,...,\beta_k$ and $m+1$ category parameters $\omega_0,...,\omega_m$. This parameterization causes a scoring of the response categories $C_h$ which is constant over the single items. Again, the item parameters can be split up in a linear combination as in Equation \ref{eq4}. This leads to the LRSM proposed by \citet{FiPa:91}.
-
-Finally, the PCM developed by \citet{Mast:82} and its linear extension, the LPCM \citep{FiPo:94}, are presented. The PCM assigns one parameter $\beta_{ih}$ to each $I_i \times C_h$ combination for $h=0,...,m_i$. Thus, the constant scoring property must not hold over the items and in addition, the items can have different numbers of response categories denoted by $m_i$. Therefore, the PCM can be regarded as a generalization of the RSM and the probability for a response of person $v$ on category $h$ (item $i$) is defined as
-
-\begin{equation}
-\label{eq6}
-    P(X_{vih}=1)=\frac{\exp[h\theta_v + \beta_{ih}]}{\sum_{l=0}^{m_i}\exp[l\theta_v + \beta_{il}]}.
+Finally, the PCM developed by \citet{Mast:82} and its linear extension, the LPCM \citep{FiPo:94}, are presented.
+The PCM assigns one parameter $\beta_{ih}$ to each $I_i \times C_h$ combination for $h=0,\,\ldots,\,m_i$.
+Thus, the constant scoring property must not hold over the items and in addition, the items can have different numbers of response categories denoted by $m_i$.
+Therefore, the PCM can be regarded as a generalization of the RSM and the probability for a response of person $v$ on category $h$ (item $i$) is defined as
+\begin{equation}\label{eq6}
+  P(X_{vih}=1)=\frac{\exp[h\theta_v + \beta_{ih}]}{\sum_{l=0}^{m_i}\exp[l\theta_v + \beta_{il}]}.
 \end{equation}
-
-It is obvious that (\ref{eq6}) is a simplification of (\ref{eq2}) in terms of $\phi_h = h$. As for the LLTM and the LRSM, the LPCM is defined by reparameterizing the item parameters of the basic model, i.e.,
-
-\begin{equation}
-\label{eq:lpcmeta}
+It is obvious that (\ref{eq6}) is a simplification of (\ref{eq2}) in terms of $\phi_h = h$.
+As for the LLTM and the LRSM, the LPCM is defined by reparameterizing the item parameters of the basic model, i.e.,
+\begin{equation}\label{eq:lpcmeta}
   \beta_{ih}=\sum_{j=1}^p w_{ihj}\eta_j.
 \end{equation}
+These six models constitute a hierarchical order as displayed in Figure \ref{fig1}.
+This hierarchy is the base for a unified CML approach presented in the next section.
+It is outlined again that the linear extension models can be regarded either as generalizations or as more restrictive formulations pertaining to the underlying base model.
+The hierarchy for the basic model is straightforward: The RM allows only items with two categories, thus each item is represented by one parameter $\beta_i$.
+The RSM allows for more than two (ordinal) categories each represented by a category parameter $\omega_h$.
+Due to identifiability issues, $\omega_0$ and $\omega_1$ are restricted to 0.
+Hence, the RM can be seen as a special case of the RSM whereas, the RSM in turn, is a special case of the PCM.
+The latter model assigns the parameter $\beta_{ih}$ to each $I_i \times C_h$ combination.
 
-These six models constitute a hierarchical order as displayed in Figure \ref{fig1}. This hierarchy is the base for a unified CML approach presented in the next section. It is outlined again that the linear extension models can be regarded either as generalizations or as more restrictive formulations pertaining to the underlying base model. The hierarchy for the basic model is straightforward: The RM allows only items with two categories, thus each item is represented by one parameter $\beta_i$. The RSM allows for more than two (ordinal) categories each represented by a category parameter $\omega_h$. Due to identifiability issues, $\omega_0$ and $\omega_1$ are restricted to 0. Hence, the RM can be seen as a special case of the RSM whereas, the RSM in turn, is a special case of the PCM. The latter model assigns the parameter $\beta_{ih}$ to each $I_i \times C_h$ combination.
-
-To conclude, the most general model is the LPCM. All other models can be considered as simplifications of Equation \ref{eq6} combined with Equation \ref{eq:lpcmeta}. As a consequence, once an estimation procedure is established for the LPCM, this approach can be used for any of the remaining models. This is what we quote as \textit{unified CML approach}. The corresponding likelihood equations follow in Section \ref{sec:cml}.
-
+To conclude, the most general model is the LPCM.
+All other models can be considered as simplifications of Equation \ref{eq6} combined with Equation \ref{eq:lpcmeta}.
+As a consequence, once an estimation procedure is established for the LPCM, this approach can be used for any of the remaining models.
+This is what we quote as \textit{unified CML approach}.
+The corresponding likelihood equations follow in Section \ref{sec:cml}.
+%
+%
+%
 \subsection{The concept of virtual items}
 \label{sec:design}
-When operating with longitudinal models, the
-main research question  is whether an individual's test
-performance changes over time. The most intuitive way would be to
-look at the shift in ability $\theta_v$ across time points. Such
-models are presented e.g. in \citet{Mi:85}, \citet{Glas:1992}, and
-discussed by \citet{Ho:95}.
+When operating with longitudinal models, the main research question  is whether an individual's test performance changes over time.
+The most intuitive way would be to look at the shift in ability $\theta_v$ across time points.
+Such models are presented, e.g., in \citet{Mi:85}, \citet{Glas:1992}, and discussed by \citet{Ho:95}.
 
-Yet there exists another look onto time dependent changes, as presented in \citet[p~158ff.]{Fisch:95b}: The
-person parameters are fixed over time and instead of them the item
-parameters change. The basic idea is that one item $I_i$ is presented at two different times to the same person $S_v$
-is regarded as a pair of \textit{virtual items}. Within the framework of extended Rasch models, any change in $\theta_v$ occuring between the testing occasions can be described without loss of generality as a change of the item parameters, instead of describing change in terms of the person parameter. Thus, with only two measurement points, $I_i$ with the corresponding parameter $\beta_i$ generates two virtual items $I_r$ and $I_s$ with associated item parameters $\beta^{\ast}_r$ and $\beta^{\ast}_s$. For the first measurement point $\beta^{\ast}_r=\beta_i$, whereas for the second $\beta^{\ast}_s=\beta_i+\tau$. In this linear combination the $\beta^{\ast}$-parameters are composed additively by means of the real item parameters $\beta$ and the treatment effects $\tau$. This concept extends to an arbitrary number of time points or testing occasions.
+Yet there exists another look onto time dependent changes, as presented in \citet[p~158ff.]{Fisch:95b}: The person parameters are fixed over time and instead of them the item parameters change.
+The basic idea is that one item $I_i$ is presented at two different times to the same person $S_v$ is regarded as a pair of \textit{virtual items}.
+Within the framework of extended Rasch models, any change in $\theta_v$ occuring between the testing occasions can be described without loss of generality as a change of the item parameters, instead of describing change in terms of the person parameter.
+Thus, with only two measurement points, $I_i$ with the corresponding parameter $\beta_i$ generates two virtual items $I_r$ and $I_s$ with associated item parameters $\beta^{\ast}_r$ and $\beta^{\ast}_s$.
+For the first measurement point $\beta^{\ast}_r=\beta_i$, whereas for the second $\beta^{\ast}_s=\beta_i+\tau$.
+In this linear combination the $\beta^{\ast}$-parameters are composed additively by means of the real item parameters $\beta$ and the treatment effects $\tau$.
+This concept extends to an arbitrary number of time points or testing occasions.
 
-Correspondingly, for each measurement point $t$ we have a vector of
-\textit{virtual item parameters} $\boldsymbol{\beta}^{\ast(t)}$ of
-length $k$. These are linear reparameterizations of the original
-$\boldsymbol{\beta}^{(t)}$, and thus the CML approach can be used
-for estimation. In general, for a simple LLTM with two measurement points the design
-matrix $\boldsymbol{W}$ is of the form as given in Table \ref{tab1}.
-
-\begin{table}
-\centering
-\[
-\begin{array}{c|c|rrrr|r}
-& & \eta_1 & \eta_2 & \hdots & \eta_k & \eta_{k+1}\\
-\hline
-\textrm{Time 1} & \beta_1^{\ast(1)} & 1 & 0 & 0 & 0 & 0\\
-& \beta_2^{\ast(1)} & 0 & 1 & 0 & 0 & 0\\
-& \vdots        &   &   & \ddots& & \vdots\\
-& \beta_{k}^{\ast(1)} & 1 & 0 & 0 & 1 & 0\\
-\hline
-\textrm{Time 2} & \beta_{k+1}^{\ast(2)} & 1 & 0 & 0 & 0 & 1\\
-& \beta_{k+2}^{\ast(2)} & 0 & 1 & 0 & 0 & 1\\
-& \vdots        &   &   & \ddots& & \vdots\\
-& \beta_{2k}^{\ast(2)} & 1 & 0 & 0 & 1 & 1\\
-\end{array}
-\]
-\caption{\label{tab1}A design matrix for an LLTM with two timepoints.}
+Correspondingly, for each measurement point $t$ we have a vector of \textit{virtual item parameters} $\bm{\beta}^{\ast(t)}$ of length $k$.
+These are linear reparameterizations of the original $\bm{\beta}^{(t)}$, and thus the CML approach can be used for estimation.
+In general, for a simple LLTM with two measurement points the design matrix $\bm{W}$ is of the form as given in Table \ref{tab1}.
+\begin{table}\centering%
+  $\begin{array}{c|c|rrrr|r}
+  & & \eta_1 & \eta_2 & \hdots & \eta_k & \eta_{k+1}\\
+  \hline
+  \textrm{Time 1} & \beta_1^{\ast(1)} & 1 & 0 & 0 & 0 & 0\\
+  & \beta_2^{\ast(1)} & 0 & 1 & 0 & 0 & 0\\
+  & \vdots        &   &   & \ddots& & \vdots\\
+  & \beta_{k}^{\ast(1)} & 1 & 0 & 0 & 1 & 0\\
+  \hline
+  \textrm{Time 2} & \beta_{k+1}^{\ast(2)} & 1 & 0 & 0 & 0 & 1\\
+  & \beta_{k+2}^{\ast(2)} & 0 & 1 & 0 & 0 & 1\\
+  & \vdots        &   &   & \ddots& & \vdots\\
+  & \beta_{2k}^{\ast(2)} & 1 & 0 & 0 & 1 & 1\\
+  \end{array}$
+  \caption{A design matrix for an LLTM with two timepoints.}
+  \label{tab1}
 \end{table}
 
-The parameter vector $\boldsymbol{\beta}^{\ast(1)}$ represents the
-item parameters for the first test occasion,
-$\boldsymbol{\beta}^{\ast(2)}$ the parameters for the second
-occasion. It might be of interest whether these vectors differ. The
-corresponding trend contrast is $\eta_{k+1}$. Due to this contrast,
-the number of original $\beta$-parameters is doubled by introducing
-the $2k$ virtual item parameters. If we assume a constant shift for
-all item parameters, it is only necessary to estimate
-$\hat{\boldsymbol{\eta}}'=(\hat{\eta}_1,...,\hat{\eta}_{k+1})$
-where $\hat{\eta}_{k+1}$ gives the amount of shift. Since according to (\ref{eq4}), the vector
-$\hat{\boldsymbol{\beta}}^\ast$ is just a linear combination of
-$\hat{\boldsymbol{\eta}}$.
+The parameter vector $\bm{\beta}^{\ast(1)}$ represents the item parameters for the first test occasion, $\bm{\beta}^{\ast(2)}$ the parameters for the second occasion.
+It might be of interest whether these vectors differ.
+The corresponding trend contrast is $\eta_{k+1}$.
+Due to this contrast, the number of original $\beta$-parameters is doubled by introducing the $2k$ virtual item parameters.
+If we assume a constant shift for all item parameters, it is only necessary to estimate $\hat{\bm{\eta}}'=(\hat{\eta}_1,\,\ldots,\,\hat{\eta}_{k+1})$ where $\hat{\eta}_{k+1}$ gives the amount of shift.
+Since according to (\ref{eq4}), the vector $\hat{\bm{\beta}}^\ast$ is just a linear combination of $\hat{\bm{\eta}}$.
 
-As mentioned in the former section, when using models with linear
-extensions it is possible to impose group contrasts. By doing this,
-one allows that the item difficulties are different across
-subgroups. However, this is possible only for models with repeated
-measurements and virtual items since otherwise the introduction of a
-group contrast leads to overparameterization and the group effect
-cannot be estimated by using CML.
+As mentioned in the former section, when using models with linear extensions it is possible to impose group contrasts.
+By doing this, one allows that the item difficulties are different across subgroups.
+However, this is possible only for models with repeated measurements and virtual items since otherwise the introduction of a group contrast leads to overparameterization and the group effect cannot be estimated by using CML.
 
-Table \ref{tab2} gives an example for a repeated measurement design
-where the effect of a treatment is to be evaluated by comparing item
-difficulties regarding a control and a treatment group. The number
-of virtual parameters is doubled compared to the model matrix given
-in Table \ref{tab1}.
-
-\begin{table}[h]
-  \centering
-\[
-\begin{array}{c|c|c|rrrr|rrr}
-& & & \eta_1 & \eta_2 & \hdots & \eta_k & \eta_{k+1} & \eta_{k+2} \\
-\hline
-\textrm{Time 1} & \textrm{Group 1} & \beta_1^{\ast(1)} & 1 & 0 & 0 & 0 & 0 &  0\\
-& & \beta_2^{\ast(1)} & 0 & 1 & 0 & 0 & 0&  0\\
-& & \vdots        &   &   & \ddots& &\vdots &\vdots\\
-& & \beta_{k}^{\ast(1)} & 1 & 0 & 0 & 1 & 0 & 0\\
-\cline{2-9}
-& \textrm{Group 2} & \beta_{k+1}^{\ast(1)} & 1 & 0 & 0 & 0 & 0 & 0\\
-& & \beta_{k+2}^{\ast(1)} & 0 & 1 & 0 & 0 & 0 & 0\\
-& & \vdots        &   &   & \ddots& &\vdots & \vdots\\
-& & \beta_{2k}^{\ast(1)} & 1 & 0 & 0 & 1 & 0& 0\\
-\hline
-\textrm{Time 2} & \textrm{Group 1} & \beta_1^{\ast(2)} & 1 & 0 & 0 & 0 & 1 & 0\\
-& & \beta_2^{\ast(2)} & 0 & 1 & 0 & 0 & 1 & 0\\
-& & \vdots        &   &   & \ddots& &\vdots &\vdots\\
-& & \beta_{k}^{\ast(2)} & 1 & 0 & 0 & 1 & 1 & 0\\
-\cline{2-9}
-& \textrm{Group 2} & \beta_{k+1}^{\ast(2)} & 1 & 0 & 0 & 0 & 1 & 1\\
-& & \beta_{k+2}^{\ast(2)} & 0 & 1 & 0 & 0 & 1 & 1\\
-& & \vdots        &   &   & \ddots& &\vdots  & \vdots\\
-& & \beta_{2k}^{\ast(2)} & 1 & 0 & 0 & 1 & 1 & 1\\
-\end{array} \]
-\caption{\label{tab2} Design matrix for a repeated measurements design with treatment and control group.}
+Table \ref{tab2} gives an example for a repeated measurement design where the effect of a treatment is to be evaluated by comparing item difficulties regarding a control and a treatment group.
+The number of virtual parameters is doubled compared to the model matrix given in Table \ref{tab1}.
+\begin{table}[h]\centering%
+  $\begin{array}{c|c|c|rrrr|rrr}
+  & & & \eta_1 & \eta_2 & \hdots & \eta_k & \eta_{k+1} & \eta_{k+2} \\
+  \hline
+  \textrm{Time 1} & \textrm{Group 1} & \beta_1^{\ast(1)} & 1 & 0 & 0 & 0 & 0 &  0\\
+  & & \beta_2^{\ast(1)} & 0 & 1 & 0 & 0 & 0&  0\\
+  & & \vdots        &   &   & \ddots& &\vdots &\vdots\\
+  & & \beta_{k}^{\ast(1)} & 1 & 0 & 0 & 1 & 0 & 0\\
+  \cline{2-9}
+  & \textrm{Group 2} & \beta_{k+1}^{\ast(1)} & 1 & 0 & 0 & 0 & 0 & 0\\
+  & & \beta_{k+2}^{\ast(1)} & 0 & 1 & 0 & 0 & 0 & 0\\
+  & & \vdots        &   &   & \ddots& &\vdots & \vdots\\
+  & & \beta_{2k}^{\ast(1)} & 1 & 0 & 0 & 1 & 0& 0\\
+  \hline
+  \textrm{Time 2} & \textrm{Group 1} & \beta_1^{\ast(2)} & 1 & 0 & 0 & 0 & 1 & 0\\
+  & & \beta_2^{\ast(2)} & 0 & 1 & 0 & 0 & 1 & 0\\
+  & & \vdots        &   &   & \ddots& &\vdots &\vdots\\
+  & & \beta_{k}^{\ast(2)} & 1 & 0 & 0 & 1 & 1 & 0\\
+  \cline{2-9}
+  & \textrm{Group 2} & \beta_{k+1}^{\ast(2)} & 1 & 0 & 0 & 0 & 1 & 1\\
+  & & \beta_{k+2}^{\ast(2)} & 0 & 1 & 0 & 0 & 1 & 1\\
+  & & \vdots        &   &   & \ddots& &\vdots  & \vdots\\
+  & & \beta_{2k}^{\ast(2)} & 1 & 0 & 0 & 1 & 1 & 1\\
+  \end{array}$
+  \caption{Design matrix for a repeated measurements design with treatment and control group.}
+  \label{tab2}
 \end{table}
 
-Again, $\eta_{k+1}$ is the parameter that refers to the time
-contrast, and $\eta_{k+2}$ is a group effect within
-measurement point 2. More examples are given in Section \ref{sec:pack}
-and further explanations can be found in \citet{Fisch:95b},
-\citet{FiPo:94}, and in the software manual for the LPCM-Win program
-by \citet{FiPS:98}.
+Again, $\eta_{k+1}$ is the parameter that refers to the time contrast, and $\eta_{k+2}$ is a group effect within measurement point 2.
+More examples are given in Section \ref{sec:pack} and further explanations can be found in \citet{Fisch:95b},
+\citet{FiPo:94}, and in the software manual for the LPCM-Win program by \citet{FiPS:98}.
 
-By introducing the concept of virtual persons, \pkg{eRm} allows for the computation of the linear logistic test model with relaxed assumptions \citep[LLRA][]{Fisch:77}. Corresponding explanations will be given in a subsequent version of this vignette.
-
-
+By introducing the concept of virtual persons, \pkg{eRm} allows for the computation of the linear logistic test model with relaxed assumptions \citep[LLRA][]{Fisch:77}.
+Corresponding explanations will be given in a subsequent version of this vignette.
+%
+%
+%
+%
 %------------------------ end extended Rasch models --------------------------
-
 \section{Estimation of item and person parameters}
 \label{sec:cml}
-
+%
+%
+%
 \subsection{CML for item parameter estimation}
-The main idea behind the CML estimation is that the person's raw score $r_v=\sum_{i=1}^k x_{vi}$ is a sufficient statistic. Thus, by conditioning the likelihood onto $\boldsymbol{r}'=(r_1,...,r_n)$, the person parameters $\boldsymbol{\theta}$, which in this context are nuisance parameters, vanish from the likelihood equation, thus, leading to consistently estimated item parameters $\hat{\boldsymbol{\beta}}$.
+The main idea behind the CML estimation is that the person's raw score $r_v=\sum_{i=1}^k x_{vi}$ is a sufficient statistic.
+Thus, by conditioning the likelihood onto $\bm{r}'=(r_1,\,\ldots,\,r_n)$, the person parameters $\bm{\theta}$, which in this context are nuisance parameters, vanish from the likelihood equation, thus, leading to consistently estimated item parameters $\hat{\bm{\beta}}$.
 
-Some restrictions have to be imposed on the parameters to ensure identifiability. This can be achieved, e.g., by setting certain parameters to zero depending on the model. In the Rasch model one item parameter has to be fixed to 0. This parameter may be considered as baseline difficulty. In addition, in the RSM the category parameters $\omega_0$ and $\omega_1$ are also constrained to 0. In the PCM all parameters representing the first category, i.e. $\beta_{i0}$ with $i=1,\ldots,k$, and one additional item-category parameter, e.g., $\beta_{11}$ have to be fixed. For the linear extensions it holds that the $\beta$-parameters that are fixed within a certain condition (e.g. first measurement point, control group etc.) are also constrained in the other conditions (e.g. second measurement point, treatment group etc.).
+Some restrictions have to be imposed on the parameters to ensure identifiability.
+This can be achieved, e.g., by setting certain parameters to zero depending on the model.
+In the Rasch model one item parameter has to be fixed to 0.
+This parameter may be considered as baseline difficulty.
+In addition, in the RSM the category parameters $\omega_0$ and $\omega_1$ are also constrained to 0.
+In the PCM all parameters representing the first category, i.e., $\beta_{i0}$ with $i=1,\ldots,k$, and one additional item-category parameter, e.g., $\beta_{11}$ have to be fixed.
+For the linear extensions it holds that the $\beta$-parameters that are fixed within a certain condition (e.g., first measurement point, control group etc.) are also constrained in the other conditions (e.g., second measurement point, treatment group etc.).
 
-At this point, for the LPCM the likelihood equations with corresponding first and second order derivatives are presented (i.e. \textit{unified CML equations}). In the first version of the \pkg {eRm} package numerical approximations of the Hessian matrix are used. However, to ensure numerical accuracy and to speed up the estimation process, it is planned to implement the analytical solution as given below.
+At this point, for the LPCM the likelihood equations with corresponding first and second order derivatives are presented (i.e., \textit{unified CML equations}).
+In the first version of the \pkg {eRm} package numerical approximations of the Hessian matrix are used.
+However, to ensure numerical accuracy and to speed up the estimation process, it is planned to implement the analytical solution as given below.
 
 The conditional log-likelihood equation for the LPCM is
 
@@ -296,18 +271,27 @@ The conditional log-likelihood equation for the LPCM is
     \log L_c = \sum_{i=1}^k \sum_{h=1}^{m_i} x_{+ih} \sum_{j=1}^p w_{ihj} \eta_j - \sum_{r=1}^{r_{max}} n_r \log \gamma_r.
 \end{equation}
 
-The maximal raw score is denoted by $r_{max}$ whereas the number of subjects with the same raw score is quoted as $n_r$. Alternatively, by going down to an individual level, the last sum over $r$ can be replaced by $\sum_{v=1}^n \log \gamma_{r_v}$. It is straightforward to show that the LPCM as well as the other extended Rasch models, define an exponential family  \citep{And:83}. Thus, the raw score $r_v$ is minimally sufficient for $\theta_v$ and the item totals $x_{.ih}$ are minimally sufficient for $\beta_{ih}$.
+The maximal raw score is denoted by $r_{max}$ whereas the number of subjects with the same raw score is quoted as $n_r$.
+Alternatively, by going down to an individual level, the last sum over $r$ can be replaced by $\sum_{v=1}^n \log \gamma_{r_v}$.
+It is straightforward to show that the LPCM as well as the other extended Rasch models, define an exponential family  \citep{And:83}.
+Thus, the raw score $r_v$ is minimally sufficient for $\theta_v$ and the item totals $x_{.ih}$ are minimally sufficient for $\beta_{ih}$.
 
-Crucial expressions are the $\gamma$-terms which are known as \textit{elementary symmetric functions}. More details about these terms are given in the next section. However, in the \pkg {eRm} package the numerically stable \textit{summation algorithm} as suggested by \citet{And:72} is implemented. \citet{FiPo:94} adopted this algorithm for the LPCM and devised also the first order derivative for computing the corresponding derivative of $\log L_c$:
-
-\begin{equation}
-\label{eq:dcml}
-\frac{\partial\log L_c}{\partial\eta_a} = \sum_{i=1}^k \sum_{h=1}^{m_i} w_{iha}\left(x_{+ih} - \epsilon_{ih} \sum_{r=1}^{r_{max}} n_r \frac{ \gamma_{r}^{(i)}}{\gamma_r}\right).
+Crucial expressions are the $\gamma$-terms which are known as \textit{elementary symmetric functions}.
+More details about these terms are given in the next section.
+However, in the \pkg {eRm} package the numerically stable \textit{summation algorithm} as suggested by \citet{And:72} is implemented.
+\citet{FiPo:94} adopted this algorithm for the LPCM and devised also the first order derivative for computing the corresponding derivative of $\log L_c$:
+\begin{equation}\label{eq:dcml}
+  \frac{\partial\log L_c}{\partial\eta_a} = \sum_{i=1}^k \sum_{h=1}^{m_i} w_{iha}\left(x_{+ih} - \epsilon_{ih} \sum_{r=1}^{r_{max}} n_r \frac{ \gamma_{r}^{(i)}}{\gamma_r}\right).
 \end{equation}
+It is important to mention that for the CML-representation, the multiplicative Rasch expression is used throughout equations \ref{eq1} to \ref{eq:lpcmeta}, i.e., $\epsilon_i=\exp(-\beta_i)$ for the person parameter.
+Therefore, $\epsilon_{ih}$ corresponds to the reparameterized item $\times$ category parameter whereas $\epsilon_{ih} > 0$.
+Furthermore, $\gamma_{r}^{(i)}$ are the first order derivatives of the $\gamma$-functions with respect to item $i$.
+The index $a$ in $\eta_a$ denotes the first derivative with respect to the $a^{th}$ parameter.
 
-It is important to mention that for the CML-representation, the multiplicative Rasch expression is used throughout equations \ref{eq1} to \ref{eq:lpcmeta}, i.e., $\epsilon_i=\exp(-\beta_i)$ for the person parameter. Therefore, $\epsilon_{ih}$ corresponds to the reparameterized item $\times$ category parameter whereas $\epsilon_{ih} > 0$. Furthermore, $\gamma_{r}^{(i)}$ are the first order derivatives of the $\gamma$-functions with respect to item $i$. The index $a$ in $\eta_a$ denotes the first derivative with respect to the $a^{th}$ parameter.
-
-For the second order derivative of $\log L_c$, two cases have to be distinguished: the derivatives for the off-diagonal elements and the derivatives for the main diagonal elements. The item categories with respect to the item index $i$ are coded with $h_i$, and those referring to item $l$ with $h_l$. The second order derivatives of the $\gamma$-functions with respect to items $i$ and $l$ are denoted by $\gamma_r^{(i,l)}$. The corresponding likelihood expressions are
+For the second order derivative of $\log L_c$, two cases have to be distinguished: the derivatives for the off-diagonal elements and the derivatives for the main diagonal elements.
+The item categories with respect to the item index $i$ are coded with $h_i$, and those referring to item $l$ with $h_l$.
+The second order derivatives of the $\gamma$-functions with respect to items $i$ and $l$ are denoted by $\gamma_r^{(i,l)}$.
+The corresponding likelihood expressions are
 \begin{align}
 \label{eq:2dcml}
 \frac{\partial\log L_c}{\partial\eta_a \eta_b} = & -\sum_{i=1}^k \sum_{h_i=1}^{m_i} w_{ih_ia}w_{ih_ib}\epsilon_{ih_i} \sum_{r=1}^{r_{max}} n_r \frac{\log \gamma_{r-h_i}}{\gamma_r}\\
@@ -323,355 +307,230 @@ for $a\neq b$, and
 \end{align}
 for $a=b$.
 
-To solve the likelihood equations with respect to $\mathbf{\hat{\eta}}$, a Newton-Raphson algorithm is applied. The update within each iteration step $s$ is performed by
-
-\begin{equation}
-\label{eq:iter}
-\boldsymbol{\hat{\eta}}_s=\boldsymbol{\hat{\eta}}_{s-1}-\mathbf{H}_{s-1}^{-1} \boldsymbol{\delta}_{s-1}.
+To solve the likelihood equations with respect to $\hat{\bm{\eta}}$, a Newton-Raphson algorithm is applied.
+The update within each iteration step $s$ is performed by
+\begin{equation}\label{eq:iter}
+  \hat{\bm{\eta}}_s=\hat{\bm{\eta}}_{s-1}-\bm{H}_{s-1}^{-1}\bm{\delta}_{s-1}.
 \end{equation}
-
-The starting values are $\boldsymbol{\hat{\eta}}_0=\mathbf{0}$.
-$\mathbf{H}_{s-1}^{-1}$ is the inverse of the Hessian matrix composed by
-the elements given in Equation \ref{eq:2dcml} and \ref{eq:2dcmlab} and
-$\boldsymbol{\delta}_{s-1}$ is the gradient at iteration $s-1$ as
-specified in Equation \ref{eq:dcml}.  The iteration stops if the
-likelihood difference $\left|\log L_c^{(s)} - \log L_c^{(s-1)}
-\right|\leq \varphi$ where $\varphi$ is a predefined (small) iteration
-limit.  Note that in the current version (\Sexpr{packageDescription("eRm", fields = "Version")})
-$\mathbf{H}$ is
-approximated numerically by using the \pkg{nlm} Newton-type algorithm
-provided in the \pkg{stats} package.  The analytical solution as given
-in Equation \ref{eq:2dcml} and \ref{eq:2dcmlab} will be implemented in
-the subsequent version of \pkg{eRm}.
-
-
+The starting values are $\hat{\bm{\eta}}_0=\bm{0}$.
+$\bm{H}_{s-1}^{-1}$ is the inverse of the Hessian matrix composed by the elements given in Equation \ref{eq:2dcml} and \ref{eq:2dcmlab} and $\bm{\delta}_{s-1}$ is the gradient at iteration $s-1$ as specified in Equation \ref{eq:dcml}.
+The iteration stops if the likelihood difference $\left|\log L_c^{(s)} - \log L_c^{(s-1)} \right|\leq \varphi$ where $\varphi$ is a predefined (small) iteration limit.
+Note that in the current version (\Sexpr{packageDescription("eRm", fields = "Version")}) $\bm{H}$ is approximated numerically by using the \pkg{nlm} Newton-type algorithm provided in the \pkg{stats} package.
+The analytical solution as given in Equation \ref{eq:2dcml} and \ref{eq:2dcmlab} will be implemented in the subsequent version of \pkg{eRm}.
+%
+%
+%
 \subsection{Mathematical properties of the CML estimates}
 \label{sec:mpcml}
-A variety of estimation approaches for IRT models in general  and
-for the Rasch model in particular are available: The \emph{joint
-maximum likelihood} (JML) estimation as proposed by \citet{Wright+Panchapakesan:1969}
-which is not recommended since the estimates are not consistent
-\citep[see e.g.][]{Haberman:77}. The basic reason for that is that the
-person parameters $\boldsymbol{\theta}$ are nuisance parameters; the
-larger the sample size, the larger the number of parameters.
+A variety of estimation approaches for IRT models in general  and for the Rasch model in particular are available: The \emph{joint maximum likelihood} (JML) estimation as proposed by \citet{Wright+Panchapakesan:1969} which is not recommended since the estimates are not consistent \citep[see e.g.][]{Haberman:77}.
+The basic reason for that is that the person parameters $\bm{\theta}$ are nuisance parameters; the larger the sample size, the larger the number of parameters.
 
-A well-known alternative is the \emph{marginal maximum likelihood}
-(MML) estimation \citep{Bock+Aitkin:1981}: A distribution $g(\theta)$ for
-the person parameters is assumed and the resulting situation
-corresponds to a mixed-effects ANOVA: Item difficulties can be
-regarded as fixed effects and person abilities as random effects.
-Thus, IRT models fit into the framework of \emph{generalized linear
-mixed models} (GLMM) as elaborated in \citet{deBoeck+Wilson:2004}. By
-integrating over the ability distribution the random nuisance
-parameters can be removed from the likelihood equations. This leads
-to consistent estimates of the item parameters. Further discussions
-of the MML approach with respect to the CML method will follow.
+A well-known alternative is the \emph{marginal maximum likelihood} (MML) estimation \citep{Bock+Aitkin:1981}: A distribution $g(\theta)$ for the person parameters is assumed and the resulting situation corresponds to a mixed-effects ANOVA: Item difficulties can be regarded as fixed effects and person abilities as random effects.
+Thus, IRT models fit into the framework of \emph{generalized linear mixed models} (GLMM) as elaborated in \citet{deBoeck+Wilson:2004}.
+By integrating over the ability distribution the random nuisance parameters can be removed from the likelihood equations.
+This leads to consistent estimates of the item parameters.
+Further discussions of the MML approach with respect to the CML method will follow.
 
-For the sake of completeness, some other methods for the estimation
-of the item parameters are the following: \citet{CAnd:07} propose
-a Pseudo-ML approach, \citet{Molenaar:1995} and \citet{Linacre:2004} give an
-overview of various (heuristic) non-ML methods, Bayesian
-techniques can be found in \citet[Chapter 7]{BaKi:04}, and for nonparameteric approaches it is referred to \citet{LeVe:86}.
+For the sake of completeness, some other methods for the estimation of the item parameters are the following: \citet{CAnd:07} propose a Pseudo-ML approach, \citet{Molenaar:1995} and \citet{Linacre:2004} give an overview of various (heuristic) non-ML methods, Bayesian techniques can be found in \citet[Chapter 7]{BaKi:04}, and for nonparameteric approaches it is referred to \citet{LeVe:86}.
 
-However, back to CML, the main idea behind this approach is the
-assumption that the raw score $r_v$ is a minimal sufficient
-statistic for $\theta_v$. Starting from the equivalent
-multiplicative expression of Equation \ref{eq1} with
-$\xi_v=\exp(\theta_v)$ and $\epsilon_i=\exp(-\beta_i)$, i.e.,
-\begin{equation}
-\label{eq7}
+However, back to CML, the main idea behind this approach is the assumption that the raw score $r_v$ is a minimal sufficient statistic for $\theta_v$.
+Starting from the equivalent multiplicative expression of Equation \ref{eq1} with $\xi_v=\exp(\theta_v)$ and $\epsilon_i=\exp(-\beta_i)$, i.e.,
+\begin{equation}\label{eq7}
   P(X_{vi}=1)=\frac{\xi_v \epsilon_i}{1+\xi_v \epsilon_i},
 \end{equation}
-the following likelihood for the response pattern $\boldsymbol{x}_v$
-for a certain subject $v$ results:
-\begin{equation}
-\label{eq8}
-  P(\boldsymbol{x}_v|\xi_v,\boldsymbol{\epsilon})=\prod_{i=1}^k \frac{(\xi_v \epsilon_i)^{x_{vi}}}{1+\xi_v \epsilon_i}=
+the following likelihood for the response pattern $\bm{x}_v$ for a certain subject $v$ results:
+\begin{equation}\label{eq8}
+  P(\bm{x}_v|\xi_v,\bm{\epsilon})=\prod_{i=1}^k \frac{(\xi_v \epsilon_i)^{x_{vi}}}{1+\xi_v \epsilon_i}=
   \frac{{\theta_v}^{r_v} \prod_{i=1}^k {\epsilon_i}^{x_{vi}}}{\prod_{i=1}^k (1+\xi_v \epsilon_i)}.
 \end{equation}
-Using the notation $\boldsymbol{y}=(y_1,\ldots ,y_k)$ for all
-possible response patterns with $\sum_{i=1}^k y_i=r_v$,  the
-probability for a fixed raw score $r_v$ is
-\begin{equation}
-\label{eq9}
-  P(r_v|\xi_v,\boldsymbol{\epsilon})=\sum_{\boldsymbol{y}|r_v} \prod_{i=1}^k \frac{(\xi_v \epsilon_i)^{x_{vi}}}{1+\xi_v \epsilon_i}=\frac{{\theta_v}^{r_v} \sum_{\boldsymbol{y}|r_v}  \prod_{i=1}^k {\epsilon_i}^{x_{vi}}}{\prod_{i=1}^k (1+\xi_v \epsilon_i)}.
+Using the notation $\bm{y}=(y_1,\ldots ,y_k)$ for all possible response patterns with $\sum_{i=1}^k y_i=r_v$,  the probability for a fixed raw score $r_v$ is
+\begin{equation}\label{eq9}
+  P(r_v|\xi_v,\bm{\epsilon})=\sum_{\bm{y}|r_v} \prod_{i=1}^k \frac{(\xi_v \epsilon_i)^{x_{vi}}}{1+\xi_v \epsilon_i}=\frac{{\theta_v}^{r_v} \sum_{\bm{y}|r_v}  \prod_{i=1}^k {\epsilon_i}^{x_{vi}}}{\prod_{i=1}^k (1+\xi_v \epsilon_i)}.
 \end{equation}
-The crucial term with respect to numerical solutions of the
-likelihood equations is the second term in the numerator:
-\begin{equation}
-\label{eq:gamma}
-  \gamma_r(\epsilon_i) \equiv \sum_{\boldsymbol{y}|r_v} \prod_{i=1}^k {\epsilon_i}^{x_{vi}}
+The crucial term with respect to numerical solutions of the likelihood equations is the second term in the numerator:
+\begin{equation}\label{eq:gamma}
+  \gamma_r(\epsilon_i) \equiv \sum_{\bm{y}|r_v} \prod_{i=1}^k {\epsilon_i}^{x_{vi}}
 \end{equation}
 These are the \emph{elementary symmetric functions}  (of order $r$).
-An overview of efficient computational algorithms and corresponding
-simulation studies can be found in \citet{Li:94}. The \pkg{eRm}
-package uses the summation algorithm as proposed by \citet{And:72}.
+An overview of efficient computational algorithms and corresponding simulation studies can be found in \citet{Li:94}.
+The \pkg{eRm} package uses the summation algorithm as proposed by \citet{And:72}.
 
-Finally, by collecting the different raw scores into the vector
-$\boldsymbol{r}$ the conditional probability of observing response
-pattern $\boldsymbol{x}_v$ with given raw score $r_v$ is
-\begin{equation}
-\label{eq:xraw}
-  P(\boldsymbol{x}_v|r_v,\boldsymbol{\epsilon})=\frac{P(\boldsymbol{x}_v|\xi_v,\boldsymbol{\epsilon})}{P(r_v|\xi_v,\boldsymbol{\epsilon})} \,.
+Finally, by collecting the different raw scores into the vector $\bm{r}$ the conditional probability of observing response pattern $\bm{x}_v$ with given raw score $r_v$ is
+\begin{equation}\label{eq:xraw}
+  P(\bm{x}_v|r_v,\bm{\epsilon})=\frac{P(\bm{x}_v|\xi_v,\bm{\epsilon})}{P(r_v|\xi_v,\bm{\epsilon})} \,.
 \end{equation}
-By taking the product over the persons (independence  assumption),
-the (conditional) likelihood expression for the whole sample becomes
-\begin{equation}
-\label{eq:likall}
-  L(\boldsymbol{\epsilon}|\boldsymbol{r})=P(\boldsymbol{x}|\boldsymbol{r},\boldsymbol{\epsilon})=\prod_{v=1}^n \frac{\prod_{i=1}^k {\epsilon_i}^{x_{vi}}}{\gamma_{r_v}}.
+By taking the product over the persons (independence  assumption), the (conditional) likelihood expression for the whole sample becomes
+\begin{equation}\label{eq:likall}
+  L(\bm{\epsilon}|\bm{r})=P(\bm{x}|\bm{r},\bm{\epsilon})=\prod_{v=1}^n \frac{\prod_{i=1}^k {\epsilon_i}^{x_{vi}}}{\gamma_{r_v}}.
 \end{equation}
-With respect to raw score frequencies $n_r$ and by reintroducing the
-$\beta$-parameters, (\ref{eq:likall}) can be reformulated as
-\begin{equation}
-\label{eq12a}
-  L(\boldsymbol{\beta}|\boldsymbol{r})= \frac{\exp \left(\sum_{i=1}^k x_{+i}\beta_i \right)}{\prod_{r=0}^k
-  \gamma_r^{n_r}} \,,
+With respect to raw score frequencies $n_r$ and by reintroducing the $\beta$-parameters, (\ref{eq:likall}) can be reformulated as
+\begin{equation}\label{eq12a}
+  L(\bm{\beta}|\bm{r})= \frac{\exp \left(\sum_{i=1}^k x_{+i}\beta_i \right)}{\prod_{r=0}^k\gamma_r^{n_r}}\,,
 \end{equation}
-where $x_{+i}$ are the item raw scores. It is obvious  that by
-conditioning the likelihood on the raw scores $\boldsymbol{r}$, the
-person parameters completely vanished from the expression. As a
-consequence, the parameters $\boldsymbol{\hat{\beta}}$ can be
-estimated without knowledge of the subject's abilities. This issue
-is referred as \emph{person-free item assessment} and we will
-discuss this topic within the context of specific objectivity in the
-next section.
+where $x_{+i}$ are the item raw scores.
+It is obvious  that by conditioning the likelihood on the raw scores $\bm{r}$, the person parameters completely vanished from the expression.
+As a consequence, the parameters $\bm{\hat{\beta}}$ can be estimated without knowledge of the subject's abilities.
+This issue is referred as \emph{person-free item assessment} and we will discuss this topic within the context of specific objectivity in the next section.
 
-Pertaining to asymptotical issues, it can be shown that  under mild
-regularity conditions \citep{Pf:94} the CML estimates are
-consistent for $n\rightarrow \infty$ and $k$ fixed, unbiased,
-asymptotically efficient, and normally distributed
-\citep{Andersen:1970}. For the computation of a Rasch model,
-comparatively small samples are sufficient to get reliable estimates
-\citep{Fischer:1988}. Whether the MML estimates are unbiased depends
-on the correct specification of the ability distribution
-$g(\theta)$. In case of an incorrect assumption, the estimates are
-biased which is surely a drawback of this method. If $g(\theta)$ is
-specified appropriately, the CML and MML estimates are
-asymptotically equivalent \citep{Pf:94}.
+Pertaining to asymptotical issues, it can be shown that  under mild regularity conditions \citep{Pf:94} the CML estimates are consistent for $n\rightarrow \infty$ and $k$ fixed, unbiased, asymptotically efficient, and normally distributed \citep{Andersen:1970}.
+For the computation of a Rasch model, comparatively small samples are sufficient to get reliable estimates \citep{Fischer:1988}.
+Whether the MML estimates are unbiased depends on the correct specification of the ability distribution $g(\theta)$.
+In case of an incorrect assumption, the estimates are biased which is surely a drawback of this method.
+If $g(\theta)$ is specified appropriately, the CML and MML estimates are asymptotically equivalent \citep{Pf:94}.
 
-\citet{Fischer:1981} elaborates on the conditions for the existence and
-the uniqueness of the CML estimates. The crucial condition for the
-data matrix is that $\boldsymbol{X}$ has to be
-\emph{well-conditioned}. To introduce this issue it is convenient to
-look at a matrix which is \emph{ill-conditioned}: A matrix is
-ill-conditioned if there exists a partition of the items into two
-nonempty subsets such that all of a group of subjects responded
-correctly to items $i+1,\ldots,k$ ($\boldsymbol{X}_2$) and all of
-all other subjects failed for items $1,\ldots,i$
-($\boldsymbol{X}_3$), i.e.,
-\begin{table}[h]
-\centering
+\citet{Fischer:1981} elaborates on the conditions for the existence and the uniqueness of the CML estimates.
+The crucial condition for the data matrix is that $\bm{X}$ has to be \emph{well-conditioned}.
+To introduce this issue it is convenient to look at a matrix which is \emph{ill-conditioned}: A matrix is ill-conditioned if there exists a partition of the items into two nonempty subsets such that all of a group of subjects responded correctly to items $i+1,\ldots,k$ ($\bm{X}_2$) and all of all other subjects failed for items $1,\ldots,i$ ($\bm{X}_3$), i.e.,
+\begin{table}[h]\centering%
 \[
-\boldsymbol{X}=
+\bm{X}=
 \left(
 \begin{array}{c|c}
-\boldsymbol{X}_1 & \boldsymbol{X}_2\\
+\bm{X}_1 & \bm{X}_2\\
 \hline
-\boldsymbol{X}_3 & \boldsymbol{X}_4\\
+\bm{X}_3 & \bm{X}_4\\
 \end{array}
 \right)
 =
 \left(
 \begin{array}{ccc|ccc}
 & & & 1 & \ldots & 1 \\
-& \boldsymbol{X}_1 & & \vdots & \ddots & \vdots \\
+& \bm{X}_1 & & \vdots & \ddots & \vdots \\
 & & & 1 & \ldots & 1 \\
 \hline
 0 & \ldots & 0 & & & \\
-\vdots & \ddots & \vdots & & \boldsymbol{X}_4 & \\
+\vdots & \ddots & \vdots & & \bm{X}_4 & \\
 0 & \ldots & 0 & & & \\
 \end{array}
 \right)
 \]
 \end{table}
 
-Thus, following the definition in \citet{Fischer:1981}: $\boldsymbol{X}$
-will be called \emph{well-conditioned} iff in every possible
-partition of the items into two nonempty subsets some subjects has
-given response 1 on some item in the first set and response 0 on
-some item in the second set. In this case a unique solution for the
-CML estimates $\boldsymbol{\hat{\beta}}$  exists.
+Thus, following the definition in \citet{Fischer:1981}: $\bm{X}$ will be called \emph{well-conditioned} iff in every possible partition of the items into two nonempty subsets some subjects has given response 1 on some item in the first set and response 0 on
+some item in the second set.
+In this case a unique solution for the CML estimates $\hat{\bm{\beta}}$  exists.
 
-This issue is important for structurally incomplete designs which
-often  occur in practice; different subsets of items are presented
-to different groups of persons $g=1,\ldots,G$ where $G\leq n$. As a
-consequence, the likelihood values have to be computed for each
-group separately and the joint likelihood is the product over the
-single group likelihoods. Hence, the likelihood in Equation
-\ref{eq12a} becomes
-\begin{equation}
-\label{eq:glik}
-L(\boldsymbol{\beta}|\boldsymbol{r})=\prod_{g=1}^G \frac{\exp \left(\sum_{i=1}^k x_{+i}\beta_i \right)}{\prod_{r=0}^k {\gamma_{g,r}}^{n_{g,r}}}
+This issue is important for structurally incomplete designs which often  occur in practice; different subsets of items are presented to different groups of persons $g=1,\ldots,G$ where $G\leq n$.
+As a consequence, the likelihood values have to be computed for each group separately and the joint likelihood is the product over the single group likelihoods.
+Hence, the likelihood in Equation \ref{eq12a} becomes
+\begin{equation}\label{eq:glik}
+  L(\bm{\beta}|\bm{r})=\prod_{g=1}^G \frac{\exp \left(\sum_{i=1}^k x_{+i}\beta_i \right)}{\prod_{r=0}^k {\gamma_{g,r}}^{n_{g,r}}}
 \end{equation}
-This also implies the necessity to compute the elementary symmetric
-functions separately for each group. The \pkg{eRm} package can
-handle such structurally incomplete designs.
+This also implies the necessity to compute the elementary symmetric functions separately for each group.
+The \pkg{eRm} package can handle such structurally incomplete designs.
 
-From the elaborations above it is obvious that from an
-asymptotical point of view the CML estimates are at least as good
-as the MML estimates. In the past, computational problems (speed,
-numerical accuracy) involved in calculating the elementary symmetric
-functions limited the practical usage of the CML approach \citep[see e.g.][]{Gustafsson:1980}.
+From the elaborations above it is obvious that from an asymptotical point of view the CML estimates are at least as good as the MML estimates.
+In the past, computational problems (speed, numerical accuracy) involved in calculating the elementary symmetric functions limited the practical usage of the CML approach \citep[see e.g.][]{Gustafsson:1980}.
 Nowadays, these issues are less crucial due to increased computer power.
 
-In some cases MML estimation has advantages not shared  by CML: MML
-leads to finite person parameters even for persons with zero and
-perfect raw score, and such persons are not removed from the
-estimation process \citep{Molenaar:1995}. On he other hand the
-consideration of such persons does not seem meaningful from a
-substantial point of view since the person parameters are not
-reliable anymore -- for such subjects the test is too difficult or
-too easy, respectively. Thus, due to these covering effects, a
-corresponding ability estimation is not feasible. However, if the
-research goal is to find ability distributions such persons should
-be regarded and MML can handle this.
+In some cases MML estimation has advantages not shared  by CML: MML leads to finite person parameters even for persons with zero and perfect raw score, and such persons are not removed from the estimation process \citep{Molenaar:1995}.
+On he other hand the consideration of such persons does not seem meaningful from a substantial point of view since the person parameters are not reliable anymore -- for such subjects the test is too difficult or too easy, respectively.
+Thus, due to these covering effects, a corresponding ability estimation is not feasible.
+However, if the research goal is to find ability distributions such persons should be regarded and MML can handle this.
 
-When estimates for the person parameters are of interest some care
-has to be taken if the CML method is used since person parameters
-cancel from the estimation equations. Usually, they are estimated
-(once having obtained values for the item parameters) by inserting
-$\boldsymbol{\hat{\beta}}$ (or equivalently
-$\boldsymbol{\hat{\epsilon}}$) into Equation \ref {eq8} and
-solving with respect to $\boldsymbol{\theta}$. Alternatively,
-Bayesian procedures are applicable \citep{Hoijtink+Boomsma:1995}. It is again
-pointed out that each person in the sample gets an own parameter
-even though limited by the number of different raw scores.
-
+When estimates for the person parameters are of interest some care has to be taken if the CML method is used since person parameters cancel from the estimation equations.
+Usually, they are estimated (once having obtained values for the item parameters) by inserting $\hat{\bm{\beta}}$ (or equivalently $\hat{\bm{\epsilon}}$) into Equation \ref {eq8} and solving with respect to $\bm{\theta}$.
+Alternatively, Bayesian procedures are applicable \citep{Hoijtink+Boomsma:1995}.
+It is again pointed out that each person in the sample gets an own parameter even though limited by the number of different raw scores.
+%
+%
+%
 \subsection{CML and specific objectivity}
-In general, the Rasch model can be regarded as a measurement model:
-Starting from the (nominally scaled) 0/1-data matrix
-$\boldsymbol{X}$, the person raw scores $r_v$ are on an ordinal
-level. They, in turn, are used to estimate the item parameters
-$\boldsymbol{\beta}$ which are on an interval scale provided that
-the Rasch model holds.
+In general, the Rasch model can be regarded as a measurement model: Starting from the (nominally scaled) 0/1-data matrix $\bm{X}$, the person raw scores $r_v$ are on an ordinal level.
+They, in turn, are used to estimate the item parameters $\bm{\beta}$ which are on an interval scale provided that the Rasch model holds.
 
-Thus, Rasch models allow for comparisons between objects on an
-interval level. Rasch reasoned on requirements to be fulfilled such
-that a specific proposition within this context can be regarded as
-``scientific''. His conclusions were that a basic requirement is the
-``objectivity'' of comparisons \citep{Ra:61}. This claim
-contrasts assumptions met in \emph{classical test theory} (CTT). A
-major advantage of the Rasch model over CTT models is the
-\emph{sample independence} of the results. The relevant concepts in
-CTT are based on a linear model for the ``true score" leading to
-some indices, often correlation coefficients, which in turn depend
-on the observed data. This is a major drawback in CTT. According to
-\citet{Fisch:74}, sample independence in IRT models has the
-following implications:
+Thus, Rasch models allow for comparisons between objects on an interval level.
+Rasch reasoned on requirements to be fulfilled such that a specific proposition within this context can be regarded as ``scientific''.
+His conclusions were that a basic requirement is the ``objectivity'' of comparisons \citep{Ra:61}.
+This claim contrasts assumptions met in \emph{classical test theory} (CTT).
+A major advantage of the Rasch model over CTT models is the \emph{sample independence} of the results.
+The relevant concepts in CTT are based on a linear model for the ``true score'' leading to some indices, often correlation coefficients, which in turn depend on the observed data.
+This is a major drawback in CTT.
+According to \citet{Fisch:74}, sample independence in IRT models has the following implications:
 \begin{itemize}
-  \item The person-specific results (i.e., essentially $\boldsymbol{\theta}$) do not depend on the assignment of a person to a certain subject group nor on the selected test items from an item pool $\Psi$.
+  \item The person-specific results (i.e., essentially $\bm{\theta}$) do not depend on the assignment of a person to a certain subject group nor on the selected test items from an item pool $\Psi$.
   \item Changes in the skills of a person on the latent trait can be determined independently from its base level and independently from the selected item subset $\psi \subset \Psi$.
   \item From both theoretical and practical perspective the requirement for representativeness of the sample is obsolete in terms of a true random selection process.
 \end{itemize}
-Based on these requirements for parameter comparisons, \citet{Ra:77}
-introduced the term \emph{specific objectivity}: \emph{objective}
-because any comparison of a pair of parameters is independent of any
-other parameters or comparisons; \emph{specifically objective}
-because the comparison made was relative to some specified frame of
-reference \citep{Andrich:88}. In other words, if specific
-objectivity holds, two persons $v$ and $w$ with corresponding
-parameters $\theta_v$ and $\theta_w$, are comparable independently
-from the remaining persons in the sample and independently from the
-presented item subset $\psi$. In turn, for two items $i$ and $j$
-with parameters $\beta_i$ and $\beta_j$, the comparison of these
-items can be accomplished independently from the remaining items in
-$\Psi$ and independently from the persons in the sample.
+Based on these requirements for parameter comparisons, \citet{Ra:77} introduced the term \emph{specific objectivity}: \emph{objective} because any comparison of a pair of parameters is independent of any other parameters or comparisons; \emph{specifically objective} because the comparison made was relative to some specified frame of reference \citep{Andrich:88}.
+In other words, if specific objectivity holds, two persons $v$ and $w$ with corresponding parameters $\theta_v$ and $\theta_w$, are comparable independently from the remaining persons in the sample and independently from the presented item subset $\psi$.
+In turn, for two items $i$ and $j$ with parameters $\beta_i$ and $\beta_j$, the comparison of these items can be accomplished independently from the remaining items in $\Psi$ and independently from the persons in the sample.
 
-The latter is crucial since it reflects completely what is called
-sample independence. If we think not only of comparing $\beta_i$ and
-$\beta_j$ but rather to estimate these parameters, we achieve a
-point where specific objectivity requires a procedure which is able
-to provide estimates $\boldsymbol{\hat{\beta}}$ that do not
-depend on the sample. This implies that
-$\boldsymbol{\hat{\beta}}$ should be computable without the
-involvement of $\boldsymbol{\theta}$. CML estimation fulfills this requirement: By
-conditioning on the sufficient raw score vector $\boldsymbol{r}$,
-$\boldsymbol{\theta}$ disappears from the likelihood equation and
-$L(\boldsymbol{\beta}|\boldsymbol{r})$ can be solved without
-knowledge of $\boldsymbol{\theta}$. This issue is referred to as
-\emph{separability of item and person parameters} \citep[see e.g.][]{Wright+Masters:1982}. Furthermore, separability implies  that no specific distribution should be assumed neither for the person nor for the item parameters \citep{Rost:2000}. MML estimation requires such assumptions. At this point it is clear that CML estimation is
-the only estimation method within the Rasch measurement context
-fulfilling the requirement of \emph{person-free item calibration}
-and, thus, it maps the epistemological theory of specific
-objectivity to a statistical maximum likelihood framework. Note that
-strictly speaking any statistical result based on sample
-observations is sample-dependent because any result depends at least
-on the sample size \citep{Fischer:1987}. The estimation of the item
-parameters is ``sample-independent", a term indicating the fact that
-the actually obtained sample of a certain population is not of
-relevance for the statistical inference on these parameters
-\citep[][p. 23]{Kubinger:1989}.
-
+The latter is crucial since it reflects completely what is called sample independence.
+If we think not only of comparing $\beta_i$ and $\beta_j$ but rather to estimate these parameters, we achieve a point where specific objectivity requires a procedure which is able to provide estimates $\hat{\bm{\beta}}$ that do not depend on the sample.
+This implies that $\hat{\bm{\beta}}$ should be computable without the involvement of $\bm{\theta}$.
+CML estimation fulfills this requirement: By conditioning on the sufficient raw score vector $\bm{r}$, $\bm{\theta}$ disappears from the likelihood equation and $L(\bm{\beta}|\bm{r})$ can be solved without knowledge of $\bm{\theta}$.
+This issue is referred to as \emph{separability of item and person parameters} \citep[see e.g.][]{Wright+Masters:1982}.
+Furthermore, separability implies  that no specific distribution should be assumed neither for the person nor for the item parameters \citep{Rost:2000}.
+MML estimation requires such assumptions.
+At this point it is clear that CML estimation is the only estimation method within the Rasch measurement context fulfilling the requirement of \emph{person-free item calibration} and, thus, it maps the epistemological theory of specific objectivity to a statistical maximum likelihood framework.
+Note that strictly speaking any statistical result based on sample observations is sample-dependent because any result depends at least on the sample size \citep{Fischer:1987}.
+The estimation of the item parameters is ``sample-independent'', a term indicating the fact that the actually obtained sample of a certain population is not of relevance for the statistical inference on these parameters \citep[][p.\ 23]{Kubinger:1989}.
+%
+%
+%
 \subsection{Estimation of person parameters}
-CML estimation for person parameters is not recommended due to computational issues. The \pkg{eRm} package provides two methods for this estimation. The first is ordinary ML where the CML-based item parameters are plugged into the joint ML equation. The likelihood is optimized with respect to $\boldsymbol{\theta}$. \citet{And:95} gives a general formulation of this ML estimate with $r_v=r$ and $\theta_v=\theta$:
-\begin{equation}
-\label{eq17}
-    r - \sum_{i=1}^k \sum_{h=1}^{m_i} \frac{h \exp(h \theta+\hat{\beta}_{ih})}{\sum_{l=0}^{m_i}\exp(h \theta_v+\hat{\beta}_{il})}=0
+CML estimation for person parameters is not recommended due to computational issues.
+The \pkg{eRm} package provides two methods for this estimation.
+The first is ordinary ML where the CML-based item parameters are plugged into the joint ML equation.
+The likelihood is optimized with respect to $\bm{\theta}$.
+\citet{And:95} gives a general formulation of this ML estimate with $r_v=r$ and $\theta_v=\theta$:
+\begin{equation}\label{eq17}
+  r - \sum_{i=1}^k \sum_{h=1}^{m_i} \frac{h \exp(h \theta+\hat{\beta}_{ih})}{\sum_{l=0}^{m_i}\exp(h \theta_v+\hat{\beta}_{il})}=0
 \end{equation}
-
-\citet{Warm:1989} proposed a weighted likelihood estimation (WLE) which is more accurate compared to ML. For the dichotomous Rasch model the expression to be solved with respect to $\boldsymbol{\theta}$ is
+\citet{Warm:1989} proposed a weighted likelihood estimation (WLE) which is more accurate compared to ML.
+For the dichotomous Rasch model the expression to be solved with respect to $\bm{\theta}$ is
 \begin{equation}
-P(\theta_v|\boldsymbol{x}_v, \hat{\boldsymbol{\beta}}) \propto \frac{exp(r_v\theta_v)}{\prod_i (1+exp(\theta_v-\hat{\beta}_i)}\sum_i p_{vi}(1-p_{vi})
+  P(\theta_v|\bm{x}_v, \hat{\bm{\beta}}) \propto \frac{exp(r_v\theta_v)}{\prod_i (1+exp(\theta_v-\hat{\beta}_i)}\sum_i p_{vi}(1-p_{vi})
 \end{equation}
-Again, the item parameter vector $\hat{\boldsymbol{\beta}}$ is used from CML. This approach will implemented in a subsequent \pkg{eRm} version. Additional explanations and simulation studies regarding person parameter estimation can be found in \citet{Hoijtink+Boomsma:1995}.
-
+Again, the item parameter vector $\hat{\bm{\beta}}$ is used from CML.
+This approach will implemented in a subsequent \pkg{eRm} version.
+Additional explanations and simulation studies regarding person parameter estimation can be found in \citet{Hoijtink+Boomsma:1995}.
+%
+%
+%
+%
 %----------------- end parameter estimation -----------------
-
 \section{Testing extended Rasch models}
 \label{Gof}
-
-Testing IRT models involves two parts: First, item- and person-wise
-statistics can be examined; in particular item-fit and person-fit
-statistics. Secondly, based on CML properties, various model tests
-can be derived \citep[see][]{Glas+Verhelst:1995a,
-Glas+Verhelst:1995b}.
-
+Testing IRT models involves two parts: First, item- and person-wise statistics can be examined; in particular item-fit and person-fit statistics.
+Secondly, based on CML properties, various model tests can be derived \citep[see][]{Glas+Verhelst:1995a, Glas+Verhelst:1995b}.
+%
+%
+%
 \subsection{Item-fit and person-fit statistics}
-
-Commonly in IRT, items and persons are excluded  due to item-fit and
-person-fit statistics. Both are residual based measures: The
-observed data matrix $\mathbf{X}$ is compared with the model
-probability matrix $\mathbf{P}$. Computing standardized residuals
-for all observations gives the $n \times k$ residual matrix
-$\mathbf{R}$. The squared column sums correspond to item-fit
-statistics and the squared row sums to person-fit statistics both of
-which are $\chi^2$-distributed with the corresponding degrees of
-freedom. Based on these quantities unweighted (\textsl{outfit}) and
-weighted (\textsl{infit}) mean-square statistics can also be used to
-evaluate item and person fit \citep[see
-e.g.][]{Wright+Masters:1982}.
-
+Commonly in IRT, items and persons are excluded  due to item-fit and person-fit statistics.
+Both are residual based measures: The observed data matrix $\bm{X}$ is compared with the model probability matrix $\bm{P}$.
+Computing standardized residuals for all observations gives the $n \times k$ residual matrix $\bm{R}$.
+The squared column sums correspond to item-fit statistics and the squared row sums to person-fit statistics both of which are $\chi^2$-distributed with the corresponding degrees of freedom.
+Based on these quantities unweighted (\textsl{outfit}) and weighted (\textsl{infit}) mean-square statistics can also be used to evaluate item and person fit \citep[see e.g.][]{Wright+Masters:1982}.
+%
+%
+%
 \subsection{A Wald test for item elimination}
-A helpful implication of CML estimates is that subsequent test
-statistics are readily obtained and model tests are easy to carry
-out. Basically, we have to distinguish between test on item level
-and global model tests.
+A helpful implication of CML estimates is that subsequent test statistics are readily obtained and model tests are easy to carry out.
+Basically, we have to distinguish between test on item level and global model tests.
 
-On item level, sample independence reflects the property that by
-splitting up the sample in, e.g., two parts, the corresponding
-parameter vectors $\boldsymbol{\hat{\beta}}^{(1)}$ and
-$\boldsymbol{\hat{\beta}}^{(2)}$ should be the same. Thus,  when
-we want to achieve Rasch model fit those items have to be
-eliminated from the test which differ in the subsamples. This
-important issue in test calibration can be examined, e.g., by using
-a graphical model test. \citet{FiSch:70} propose a $N(0,1)$-distributed
-test statistic which compares the item parameters for two subgroups:
-\begin{equation}
-\label{eq:wald}
+On item level, sample independence reflects the property that by splitting up the sample in, e.g., two parts, the corresponding parameter vectors $\hat{\bm{\beta}}^{(1)}$ and $\hat{\bm{\beta}}^{(2)}$ should be the same.
+Thus,  when we want to achieve Rasch model fit those items have to be eliminated from the test which differ in the subsamples.
+This important issue in test calibration can be examined, e.g., by using a graphical model test.
+\citet{FiSch:70} propose a $\mathcal{N}(0,\,1)$-distributed test statistic which compares the item parameters for two subgroups:
+\begin{equation}\label{eq:wald}
   z=\frac{\beta_i^{(1)}-\beta_i^{(2)}}{\sqrt{Var_i^{(1)}-Var_i^{(2)}}}
 \end{equation}
-The variance term in the denominator is based on Fisher's function of ``information in the sample".
-However, as \citet{Glas+Verhelst:1995a} point out
-discussing their Wald-type test that this term can be extracted directly
-from the variance-covariance matrix of the CML estimates. This Wald approach is provided in \pkg{eRm} by means of the function \code{Waldtest()}.
-
+The variance term in the denominator is based on Fisher's function of ``information in the sample''.
+However, as \citet{Glas+Verhelst:1995a} point out discussing their Wald-type test that this term can be extracted directly from the variance-covariance matrix of the CML estimates.
+This Wald approach is provided in \pkg{eRm} by means of the function \code{Waldtest()}.
+%
+%
+%
 \subsection{Andersen's likelihood-ratio test}
 In the \pkg {eRm} package the likelihood ratio test statistic $LR$, initially proposed by \citet{And:73} is computed for the RM, the RSM, and the PCM. For the models with linear extensions, $LR$ has to be computed separately for each measurement point and subgroup.
 \begin{equation}
 \label{eq15}
-LR = 2\left(\sum_{g=1}^G \log L_c(\boldsymbol{\hat{\eta}}_g;\boldsymbol{X}_g)-\log L_c(\boldsymbol{\hat{\eta}};\boldsymbol{X})\right)
+LR = 2\left(\sum_{g=1}^G \log L_c(\hat{\bm{\eta}}_g;\bm{X}_g)-\log L_c(\hat{\bm{\eta}};\bm{X})\right)
 \end{equation}
-The underlying principle of this test statistic is that of \textit{subgroup homogeneity} in Rasch models: for arbitrary disjoint subgroups $g=1,...,G$ the parameter estimates $\boldsymbol{\hat{\eta}}_g$ have to be the same. $LR$ is asymptotically $\chi^2$-distributed with $df$ equal to the number of parameters estimated in the subgroups minus the number of parameters in the total data set. For the sake of computational efficiency, the \pkg {eRm} package performs a person raw score median split into two subgroups. In addition, a graphical model test \citep{Ra:60} based on these estimates is produced by plotting $\boldsymbol{\hat{\beta}}_1$ against $\boldsymbol{\hat{\beta}}_2$. Thus, critical items (i.e. those fairly apart from the diagonal) can be identified and eliminated. Further elaborations and additional test statistics for polytomous Rasch models can be found, e.g., in \citet{Glas+Verhelst:1995a}.
+The underlying principle of this test statistic is that of \textit{subgroup homogeneity} in Rasch models: for arbitrary disjoint subgroups $g=1,\,\ldots,\,G$ the parameter estimates $\hat{\bm{\eta}}_g$ have to be the same. $LR$ is asymptotically $\chi^2$-distributed with $df$ equal to the number of parameters estimated in the subgroups minus the number of parameters in the total data set. For the sake of computational efficiency, the \pkg {eRm} package performs a person raw score median split into two subgroups. In addition, a graphical model test \citep{Ra:60} based on these estimates is produced by plotting $\hat{\bm{\beta}}_1$ against $\hat{\bm{\beta}}_2$. Thus, critical items (i.e. those fairly apart from the diagonal) can be identified and eliminated. Further elaborations and additional test statistics for polytomous Rasch models can be found, e.g., in \citet{Glas+Verhelst:1995a}.
 
 \subsection{Nonparametric (``exact'') Tests}
 Based on the package \pkg{RaschSampler} by
@@ -689,8 +548,8 @@ to test the unidimensionality axiom.
 \label{sec:pack}
 The underlying idea of the \pkg {eRm} package is to provide a user-friendly
 flexible tool to compute extended Rasch models. This implies, amongst others,
-an automatic generation of the design matrix $\mathbf{W}$. However, in order to
-test specific hypotheses the user may specify $\mathbf{W}$ allowing the package
+an automatic generation of the design matrix $\bm{W}$. However, in order to
+test specific hypotheses the user may specify $\bm{W}$ allowing the package
 to be flexible enough for computing IRT-models beyond their regular applications.
 In the following subsections, various examples are provided pertaining to different model and design
 matrix scenarios. Due to intelligibility matters, the artificial data sets are kept rather small. A detailed description in German of applications of various extendend Rasch models using the \pkg{eRm} package can be found in \citet{Poinstingl+Mair+Hatzinger:07}.
@@ -710,17 +569,15 @@ the most general model into the \pkg{eRm} package. For the latter
 model the CML estimation was implemented which can be used for the
 remaining models as well. A corresponding
 graphical representation is given in Figure \ref{fig:body}.
-
-\begin{figure}[hbt]
-\begin{center}
-    \includegraphics[width=13.7cm, height=6.5cm]{UCML.jpg}
-    \caption{\label{fig:body}Bodywork of the \pkg{eRm} routine}
-\end{center}
+\begin{figure}[hbt]\centering%
+  \includegraphics[width=157mm, keepaspectratio=true]{UCML}%
+  \caption{Bodywork of the \pkg{eRm} routine}%
+  \label{fig:body}%
 \end{figure}
 
 An important benefit of the package with respect to linearly
 extended models is that for certain models the design matrix
-$\boldsymbol{W}$ can be generated automatically \citep[LPCM-WIN,][]{FiPS:98} also allows for specifying design matrices but in
+$\bm{W}$ can be generated automatically \citep[LPCM-WIN,][]{FiPS:98} also allows for specifying design matrices but in
 case of more complex models this can become a tedious task and the
 user must have a thorough understanding of establishing proper
 design structures). For repeated measurement models time contrasts
@@ -728,143 +585,115 @@ in the \pkg{eRm} can be simply specified by defining the number of
 measurement points, i.e., {\tt mpoints}. To regard group contrasts
 like, e.g., treatment and control groups, a corresponding vector
 ({\tt groupvec}) can be specified that denotes which person belongs
-to which group. However, $\boldsymbol{W}$ can also be defined by the
+to which group. However, $\bm{W}$ can also be defined by the
 user.
 
 A recently added feature of the routine is the option to allow for
 structurally missing values. This is required, e.g., in situations
 when different subsets of items are presented to different groups of
 subjects as described in Section \ref{sec:mpcml}. These person groups
-are identified automatically: In the data matrix $\boldsymbol{X}$,
+are identified automatically: In the data matrix $\bm{X}$,
 those items which are not presented to a certain subject are
 declared as \code{NA}s, as usual in \proglang{R}.
 
 After solving the CML equations by the Newton-Raphson method, the
-output of the routine consists of the ``basic" parameter estimates
-$\boldsymbol{\hat{\eta}}$, the corresponding variance-covariance
+output of the routine consists of the ``basic'' parameter estimates
+$\hat{\bm{\eta}}$, the corresponding variance-covariance
 matrix, and consequently the vector with the standard errors.
 Furthermore, the ordinary item parameter estimates
-$\boldsymbol{\hat{\beta}}$ are computed by using the linear
+$\hat{\bm{\beta}}$ are computed by using the linear
 transformation
-$\boldsymbol{\hat{\beta}}=\boldsymbol{W}\boldsymbol{\hat{\eta}}$.
+$\hat{\bm{\beta}}=\bm{W}\hat{\bm{\eta}}$.
 For ordinary Rasch models these basic parameters correspond to the
 item easiness. For the RM, the RSM, and the PCM, however, we display
-$\boldsymbol{\hat{\eta}}$ as $\boldsymbol{-\hat{\eta}}$, i.e., as difficulty.
+$\hat{\bm{\eta}}$ as $-\hat{\bm{\eta}}$, i.e., as difficulty.
 It has to be mentioned that the CML equation is
 solved with the restriction that one item parameter has to be fixed
 to zero (we use
  $\beta_1=0$). For the sake of interpretability, the resulting
-estimates $\boldsymbol{\hat{\beta}}$ can easily be transformed
-into ``sum-zero" restricted $\boldsymbol{\hat{\beta}^*}$ by
+estimates $\hat{\bm{\beta}}$ can easily be transformed
+into ``sum-zero'' restricted $\hat{\bm{\beta}^*}$ by
 applying
 $\hat{\beta}_i^*=\hat{\beta}_i-\sum_i{\hat{\beta}_i}/k$.
 This transformation is also used for the graphical model test.
-
+%
+%
+%
 \subsection{Example 1: Rasch model}
-We start the example section
-with a  simple Rasch model based on a $100 \times 30$ data matrix.
-First, we estimate the item parameters using the function
-\code{RM()} and then the person parameters with
-\code{person.parameters()}.
-
+We start the example section with a  simple Rasch model based on a $100 \times 30$ data matrix.
+First, we estimate the item parameters using the function \code{RM()} and then the person parameters with \code{person.parameters()}.
 <<>>=
-library(eRm)
+library("eRm")
 data(raschdat1)
 res.rasch <- RM(raschdat1)
 pres.rasch <- person.parameter(res.rasch)
 @
-
 Then we use Andersen's LR-test for goodness-of-fit with mean split criterion:
 <<>>=
 lrres.rasch <- LRtest(res.rasch, splitcr = "mean", se = TRUE)
 lrres.rasch
 @
-
-We see that the model fits and a graphical  representation of this
-result (subset of items only) is given in Figure \ref{fig:GOF} by means
-of a goodness-of-fit plot with confidence ellipses.
-
-\begin{figure}[hbt]
-\begin{center}
-<<fig = TRUE>>=
+We see that the model fits and a graphical  representation of this result (subset of items only) is given in Figure \ref{fig:GOF} by means of a goodness-of-fit plot with confidence ellipses.
+<<plotGOF-lrres-rasch, eval=FALSE, fig=FALSE, results=hide>>=
 plotGOF(lrres.rasch, beta.subset=c(14,5,18,7,1), tlab="item", conf=list(ia=FALSE,col="blue",lty="dotted"))
 @
-\caption{\label{fig:GOF} Goodness-of-fit plot for some items with confidence ellipses.}
-\end{center}
+\begin{figure}[hbt]\centering%
+<<plotGOF-lrres-rasch-plot, echo=FALSE, fig=TRUE>>=
+<<plotGOF-lrres-rasch>>
+@
+\caption{Goodness-of-fit plot for some items with confidence ellipses.}
+\label{fig:GOF}
 \end{figure}
 
 To be able to draw confidence ellipses it is needed to set \code{se = TRUE} when computing the LR-test.
-
+%
+%
+%
 \subsection{Example 2: LLTM as a restricted Rasch model}
-As mentioned in Section \ref{Rep}, also the models with the linear extensions on
-the item parameters can be seen as special cases of their underlying basic model.
-In fact, the LLTM as presented below and following the original idea by \citet{Scheib:72},
-is a restricted RM, i.e. the number of estimated parameters is smaller compared to a Rasch model. The data matrix
-$\mathbf{X}$ consists of $n=15$ persons and $k=5$ items. Furthermore, we specify a design matrix $\mathbf{W}$ (following Equation \ref{eq4}) with specific weight elements $w_{ij}$.
-
+As mentioned in Section \ref{Rep}, also the models with the linear extensions on the item parameters can be seen as special cases of their underlying basic model.
+In fact, the LLTM as presented below and following the original idea by \citet{Scheib:72}, is a restricted RM, i.e. the number of estimated parameters is smaller compared to a Rasch model. The data matrix $\bm{X}$ consists of $n=15$ persons and $k=5$ items. Furthermore, we specify a design matrix $\bm{W}$ (following Equation \ref{eq4}) with specific weight elements $w_{ij}$.
 <<>>=
 data(lltmdat2)
 W <- matrix(c(1,2,1,3,2,2,2,1,1,1),ncol=2)
 res.lltm <- LLTM(lltmdat2, W)
 summary(res.lltm)
 @
-
-The \code{summary()} method provides point estimates and standard
-errors for the basic parameters and for the resulting item
-parameters. Note that item parameters in \pkg{eRm} are always
-estimated as easiness parameters according to equations \ref{eq1}
-and \ref{eq2} but not \ref{eq:rasch}. If the sign is switched, the
-user gets difficulty parameters (the standard errors remain the
-same, of course). However,
-all plotting functions \code{plotGOF}, \code{plotICC},
-\code{plotjointICC}, and \code{plotPImap}, as well as the function
-\code{thresholds} display the difficulty parameters. The same applies
-for the basic parameters $\eta$ in the output of the RM, RSM, and PCM.
-
+The \code{summary()} method provides point estimates and standard errors for the basic parameters and for the resulting item parameters. Note that item parameters in \pkg{eRm} are always estimated as easiness parameters according to equations \ref{eq1} and \ref{eq2} but not \ref{eq:rasch}. If the sign is switched, the user gets difficulty parameters (the standard errors remain the same, of course).
+However, all plotting functions \code{plotGOF}, \code{plotICC}, \code{plotjointICC}, and \code{plotPImap}, as well as the function \code{thresholds} display the difficulty parameters. The same applies for the basic parameters $\eta$ in the output of the RM, RSM, and PCM.
+%
+%
+%
 \subsection{Example 3: RSM and PCM}
-Again, we provide an artificial data set now with $n=300$ persons and $k=4$ items;
-each of them with $m+1=3$ categories. We start with the estimation of an RSM and, subsequently,
-we calculate the corresponding category-intersection parameters using the function \code{thresholds()}.
-
+Again, we provide an artificial data set now with $n=300$ persons and $k=4$ items; each of them with $m+1=3$ categories. We start with the estimation of an RSM and, subsequently, we calculate the corresponding category-intersection parameters using the function \code{thresholds()}.
 <<>>=
 data(pcmdat2)
 res.rsm <- RSM(pcmdat2)
 thresholds(res.rsm)
 @
-
-The location parameter is basically the item difficulty and the thesholds are the points in the
-ICC plot given in Figure \ref{fig:ICC} where the category curves intersect:
-
-<<fig = FALSE>>=
+The location parameter is basically the item difficulty and the thesholds are the points in the ICC plot given in Figure \ref{fig:ICC} where the category curves intersect:
+<<plotICC-res-rsm, eval=FALSE, fig=FALSE, results=hide>>=
 plotICC(res.rsm, mplot=TRUE, legpos=FALSE,ask=FALSE)
 @
-
-\begin{figure}[hbt]
-\begin{center}
-<<fig = TRUE, echo=FALSE>>=
-plotICC(res.rsm, mplot=TRUE, legpos=FALSE,ask=FALSE)
+\begin{figure}[hbt]\centering%
+<<plotICC-res-rsm-plot, echo=FALSE, fig=TRUE>>=
+<<plotICC-res-rsm>>
 @
-\caption{\label{fig:ICC} ICC plot for an RSM.}
-\end{center}
+\caption{ICC plot for an RSM.}
+\label{fig:ICC}
 \end{figure}
 
 The RSM restricts the threshold distances to be the same across all items.
-This strong assumption can be relaxed using a PCM. The results are represented in a person-item map
-(see Figure \ref{fig:PImap}).
-
-<<fig=FALSE>>=
+This strong assumption can be relaxed using a PCM. The results are represented in a person-item map (see Figure \ref{fig:PImap}).
+<<plotPImap-res-pcm, eval=FALSE, fig=FALSE, results=hide>>=
 res.pcm <- PCM(pcmdat2)
 plotPImap(res.pcm, sorted = TRUE)
 @
-
-\begin{figure}[hbt]
-\begin{center}
-<<fig=TRUE,echo=FALSE>>=
-res.pcm <- PCM(pcmdat2)
-plotPImap(res.pcm, sorted = TRUE)
+\begin{figure}[hbt]\centering%
+<<plotPImap-res-pcm-plot, echo=FALSE, fig=TRUE>>=
+<<plotPImap-res-pcm>>
 @
-\caption{\label{fig:PImap} Person-Item map for a PCM.}
-\end{center}
+\caption{Person-Item map for a PCM.}
+\label{fig:PImap}
 \end{figure}
 
 After estimating the person parameters we can check the item-fit statistics.
@@ -872,72 +701,62 @@ After estimating the person parameters we can check the item-fit statistics.
 pres.pcm <- person.parameter(res.pcm)
 itemfit(pres.pcm)
 @
-
 A likelihood ratio test comparing the RSM and the PCM indicates that the PCM provides a better fit.
 %Since none of the items is significant we can conclude that the data fit the PCM.
-
 <<>>=
 lr<- 2*(res.pcm$loglik-res.rsm$loglik)
 df<- res.pcm$npar-res.rsm$npar
 pvalue<-1-pchisq(lr,df)
 cat("LR statistic: ", lr, "  df =",df, "  p =",pvalue, "\n")
 @
-
-
+%
+%
+%
 \subsection{An LPCM for repeated measurements in different groups}
 The most complex example refers to an LPCM with two measurement points.
 In addition, the hypothesis is of interest whether the treatment has an effect.
-The corresponding contrast is the last column in $\mathbf{W}$ below.
+The corresponding contrast is the last column in $\bm{W}$ below.
 
-First, the data matrix $\mathbf{X}$ is specified. We assume an artificial test consisting of $k=3$ items
-which was presented twice to the subjects. The first 3 columns in $\mathbf{X}$ correspond
-to the first test occasion, whereas the last 3 to the second occasion.
+First, the data matrix $\bm{X}$ is specified. We assume an artificial test consisting of $k=3$ items which was presented twice to the subjects. The first 3 columns in $\bm{X}$ correspond to the first test occasion, whereas the last 3 to the second occasion.
 Generally, the first $k$ columns correspond to the first test occasion, the next $k$ columns for the second, etc.
-In total, there are $n=20$ subjects. Among these, the first 10 persons belong to the first group (e.g., control),
-and the next 10 persons to the second group (e.g., treatment). This is specified
-by a group vector:
-
+In total, there are $n=20$ subjects. Among these, the first 10 persons belong to the first group (e.g., control), and the next 10 persons to the second group (e.g., treatment). This is specified by a group vector:
 <<>>=
 data(lpcmdat)
 grouplpcm <- rep(1:2, each = 10)
 @
-
-Again, $\boldsymbol{W}$ is generated automatically. In general, for such designs
-the generation of $\boldsymbol{W}$ consists first of the item contrasts,
-followed by the time contrasts and finally by the group main effects except for
-the first measurement point (due to identifiability issues, as already described).
-
+Again, $\bm{W}$ is generated automatically. In general, for such designs the generation of $\bm{W}$ consists first of the item contrasts, followed by the time contrasts and finally by the group main effects except for the first measurement point (due to identifiability issues, as already described).
 <<>>=
 reslpcm <- LPCM(lpcmdat, mpoints = 2, groupvec = grouplpcm, sum0 = FALSE)
 model.matrix(reslpcm)
 @
-
 The parameter estimates are the following:
-
-<<echo = FALSE>>=
+<<echo=FALSE>>=
 reslpcm
 @
-
-Testing whether the $\eta$-parameters equal 0 is mostly not of relevance for those
-parameters referring to the items (in this example $\eta_1,...,\eta_8$).
-But for the remaining contrasts, $H_0: \eta_9=0$ (implying no general time effect)
-can not be rejected ($p=.44$), whereas hypothesis $H_0: \eta_{10}=0$ has to be rejected
-($p=.004$) when applying a $z$-test.
+Testing whether the $\eta$-parameters equal 0 is mostly not of relevance for those parameters referring to the items (in this example $\eta_1,\,\ldots,\,\eta_8$).
+But for the remaining contrasts, $H_0: \eta_9=0$ (implying no general time effect) can not be rejected ($p=.44$), whereas hypothesis $H_0: \eta_{10}=0$ has to be rejected ($p=.004$) when applying a $z$-test.
 This suggests that there is a significant treatment effect over the measurement points.
-If a user wants to perform additional tests such as a Wald test for the equivalence
-of two $\eta$-parameters, the \code{vcov} method can be applied to get the
-variance-covariance matrix.
-
+If a user wants to perform additional tests such as a Wald test for the equivalence of two $\eta$-parameters, the \code{vcov} method can be applied to get the variance-covariance matrix.
+%
+%
+%
+%
+%
 \section{Additional topics}
-
-This section will be extended successively with new developments and
-components which do not directly relate to the modeling core of
-\pkg{eRm} but may prove to be useful add-ons.
-
+This section will be extended successively with new developments and components which do not directly relate to the modeling core of \pkg{eRm} but may prove to be useful add-ons.
+%
+%
+%
 \subsection{The eRm simulation module}
-A recent \pkg{eRm} development is the implementation of a simulation module to generate 0-1 matrices for different Rasch scenarios. In this article we give a brief overview about the functionality and for more detailed descriptions (within the context of model testing) it is referred to \citet{Mair:2006} and \citet{Suarez+Glas:2003}.
+A recent \pkg{eRm} development is the implementation of a simulation module to generate 0-1 matrices for different Rasch scenarios.
+In this article we give a brief overview about the functionality and for more detailed descriptions (within the context of model testing) it is referred to \citet{Mair:2006} and \citet{Suarez+Glas:2003}.
 
-For each scenario the user has the option either to assign $\boldsymbol{\theta}$ and $\boldsymbol{\beta}$ as vectors to the simulation function (e.g. by drawing parameters from a uniform distribution) or to let the function draw the parameters from a $N(0,1)$ distribution. The first scenario is the simulation of Rasch homogenous data by means of the function \code{sim.rasch()}. The parameter values are plugged into equation \ref{eq:rasch} and it results the matrix $\mathbf{P}$ of model probabilites which is of dimension $n \times k$. An element $p_{vi}$ indicates the probability that subject $v$ solves item $i$. In a second step the matrix $\mathbf{P}$ has to be transformed into the 0-1 data matrix $\mathbf{X}$. The recommended way to achieve this is to draw another random number $p^{\star}_{vi}$ from a uniform distribution in $[0;1]$ and perform the transformation according to the following rule:
+For each scenario the user has the option either to assign $\bm{\theta}$ and $\bm{\beta}$ as vectors to the simulation function (e.g., by drawing parameters from a uniform distribution) or to let the function draw the parameters from a $\mathcal{N}(0,1)$ distribution.
+The first scenario is the simulation of Rasch homogenous data by means of the function \code{sim.rasch()}.
+The parameter values are plugged into equation \ref{eq:rasch} and it results the matrix $\bm{P}$ of model probabilites which is of dimension $n \times k$.
+An element $p_{vi}$ indicates the probability that subject $v$ solves item $i$.
+In a second step the matrix $\bm{P}$ has to be transformed into the 0-1 data matrix $\bm{X}$.
+The recommended way to achieve this is to draw another random number $p^{\star}_{vi}$ from a uniform distribution in $[0;1]$ and perform the transformation according to the following rule:
 \begin{equation*}
 x_{vi} = \left\{
  \begin{array}{rl}
@@ -945,65 +764,85 @@ x_{vi} = \left\{
   0 & \text{if } p^{\star}_{vi} > p_{vi}\\
  \end{array} \right.
 \end{equation*}
-Alternatively, the user can specify a fixed cutpoint $p^{\star}:=p^{\star}_{vi}$ (e.g. $p^{\star} = 0.5$) and make the decision according to the same rule. This option is provided by means of the \code{cutpoint} argument. Caution is advised when using this deterministic option since this leads likely to ill-conditioned data matrices.
+Alternatively, the user can specify a fixed cutpoint $p^{\star}:=p^{\star}_{vi}$ (e.g., $p^{\star} = 0.5$) and make the decision according to the same rule.
+This option is provided by means of the \code{cutpoint} argument.
+Caution is advised when using this deterministic option since this leads likely to ill-conditioned data matrices.
 
 The second scenario in this module regards the violation of the parallel ICC assumption which leads to the two-parameter logistic model (2-PL) proposed by \citet{Birnbaum:1968}:
-\begin{equation}
-\label{eq:2pl}
+\begin{equation}\label{eq:2pl}
   P(X_{vi}=1)=\frac{\exp(\alpha_i(\theta_v - \beta_i))}{1+\exp(\alpha_i(\theta_v-\beta_i))}.
 \end{equation}
-The parameter $\alpha_i$ denotes the item discrimination which for the Rasch model is 1 across all items. Thus, each item score gets a weight and the raw scores are not sufficient anymore. The function for simulating 2-PL data is \code{sim.2pl()} and if $\boldsymbol{\alpha}$ is not specified by the user by means of the argument \code{discrim}, the discrimination parameters are drawn from a log-normal distribution. The reasons for using this particular kind of distribution are the following: In the case of $\alpha_i = 1$ the ICC are Rasch consistent. Concerning the violations, it should be possible to achieve deviations in both directions (for $\alpha_i > 0$). If $\alpha_i > 0$ the ICC is steeper than in the Rasch case and, consequently, if $\alpha_i < 1$ the ICC is flatter. This bidirectional deviation around 1 is warranted by the lognormal distribution $LN(\mu,\sigma^2)$ with $\mu = 0$. Since it is a logarithmic distribution, $\alpha_i$ cannot be negative. The degrees of model violation can be steered by mea
-ns of the dispersion parameter $\sigma^2$. A value of $\sigma^2 = .50$ already denotes a strong violation. The lower $\sigma^2$, the closer the values lie around 1. In this case the $\alpha_i$ are close to the Rasch slopes.
+The parameter $\alpha_i$ denotes the item discrimination which for the Rasch model is 1 across all items.
+Thus, each item score gets a weight and the raw scores are not sufficient anymore.
+The function for simulating 2-PL data is \code{sim.2pl()} and if $\bm{\alpha}$ is not specified by the user by means of the argument \code{discrim}, the discrimination parameters are drawn from a log-normal distribution.
+The reasons for using this particular kind of distribution are the following: In the case of $\alpha_i = 1$ the ICC are Rasch consistent.
+Concerning the violations, it should be possible to achieve deviations in both directions (for $\alpha_i > 0$).
+If $\alpha_i > 0$ the ICC is steeper than in the Rasch case and, consequently, if $\alpha_i < 1$ the ICC is flatter.
+This bidirectional deviation around 1 is warranted by the lognormal distribution $LN(\mu,\sigma^2)$ with $\mu = 0$.
+Since it is a logarithmic distribution, $\alpha_i$ cannot be negative.
+The degrees of model violation can be steered by means of the dispersion parameter $\sigma^2$.
+A value of $\sigma^2 = .50$ already denotes a strong violation.
+The lower $\sigma^2$, the closer the values lie around 1.
+In this case the $\alpha_i$ are close to the Rasch slopes.
 
-Using the function \code{sim.xdim()} the unidimensionality assumptions is violated. This function allows for the simulation of multidimensional Rasch models as for instance given \citet{Glas:1992} and \citet{Adams+Wilson+Wang:1997}. Multidimensionality implies that one single item measures more than one latent construct. Let us denote the number of these latent traits by $D$. Consequently, each person has a vector of ability parameters $\boldsymbol{\theta}_v$ of length $D$. These vectors are drawn from a multivariate normal distribution with mean $\boldsymbol{\mu} = \mathbf{0}$ and VC-matrix $\boldsymbol{\Sigma}$ of dimension $D \times D$. This matrix has to be specified by the user with the argument \code{Sigma}. In order to achieve strong model violations, very low correlations such as .01 should be provided. To specify to which extend item $i$ is measuring each of the $D$ dimensions, a corresponding vector of weights $\mathbf{z}_i$ of length $D$ is defined. If the resulting $k \times D$ matrix $\mathbf{Z}$
- is not provided by the user, \code{sim.xdim()} generates $\mathbf{Z}$ such that each $\mathbf{z}_i$ contains only nonzero element which indicates the assigned dimension. This corresponds to the \emph{between-item multidimensional model} \citep{Adams+Wilson+Wang:1997}. However, in any case the person part of the model is $\mathbf{z}_i^T \boldsymbol{\theta}_v$ which replaces $\theta_v$ in Equation \ref{eq:rasch}.
+Using the function \code{sim.xdim()} the unidimensionality assumptions is violated.
+This function allows for the simulation of multidimensional Rasch models as for instance given \citet{Glas:1992} and \citet{Adams+Wilson+Wang:1997}.
+Multidimensionality implies that one single item measures more than one latent construct.
+Let us denote the number of these latent traits by $D$.
+Consequently, each person has a vector of ability parameters $\bm{\theta}_v$ of length $D$.
+These vectors are drawn from a multivariate normal distribution with mean $\bm{\mu} = \bm{0}$ and VC-matrix $\bm{\Sigma}$ of dimension $D \times D$.
+This matrix has to be specified by the user with the argument \code{Sigma}.
+In order to achieve strong model violations, very low correlations such as .01 should be provided.
+To specify to which extend item $i$ is measuring each of the $D$ dimensions, a corresponding vector of weights $\bm{z}_i$ of length $D$ is defined.
+If the resulting $k \times D$ matrix $\bm{Z}$
+ is not provided by the user, \code{sim.xdim()} generates $\bm{Z}$ such that each $\bm{z}_i$ contains only nonzero element which indicates the assigned dimension.
+ This corresponds to the \emph{between-item multidimensional model} \citep{Adams+Wilson+Wang:1997}.
+ However, in any case the person part of the model is $\bm{z}_i^T \bm{\theta}_v$ which replaces $\theta_v$ in Equation \ref{eq:rasch}.
 
-Finally, locally dependent item responses can be produced by means of the function \code{sim.locdep()}. Local dependence implies the introduction of pair-wise item correlations $\delta_{ij}$. If these correlations are constant across items, the argument \code{it.cor} can be a single value $\delta$. A value $\delta = 0$ corresponds to the Rasch model whereas $\delta = 1$ leads to the strongest violation. Alternatively, for different pair-wise item correlations, the user can specify a VC-matrix $\Delta$ of dimension $k \times k$. The formal representation of the corresponding IRT model is
+Finally, locally dependent item responses can be produced by means of the function \code{sim.locdep()}.
+Local dependence implies the introduction of pair-wise item correlations $\delta_{ij}$.
+If these correlations are constant across items, the argument \code{it.cor} can be a single value $\delta$.
+A value $\delta = 0$ corresponds to the Rasch model whereas $\delta = 1$ leads to the strongest violation.
+Alternatively, for different pair-wise item correlations, the user can specify a VC-matrix $\Delta$ of dimension $k \times k$.
+The formal representation of the corresponding IRT model is
 \begin{equation}
-P(X_{vi}=1|X_{vj}=x_{vj})=\frac{\exp(\theta_v - \beta_i + x_{vj}\delta_{ij})}{1+\exp(\theta_v-\beta_i + x_{vj}\delta_{ij})}.
+  P(X_{vi}=1|X_{vj}=x_{vj})=\frac{\exp(\theta_v - \beta_i + x_{vj}\delta_{ij})}{1+\exp(\theta_v-\beta_i + x_{vj}\delta_{ij})}.
 \end{equation}
 This model was proposed by \citet{Jannarone:1986} and is suited to model locally dependent item responses.
-
-
+%
+%
+%
+%
+%
 \section{Discussion and outlook}
 \label{sec:disc}
+Here we give a brief outline of future \pkg{eRm} developments.
+The CML estimation  approach, in combination with the EM-algorithm, can also be used to estimate \textit{mixed Rasch models} (MIRA).
+The basic idea behind such models is that the extended Rasch model holds within subpopulations of individuals, but with different parameter values for each subgroup.
+Corresponding elaborations are given in \citet{RoDa:95}.
 
-Here we give a brief outline of future \pkg{eRm} developments. The
-CML estimation  approach, in combination with the EM-algorithm, can
-also be used to estimate \textit{mixed Rasch models} (MIRA). The
-basic idea behind such models is that the extended Rasch model holds
-within subpopulations of individuals, but with different parameter
-values for each subgroup. Corresponding elaborations are given in
-\citet{RoDa:95}.
+In Rasch models the item discrimination parameter $\alpha_i$ is always fixed  to 1 and thus it does not appear in the basic equation.
+Allowing for different discrimination parameters across items leads to the two-parameter logistic model as given in Equation \ref{eq:2pl}.
+In this model the raw scores are not sufficient statistics anymore and hence CML can not be applied.
+2-PL models can be estimated by means of the \pkg{ltm} package \citep{Riz:06}.
+However, \citet{Verhelst+Glas:1995} formulated the one parameter logistic model (OPLM) where the $\alpha_i$ do not vary across the items but are unequal to one.
+The basic strategy to estimate OPLM is a three-step approach: First, the item parameters of the Rasch model are computed.
+Then, discrimination parameters are computed under certain restrictions.
+Finally, using these discrimination weights, the item parameters for the OPLM are estimated using CML.
+This is a more flexible version of the Rasch model in terms of different slopes.
 
-In Rasch models the item discrimination parameter $\alpha_i$ is
-always fixed  to 1 and thus it does not appear in the basic
-equation. Allowing for different discrimination parameters across
-items leads to the two-parameter logistic model as given in Equation
-\ref{eq:2pl}. In this model the raw scores are not sufficient
-statistics anymore and hence CML can not be applied. 2-PL models can
-be estimated by means of the \pkg{ltm} package \citep{Riz:06}.
-However, \citet{Verhelst+Glas:1995} formulated the one parameter
-logistic model (OPLM) where the $\alpha_i$ do not vary across the
-items but are unequal to one. The basic strategy to estimate OPLM is
-a three-step approach: First, the item parameters of the Rasch model
-are computed. Then, discrimination parameters are computed under
-certain restrictions. Finally, using these discrimination weights,
-the item parameters for the OPLM are estimated using CML. This is a
-more flexible version of the Rasch model in terms of different
-slopes.
-
-To conclude, the \pkg{eRm} package is a tool to estimate extended
-Rasch models for unidimensional traits.  The generalizations towards
-different numbers of item categories, linear extensions to allow for
-introducing item covariates and/or trend and optionally group
-contrasts are important issues when examining item behavior and
-person performances in tests.  This improves the feasibility of IRT
-models with respect to a wide variety of application areas.
-
-\bibliography{eRmvig}
-\newpage
-
-\rotatebox[origin=c]{90}{\includegraphics[width=1.1\textheight]{eRm_object_tree.pdf}}
-
+To conclude, the \pkg{eRm} package is a tool to estimate extended Rasch models for unidimensional traits.
+The generalizations towards different numbers of item categories, linear extensions to allow for introducing item covariates and/or trend and optionally group contrasts are important issues when examining item behavior and person performances in tests.
+This improves the feasibility of IRT models with respect to a wide variety of application areas.
+%
+%
+%
+%
+%
+\bibliography{eRmvig}%
+\newpage%
+\rotatebox[origin=c]{90}{\includegraphics[width=1.1\textheight]{eRm_object_tree.pdf}}%
+%
+%
+%
 \end{document}

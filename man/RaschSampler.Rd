@@ -56,10 +56,7 @@ on the control object \code{\link{RSctr}} which is obtained from using
 \code{\link{rsctrl}} containing the specification for the sampling routine.
 
 }
-\author{Reinhold Hatzinger, Patrick Mair, Norman D. Verhelst
-
-Maintainer: <reinhold.hatzinger@wu.ac.at>
-}
+\author{Reinhold Hatzinger, Patrick Mair, Norman D. Verhelst}
 \references{
 Verhelst, N. D. (2008) An Efficient MCMC Algorithm to Sample Binary Matrices with Fixed Marginals. Psychometrika, Volume 73, Number 4\cr
 Verhelst, N. D., Hatzinger, R., and Mair, P. (2007) The Rasch Sampler, Journal of Statistical Software, Vol. 20, Issue 4, Feb 2007

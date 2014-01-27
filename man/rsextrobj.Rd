@@ -59,9 +59,11 @@ some_m <- rsextrobj(all_m, 1, 2)
 summary(some_m)
 
 \dontrun{
-save(some_m, file = "some.RSobj")
-some_new <- load("some.RSobj")
-summary(some_new)
-}
+save(some_m, file = "some.RSobj.RData")
+rm(some_m)
+ls()
+
+load("some.RSobj.RData")
+summary(some_m)}
 }
 \keyword{misc}

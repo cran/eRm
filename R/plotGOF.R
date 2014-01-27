@@ -1,3 +1,2 @@
-`plotGOF` <-
-function(x,...)UseMethod("plotGOF")
+plotGOF <- function(x, ...) UseMethod("plotGOF")
 

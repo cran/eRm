@@ -1,3 +1,1 @@
-`plotjointICC` <-
-function(object,...)UseMethod("plotjointICC")
-
+plotjointICC <- function(object, ...) UseMethod("plotjointICC")

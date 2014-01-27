@@ -23,3 +23,7 @@ setClass("performance",
 #          function(x,y,...) {
 #              .plot.performance(x,...)
 #          })
+
+prettyPaste <- function(...){
+  paste(strwrap(paste0(..., collapse = ""), width = getOption("width")), sep="\n", collapse="\n")
+}

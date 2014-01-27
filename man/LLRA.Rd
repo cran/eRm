@@ -115,10 +115,10 @@ groups <- c(rep("TG",30),rep("CG",30))
 llra1 <- LLRA(llradat3,mpoints=2,groups=groups)
 llra1
 
+\dontrun{
 ##An LLRA with 2 treatment groups and 1 baseline group, 5 items and 4
 ##time points. Item 1 is dichotomous, all others have 3, 4, 5, 6
 ##categories respectively.
-\dontrun{
 dats <- llraDat2[1:20]
 groups <- llraDat2$group
 tps <- 4
@@ -135,6 +135,5 @@ summary(ex2a)
 
 #plotting
 plotGR(ex2)
-plotTR(ex2)
-}
+plotTR(ex2)}
 }

@@ -1,0 +1,85 @@
+citHeader("To cite package 'eRm' in publications use:")
+desc <- packageDescription("eRm")
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", desc$Date)
+vers <- paste("R package version", desc$Version)
+
+# Package Citation
+citEntry(header = paste0("\n", paste0(rep("#", getOption("width")), collapse=""), "\nThe current Package Version:\n"),
+         entry  = "MANUAL",
+         title  = "{eRm: Extended Rasch Modeling}",
+         author = c(person("Patrick", "Mair"), person("Reinhold", "Hatzinger"), person(c("Marco", "Johannes"), "Maier")),
+         year   = year,
+         note   = vers,
+         url    = "http://erm.r-forge.r-project.org/",
+         textVersion = paste0("Mair, P., Hatzinger, R., & Maier M.J. (",
+                              year,
+                              "). eRm: Extended Rasch Modeling. ",
+                              vers,
+                              ". http://erm.r-forge.r-project.org/")
+)
+
+# JSS 2007
+citEntry(header  = paste0("\n", paste0(rep("#", getOption("width")), collapse=""), "\nThe original JSS Article:\n"),
+         entry   = "ARTICLE",
+         title   = "{Extended Rasch modeling: The eRm package for the application of IRT models in R}",
+         author  = c(person("Patrick", "Mair"), person("Reinhold", "Hatzinger")),
+         year    = 2007,
+         page    = "1--20",
+         journal = "{Journal of Statistical Software}",
+         volume  = 20,
+         issue   = 9,
+         url     = "http://www.jstatsoft.org/v20/i09",
+         textVersion = paste0("Mair, P., & Hatzinger, R. (2007). ",
+                              "Extended Rasch modeling: The eRm package for the application of IRT models in R. ",
+                              "Journal of Statistical Software, 20(9), 1-20. ",
+                              "http://www.jstatsoft.org/v20/i09")
+)
+
+# PS 2007
+citEntry(header  = paste0("\n", paste0(rep("#", getOption("width")), collapse=""), "\nArticle about CML Estimation in eRm:\n"),
+         entry   = "ARTICLE",
+         title   = "{CML based estimation of extended Rasch models with the eRm package in R}",
+         author  = c(person("Patrick", "Mair"), person("Reinhold", "Hatzinger")),
+         year    = 2007,
+         page    = "26--43",
+         journal = "{Psychology Science}",
+         volume  = 49,
+         issue   = 1,
+         textVersion = paste0("Mair, P., & Hatzinger, R. (2007). ",
+                              "CML based estimation of extended Rasch models with the eRm package in R. ",
+                              "Psychology Science, 49(1), 26-43.")
+)
+
+# PSQ 2009
+citEntry(header  = paste0("\n", paste0(rep("#", getOption("width")), collapse=""), "\nArticle about LLRAs in eRm:\n"),
+         entry   = "ARTICLE",
+         title   = "{IRT models with relaxed assumptions in eRm: A manual-like instruction}",
+         author  = c(person("Reinhold", "Hatzinger"), person("Rusch", "Thomas")),
+         year    = 2009,
+         page    = "87--120",
+         journal = "{Psychology Science Quarterly}",
+         volume  = 51,
+         issue   = 1,
+         textVersion = paste0("Hatzinger, R., & Rusch, T. (2009). ",
+                              "IRT models with relaxed assumptions in eRm: A manual-like instruction. ",
+                              "Psychology Science Quarterly, 51(1), 87-120.")
+)
+
+# LLRA Springer 2013
+citEntry(header  = paste0("\n", paste0(rep("#", getOption("width")), collapse=""), "\nBook Chapter about LLRAs:\n"),
+         entry   = "INPROCEEDINGS",
+         title   = "{Linear logistic models with relaxed assumptions in R}",
+         author  = c(person("Thomas", "Rusch"), person(c("Marco", "Johannes"), "Maier"), person("Reinhold", "Hatzinger")),
+         booktitle = "{Algorithms from and for Nature and Life}",
+         editor  = c(person("Berthold", "Lausen"), person("Dirk", "van den Poel"), person("Alfred", "Ultsch")),
+         series  = "{Studies in Classification, Data Analysis, and Knowledge Organization}",
+         year    = 2013,
+         page    = "337--347",
+         address = "{New York}",
+         publisher = "{Springer}",
+         textVersion = paste0("Rusch T., Maier M.J., & Hatzinger R. (2013). ",
+                              "Linear logistic models with relaxed assumptions in R. ",
+                              "In: B. Lausen, D. van den Poel, & A. Ultsch (Eds.) ",
+                              "Algorithms from and for Nature and Life.",
+                              "New York: Springer. 337-347")
+)

@@ -94,6 +94,7 @@ lrres2 <- LRtest(res, split = "mean")
 
 # combination of LRtest-objects in a list
 RMplotCI <- list(lrres, lrres2)}
+
 # the object raschdat1_RM_plotDIF is the result of the computations outlined
 # above and is loaded to save computation time. see ?raschdat1_RM_plotDIF
 RMplotCI <- raschdat1_RM_plotDIF

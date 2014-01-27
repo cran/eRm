@@ -51,10 +51,10 @@ groups <- c(rep("TG",30),rep("CG",30))
 llra1 <- LLRA(llradat3,mpoints=2,groups=groups)
 summary(llra1)
 
+\dontrun{
 ##An LLRA with 2 treatment groups and 1 baseline group, 5 items and 4
 ##time points. Item 1 is dichotomous, all others have 3, 4, 5, 6
 ##categories respectively.
-\dontrun{
 ex2 <- LLRA(llraDat2[1:20],mpoints=4,llraDat2[21])
 sumEx2 <- summary(ex2, level=0.95)
 
@@ -62,6 +62,5 @@ sumEx2 <- summary(ex2, level=0.95)
 sumEx2
 
 #get confidence intervals
-sumEx2$ci
-}
+sumEx2$ci}
 }
