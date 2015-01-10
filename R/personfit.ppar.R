@@ -1,21 +1,17 @@
-`personfit.ppar` <-
-function(object)
+personfit.ppar <- function(object) {
 # computes Chi-square based itemfit statistics (Smith, p.77ff)
 # for object of class "ppar" (from person.parameter)
-{
 
-  if (length(object$pers.ex)==0) {
-    X <- object$X
-  } else {
-    X <- object$X[-object$pers.ex,]
-  }
+  excl_obs_num <- object$pers.ex                     #mjm 2014-09-07
+  excl_obs_chr <- rownames(object$X)[excl_obs_num]   #
+                                                     #
+  if(length(excl_obs_num) > 0L){                 # remove obs. to be excluded, but
+    X <- object$X[-excl_obs_num,]                # store information to use in
+  } else {                                           # subsequent functions
+    X <- object$X                                    #
+  }                                                  #
 
-  #rp <- rowSums(X,na.rm=TRUE)
-  #mt_vek <- apply(X,2,max,na.rm=TRUE)
-  #maxrp <- sum(mt_vek)
-  #TFrow <- ((rp==maxrp) | (rp==0))              #exclude full and 0 responses
-
-  VE <- pifit.internal(object)                  #compute expectation and variance term
+  VE <- pifit.internal(object)   # compute expectation and variance term
   Emat <- VE$Emat
   Vmat <- VE$Vmat
   Cmat <- VE$Cmat
@@ -26,7 +22,7 @@ function(object)
   sq.res <- st.res^2                            #squared standardized residuals
   pfit <- rowSums(sq.res,na.rm=TRUE)
 
-  pdf <- apply(X,1,function(x) {length(na.exclude(x))})
+  pdf <- apply(X, 1L, function(x){ length(na.exclude(x)) })
 
   #pdf <- apply(X[!TFrow,],1,function(x) {length(na.exclude(x))})   #degress of freedom (#of persons per item)
 
@@ -44,10 +40,17 @@ function(object)
   p.outfitZ <- ((p.outfitMSQ)^(1/3)-1)*(3/q.outfitMSQ)+(q.outfitMSQ/3)
   p.infitZ <- ((p.infitMSQ)^(1/3)-1)*(3/q.infitMSQ)+(q.infitMSQ/3)
 
-  result <- list(p.fit = pfit, p.df = pdf, st.res = st.res, p.outfitMSQ = p.outfitMSQ,
-                 p.infitMSQ = p.infitMSQ,
-                 p.outfitZ = p.outfitZ, p.infitZ = p.infitZ)
-  class(result) <- "pfit"
-  result
-}
+  result <- structure(
+    list("p.fit"        = pfit,
+         "p.df"         = pdf,
+         "st.res"       = st.res,
+         "p.outfitMSQ"  = p.outfitMSQ,
+         "p.infitMSQ"   = p.infitMSQ,
+         "p.outfitZ"    = p.outfitZ,
+         "p.infitZ"     = p.infitZ,
+         "excl_obs_num" = excl_obs_num,
+         "excl_obs_chr" = excl_obs_chr),
+    class = "pfit")
+  return(result)
 
+}

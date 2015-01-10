@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{xmpl}
 \alias{xmpl}
 \alias{xmplbig}

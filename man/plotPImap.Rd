@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{plotPImap}
 \alias{plotPImap}
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -51,7 +52,7 @@ plotPImap(object, item.subset = "all", sorted = FALSE,
 \references{Bond, T.G., and Fox Ch.M. (2007) Applying the Rasch Model. Fundamental Measurement in the Human Sciences.
 2nd Edition. Lawrence Erlbaum Associates.
 }
-\author{Patrick Mair, Reinhold Hatzinger, patches from Julian Gilbey and Marco Maier}
+\author{Patrick Mair, Reinhold Hatzinger, patches from Julian Gilbey and Marco J. Maier}
 %\note{}
 %\seealso{}
 \examples{

@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{IC}
 \alias{IC}
 \alias{IC.ppar}

@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{stepwiseIt}
 \alias{stepwiseIt}
 \alias{stepwiseIt.eRm}

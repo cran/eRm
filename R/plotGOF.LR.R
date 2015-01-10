@@ -142,13 +142,13 @@ plotGOF.LR <- function(
   }
 ################################################################################
   
-  if(!exists("ci1l")) ci1l <- NA
-  if(!exists("ci1u")) ci1u <- NA
-  if(!exists("ci2l")) ci2l <- NA
-  if(!exists("ci2u")) ci2u <- NA
+  if(!exists("ci1l", inherits = FALSE)) ci1l <- NA
+  if(!exists("ci1u", inherits = FALSE)) ci1u <- NA
+  if(!exists("ci2l", inherits = FALSE)) ci2l <- NA
+  if(!exists("ci2u", inherits = FALSE)) ci2u <- NA
   
-  if(!exists("upperx")) upperx <- NA
-  if(!exists("uppery")) uppery <- NA
+  if(!exists("upperx", inherits = FALSE)) upperx <- NA
+  if(!exists("uppery", inherits = FALSE)) uppery <- NA
   
   if(missing(xlim)){
     xlim <- range(beta1[beta.subset], ci1l, ci1u, upperx, uppery, na.rm = TRUE)
@@ -189,13 +189,13 @@ plotGOF.LR <- function(
     lines(uppery, upperx, col = ctrline$col, lty = ctrline$lty)
   }
 
-  if(exists("textlab")){
+  if(exists("textlab", inherits = FALSE)){
     text(beta1[beta.subset], beta2[beta.subset], labels = textlab, pos = pos, ...)
   }
   
   points(x = beta1[beta.subset], y = beta2[beta.subset], type = type, ...)
 
-  if(exists("labs")){
+  if(exists("labs", inherits = FALSE)){
     xycoords <- cbind(beta1[beta.subset], beta2[beta.subset])
     nothing  <- identify(xycoords, labels = labs, atpen = TRUE, offset = 1)
   }

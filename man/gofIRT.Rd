@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{gofIRT}
 \alias{gofIRT}
 \alias{gofIRT.ppar}

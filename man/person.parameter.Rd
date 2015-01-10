@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{person.parameter}
 \alias{person.parameter}
 \alias{person.parameter.eRm}
@@ -25,7 +26,7 @@ as AIC, BIC, and cAIC based on unconditional log-likelihood.}
 }
 
 \arguments{
-  \item{object}{Object of class \code{eRm} in \code{person.parameter} and object of class \code{ppar} in \code{IC}.}
+  \item{object}{Object of class \code{'eRm'} in \code{person.parameter} and object of class \code{ppar} in \code{IC}.}
 
 Arguments for \code{print} and \code{plot} methods:
   \item{x}{Object of class \code{ppar}.}
@@ -73,9 +74,9 @@ The function \code{logLik} returns an object of class \code{loglik.ppar} contain
 Fischer, G. H., and Molenaar, I. (1995). Rasch Models - Foundations,
 Recent Developements, and Applications. Springer.
 
-Mair, P., and Hatzinger, R. (2007). Extended Rasch modeling: The eRm package for the application of IRT models in R. Journal of Statistical Software, 20(9), 1-20.
+Mair, P., and Hatzinger, R. (2007). Extended Rasch modeling: The \pkg{eRm} package for the application of IRT models in R. Journal of Statistical Software, 20(9), 1-20.
 
-Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch models with the eRm package in R. Psychology Science, 49, 26-43.
+Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch models with the \pkg{eRm} package in R. Psychology Science, 49, 26-43.
 }
 \author{Patrick Mair, Reinhold Hatzinger}
 %\note{}

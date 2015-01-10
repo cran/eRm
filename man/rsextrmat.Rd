@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{rsextrmat}
 \alias{rsextrmat}
 \title{Extracting a Matrix}

@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{anova.llra}
 \alias{anova.llra}
 

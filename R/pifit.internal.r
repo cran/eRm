@@ -1,27 +1,25 @@
-pifit.internal <- function(object)
-{
+pifit.internal <- function(object){
 #object of class ppar
 #function is called in itemfit.ppar and personfit.ppar
 
-
-  X <- object$X
-  mt_vek <- apply(X,2,max,na.rm=TRUE)             #number of categories - 1 for each item
-  mt_ind <- rep(1:length(mt_vek),mt_vek)
+  X      <- object[["X"]]
+  mt_vek <- apply(X, 2L, max, na.rm = TRUE)   # (number of categories - 1) for each item
+  mt_ind <- rep(seq_along(mt_vek), mt_vek) # MjM 2014-07-11
   mt_seq <- sequence(mt_vek)
-  gmemb <- object$gmemb
+  gmemb  <- object$gmemb
 
   pmat <- pmat(object)                          #matrix with model probabilites
 
   #-----------------matrix with expected response patterns--------------
-  Emat.cat <- t(apply(pmat,1,function(x) x*mt_seq))
-  if ((object$model == "RM") || (object$model == "LLTM")) { 
+  Emat.cat <- t(apply(pmat, 1L, function(x) x*mt_seq))
+  if(object$model %in% c("RM", "LLTM")){ 
     Emat <- Emat.cat
   } else {
-    E.list <- tapply(1:length(mt_ind),mt_ind, function(ind) {rowSums(cbind(Emat.cat[,ind]),na.rm=TRUE)})
+    E.list <- tapply(seq_along(mt_ind), mt_ind, function(ind){ rowSums(cbind(Emat.cat[, ind]), na.rm = TRUE) })
     Emat <- matrix(unlist(E.list),ncol=dim(X)[2],dimnames=list(rownames(pmat),colnames(X)))
-  } 
+  }
   #------------------------variance term for standardized residuals------
-  pmat.l0 <- tapply(1:length(mt_ind),mt_ind, function(ind) {
+  pmat.l0 <- tapply(seq_along(mt_ind), mt_ind, function(ind){
                             vec0 <- 1-rowSums(as.matrix(pmat[,ind]))     #prob for 0th category
                             cbind(vec0,pmat[,ind])
                             })

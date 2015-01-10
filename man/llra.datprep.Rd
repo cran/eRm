@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{llra.datprep}
 \alias{llra.datprep}
 
@@ -43,9 +44,7 @@ Returns a list with the components
 \item{assign.vec}{The assignment vector.}
 \item{grp_n}{A vector of the number of subjects in each group.}
 }
-\author{
-Reinhold Hatzinger
-}
+\author{Reinhold Hatzinger}
 \seealso{
 The function that uses this is \code{\link{LLRA}}. The values from
   \code{llra.datprep} can be passed to \code{\link{build_W}}.

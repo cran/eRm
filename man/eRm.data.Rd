@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{eRm.data}
 \alias{eRm.data}
 \alias{raschdat1}

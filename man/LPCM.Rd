@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{LPCM}
 \alias{LPCM}
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -39,7 +40,7 @@ LPCM(X, W , mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE,
   \code{model.matrix}, \code{vcov},\code{summary}, \code{logLik}, \code{person.parameters}.
 }
 \value{
-  Returns on object of class \code{eRm} containing:
+  Returns on object of class \code{'eRm'} containing:
 
   \item{loglik}{Conditional log-likelihood.}
   \item{iter}{Number of iterations.}
@@ -60,9 +61,9 @@ LPCM(X, W , mpoints = 1, groupvec = 1, se = TRUE, sum0 = TRUE,
 Fischer, G. H., and Molenaar, I. (1995). Rasch Models - Foundations,
 Recent Developements, and Applications. Springer.
 
-Mair, P., and Hatzinger, R. (2007). Extended Rasch modeling: The eRm package for the application of IRT models in R. Journal of Statistical Software, 20(9), 1-20.
+Mair, P., and Hatzinger, R. (2007). Extended Rasch modeling: The \pkg{eRm} package for the application of IRT models in R. Journal of Statistical Software, 20(9), 1-20.
 
-Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch models with the eRm package in R. Psychology Science, 49, 26-43.
+Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch models with the \pkg{eRm} package in R. Psychology Science, 49, 26-43.
 }
 \author{Patrick Mair, Reinhold Hatzinger}
 %\note{}

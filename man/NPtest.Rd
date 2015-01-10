@@ -1,83 +1,71 @@
-\name{NPtest}
-\Rdversion{1.1}
+\encoding{UTF-8}
+\name{NonparametricTests}
+\alias{NonparametricTests}
 \alias{NPtest}
-\title{function to perform nonparametric Rasch model tests}
-\description{A variety of nonparametric tests as proposed by Ponocny(2001), Koller and Hatzinger(2012),
-    and an 'exact' version of the Martin-Loef test are implemented. The function operates on
-    random binary matrices that have been generated using an
-    MCMC algorithm (Verhelst, 2008) from the RaschSampler package (Hatzinger, Mair, and Verhelst, 2009).
+\title{A Function to Perform Nonparametric Rasch Model Tests}
+\description{A variety of nonparametric tests as proposed by Ponocny (2001), Koller and Hatzinger (2012), and an \sQuote{exact} version of the Martin-Löf test are implemented. The function operates on random binary matrices that have been generated using an \acronym{MCMC} algorithm (Verhelst, 2008) from the \pkg{RaschSampler} package (Hatzinger, Mair, and Verhelst, 2009).%
 }
-\usage{
-NPtest(obj, n = NULL, method = "T1", ...)
-}
+\usage{NPtest(obj, n = NULL, method = "T1", \dots)}
 \arguments{
   \item{obj}{
-     A binary data matrix (or data frame) or
-     an object containing the output from the \code{\link{RaschSampler}} package.
+    A binary data matrix (or data frame) or an object containing the output from the \pkg{\link[eRm:RaschSampler]{RaschSampler}} package.
   }
   \item{n}{
-     If \code{obj} is a matrix or a data frame, \code{n} n is the number of sampled matrices
-     (default is 500)
+    If \code{obj} is a matrix or a data frame, \code{n} is the number of sampled matrices (default is 500)
   }
   \item{method}{
-     One of the test statistics. See details below.
+     One of the test statistics. See Details below.
   }
   \item{\dots}{
-     Further arguments according to \code{method}. See details below. Additionally, the sampling routine
-     can be controlled by specifying \code{burn_in =}, \code{step =}, and \code{seed =} (for details see
-     below and . A summary of the sampling object may be obtained using
-     the option \code{RSinfo = TRUE}.
+     Further arguments according to \code{method}.
+     See Details below.
+     Additionally, the sampling routine can be controlled by specifying \code{burn_in}, \code{step}, and \code{seed} (for details see below and \code{\link[eRm:rsctrl]{rsctrl}}).
+     A summary of the sampling object may be obtained using the option \code{RSinfo = TRUE}.
   }
 }
 \details{
-     The function uses the  \code{\link{RaschSampler}} package. It has to be installed to use
-     \code{NPtest}.
-     On input the user has to supply
-     either a binary data matrix or a RaschSampler output object. If the input is a data matrix, the RaschSampler
-     is called with default values (i.e., \code{rsctrl(burn_in = 256, n_eff = n, step = 32)}, see \code{\link{rsctrl}}),
-     where \code{n} corresponds to \code{n_eff} (the default number of sampled matrices is 500).
-     By default, the starting values for the random number generators (\code{seed}) are chosen randomly using system time.
-     Methods other than those listed below can easily be implemented using the RaschSampler package directly.
+  The function uses the \pkg{\link[eRm:RaschSampler]{RaschSampler}} package, which is now packaged with \pkg{eRm} for convenience.
+  It can, of course, still be accessed and downloaded separately via CRAN.
+  
+  As an input the user has to supply either a binary data matrix or a \pkg{RaschSampler} output object.
+  If the input is a data matrix, the \pkg{RaschSampler} is called with default values (i.e., \code{rsctrl(burn_in = 256, n_eff = n, step = 32)}, see \code{\link[eRm:rsctrl]{rsctrl}}), where \code{n} corresponds to \code{n_eff} (the default number of sampled matrices is 500).
+  By default, the starting values for the random number generators (\code{seed}) are chosen randomly using system time.
+  Methods other than those listed below can easily be implemented using the \pkg{RaschSampler} package directly.
 
-     The currently implemented methods (following Ponocny's notation of \emph{T}-statistics) and their options are:
-   \describe{
-     \item{\bold{T1:}}{\code{method = "T1"}, no further option}\cr
-     Checks for local dependence via increased inter-item correlations. For all item pairs
-     cases are counted with equal responses on both items.
-
-     \item{\bold{T1m:}}{\code{method = "T1m"}, no further option}\cr
-     Checks for multidimensionality via decreased inter-item correlations. For all item pairs
-     cases are counted with equal responses on both items.
-
-     \item{\bold{T1l:}}{\code{method = "T1l"}, no further option}\cr
-     Checks for learning. For all item pairs
-     cases are counted with response pattern (1,1).
-
-     \item{\bold{Tmd:}}{\code{method = "Tmd", idx1, idx2}}\cr
-     \code{idx1, idx2} \ldots vectors of indices specifying items which define two subscales, e.g.,
-     \code{idx1 = c(1, 5, 7)} and \code{idx2 = c(3, 4, 6)} \cr
-     Checks for multidimensionality based on correlations of person raw scores for the subscales.
-
-     \item{\bold{T2:}}{\code{method = "T2", idx = NULL, stat = "var"}}\cr
-     \code{idx} \ldots vector of indices specifying items which define a subscale, e.g., \code{idx = c(1, 5, 7)}\cr
-     \code{stat} \ldots one of \code{"var"} (variance), \code{"mad1"} (mean absolute deviation),
-     \code{"mad2"} (median absolute deviation), \code{"range"} (range)\cr
-     Checks for local dependence within model deviating subscales via increased
-     dispersion of subscale person rawscores.
-
-     \item{\bold{T2m:}}{\code{method = "T2m", idx = NULL, stat = "var"}}\cr
-     \code{idx} \ldots vector of indices specifying items which define a subscale, e.g., \code{idx = c(1, 5, 7)}\cr
-     \code{stat} \ldots one of \code{"var"} (variance), \code{"mad1"} (mean absolute deviation),
-     \code{"mad2"} (median absolute deviation), \code{"range"} (range)\cr
-     Checks for multidimensionality within model deviating subscales via decreased
-     dispersion of subscale person rawscores.
-
-     \item{\bold{T4:}}{\code{method = "T4", idx = NULL, group = NULL, alternative = "high"}}\cr
-     \code{idx} \ldots vector of indices specifying items which define a subscale, e.g., \code{idx = c(1, 5, 7)}\cr
-     \code{group} \ldots logical vector defining a subject group, e.g., \code{group = (age >= 15 && age < 30)}\cr
-     \code{alternative} \ldots one of \code{"high"} or \code{"low"}. Specifies the alternative hypothesis.\cr
-     Checks for group anomalies (DIF) via too high (low) raw scores on item(s) for specified group.
-
+  The currently implemented methods (following Ponocny's notation of \eqn{T}{T}-statistics) and their options are:
+  \describe{
+    \item{\eqn{T_1}{T_1}:}{\code{method = "T1"}\cr%
+      Checks for local dependence via increased inter-item correlations.
+      For all item pairs, cases are counted with equal responses on both items.
+    }
+    \item{\eqn{T_{1m}}{T_1m}:}{\code{method = "T1m"}\cr%
+      Checks for multidimensionality via decreased inter-item correlations.
+      For all item pairs, cases are counted with equal responses on both items.
+    }
+    \item{\eqn{T_{1l}}{T_1l}:}{\code{method = "T1l"}\cr%
+      Checks for learning.
+      For all item pairs, cases are counted with response pattern (1,1).
+    }
+    \item{\eqn{T_{md}}{T_md}:}{\code{method = "Tmd", idx1, idx2}\cr%
+      \code{idx1} and \code{idx2} are vectors of indices specifying items which define two subscales, e.g., \code{idx1 = c(1, 5, 7)} and \code{idx2 = c(3, 4, 6)}\cr%
+      Checks for multidimensionality based on correlations of person raw scores for the subscales.
+    }
+    \item{\eqn{T_2}{T_2}:}{\code{method = "T2", idx = NULL, stat = "var"}\cr%
+      \code{idx} is a vector of indices specifying items which define a subscale, e.g., \code{idx = c(1, 5, 7)}\cr%
+      \code{stat} defines the used statistic as a character object which can be: \code{"var"} (variance), \code{"mad1"} (mean absolute deviation), \code{"mad2"} (median absolute deviation), or \code{"range"} (range)\cr%
+      Checks for local dependence within model deviating subscales via increased dispersion of subscale person rawscores.
+    }
+    \item{\eqn{T_{2m}}{T_2m}:}{\code{method = "T2m", idx = NULL, stat = "var"}\cr%
+      \code{idx} is a vector of indices specifying items which define a subscale, e.g., \code{idx = c(1, 5, 7)}\cr%
+      \code{stat} defines the used statistic as a character object which can be: \code{"var"} (variance), \code{"mad1"} (mean absolute deviation), \code{"mad2"} (median absolute deviation), \code{"range"} (range)\cr%
+      Checks for multidimensionality within model deviating subscales via decreased dispersion of subscale person rawscores.
+    }
+    \item{\eqn{T_4}{T_4}:}{\code{method = "T4", idx = NULL, group = NULL, alternative = "high"}\cr%
+      \code{idx} is a vector of indices specifying items which define a subscale, e.g., \code{idx = c(1, 5, 7)}\cr%
+      \code{group} is a logical vector defining a subject group, e.g., \code{group = ((age >= 20) & (age < 30))}\cr%
+      \code{alternative} specifies the alternative hypothesis and can be: \code{"high"} or \code{"low"}.\cr%
+      Checks for group anomalies (\acronym{DIF}) via too high (low) raw scores on item(s) for specified group.
+    }
 %  removed in version 0.14-5
 %     \item{\bold{T7:}}{\code{method = "T7", idx = NULL}}\cr
 %     \code{idx} \ldots vector of indices specifying items which define a subscale, e.g., \code{idx = c(1, 5, 7)}\cr
@@ -99,49 +87,50 @@ NPtest(obj, n = NULL, method = "T1", ...)
 %     t7a<-NPtest(rmat,method="T7a",idx=c(1,3,5)) # test for item-pairs
 %     t7a
 
-     \item{\bold{T10:}}{\code{method = "T10", splitcr="median"}}\cr
-     \code{splitcr} \ldots split criterion for subject raw score splitting. \code{"median"} uses the median as split criterion,
-     \code{"mean"} performs a mean-split. Optionally \code{splitcr} can also be a vector which assigns each person to a
-     one of two subgroups (e.g., following an external criterion). This vector can be numeric, character, logical or a factor.\cr
-     Gobal test for subgroup-invariance. Checks for different item difficulties in two subgroups (for details see Ponocny, 2001).
-
-     \item{\bold{T11:}}{\code{method = "T11"}, no further specific option}\cr
-     Gobal test for local dependence. The statistic calculates the sum of absolute deviations between the observed inter-item correlations
-     and the expected correlations.
-
-     \item{\bold{Tpbis:}}{\code{method = "Tpbis", idxt, idxs}}\cr
-     Test for discrimination. The statistic calculates a pointbiserial correlation for a test item (specified via \code{idxt})
-     with the person row scores for a subscale of the test sum (specified via \code{idxs}). If correlation is too low, the test item
-     shows different discrimination compared to the items of the subscale.
-   }
-
-    The 'exact' version of the \bold{Martin-Loef} statistic is specified via \code{method = "MLoef"} and optionally \code{splitcr}
-    (see \code{\link{MLoef}}).
+    \item{\eqn{T_{10}}{T_10}:}{\code{method = "T10", splitcr = "median"}\cr%
+      \code{splitcr} defines the split criterion for subject raw score splitting.
+      \code{"median"} uses the median as split criterion, \code{"mean"} performs a mean-split.
+      Optionally, \code{splitcr} can also be a vector which assigns each person to one of two subgroups (e.g., following an external criterion).
+      This vector can be numeric, character, logical, or a factor.\cr%
+      Global test for subgroup-invariance.
+      Checks for different item difficulties in two subgroups (for details see Ponocny, 2001).
+    }
+    \item{\eqn{T_{11}}{T_11}:}{\code{method = "T11"}\cr%
+      Global test for local dependence.
+      The statistic calculates the sum of absolute deviations between the observed inter-item correlations and the expected correlations.
+    }
+    \item{\eqn{T_{pbis}}{T_pbis}:}{\code{method = "Tpbis", idxt, idxs}\cr
+      Test for discrimination.
+      The statistic calculates a point-biserial correlation for a test item (specified via \code{idxt}) with the person row scores for a subscale of the test sum (specified via \code{idxs}).
+      If the correlation is too low, the test item shows different discrimination compared to the items of the subscale.
+    }
+    \item{\emph{Martin-Löf}}{%
+      The \sQuote{exact} version of the \emph{Martin-Löf} statistic is specified via \code{method = "MLoef"} and optionally \code{splitcr} (see \code{\link{MLoef}}).%
+    }
+  }
 }
 \value{
-Depends on the method used. For each method a list is returned. The returned objects are of class
-\code{T1obj},\code{T1mobj},\code{T1lobj}, \code{Tmdobj}, \code{T2obj}, \code{T2mobj}, \code{T4obj},
-\code{T10obj}, \code{T11obj}, and \code{Tpbisobj} corresponding to the method used.
-The main output element is \code{prop} giving the one-sided p-value, i.e., the number of statistics from the sampled matrices which are equal
-or exceed the statistic based on the observed data. For \emph{T1}, \emph{T1m}, and \emph{T1l} \code{prop} is a vector.
-For the \emph{Martin-Loef} test the returned object is of class \code{MLobj}. Besides other elements, it contains a \code{prop} vector and \code{MLres}, the output
-object from the asymptotic Martin-Loef test on the input data.
+Depending on the \code{method} argument, a list is returned which has one of the following classes:
+\code{'T1obj'}, \code{'T1mobj'}, \code{'T1lobj'}, \code{'Tmdobj'}, \code{'T2obj'}, \code{'T2mobj'}, \code{'T4obj'}, \code{'T10obj'}, \code{'T11obj'}, or \code{'Tpbisobj'}.
+
+The main output element is \code{prop} giving the one-sided \eqn{p}{p}-value, i.e., the number of statistics from the sampled matrices which are equal or exceed the statistic based on the observed data.
+For \eqn{T_1}{T_1}, \eqn{T_{1m}}{T_1m}, and \eqn{T_{1l}}{T_1l}, \code{prop} is a vector.
+For the Martin-Löf test, the returned object is of class \code{'MLobj'}.
+Besides other elements, it contains a \code{prop} vector and \code{MLres}, the output object from the asymptotic Martin-Löf test on the input data.
 }
-\note{
-The \code{RaschSampler} package is no longer required to use \code{NPtest} since version 0.15-0.
+\note{The \pkg{RaschSampler} package is no longer required to use \code{NPtest} since \pkg{eRm} version 0.15-0.}
+\references{%
+Ponocny, I. (2001). Nonparametric goodness-of-fit tests for the Rasch model. \emph{Psychometrika, 66}(3), 437--459. \url{http://dx.doi.org/10.1007/BF02294444}
+
+Verhelst, N. D. (2008). An efficient \acronym{MCMC} algorithm to sample binary matrices with fixed marginals. \emph{Psychometrika, 73}(4), 705--728. \url{http://dx.doi.org/10.1007/s11336-008-9062-3}
+
+Verhelst, N., Hatzinger, R., & Mair, P. (2007). The Rasch sampler. \emph{Journal of Statistical Software, 20}(4), 1--14. \url{http://www.jstatsoft.org/v20/i04}
+
+Koller, I., & Hatzinger, R. (2013). Nonparametric tests for the Rasch model: Explanation, development, and application of quasi-exact tests for small samples. \emph{Interstat, 11}, 1--16. \url{http://interstat.statjournals.net/YEAR/2013/abstracts/1311002.php}
+
+Koller, I., Maier, M. J., & Hatzinger, R. (2015). An Empirical Power Analysis of Quasi-Exact Tests for the Rasch Model: Measurement Invariance in Small Samples. \emph{Methodology}. \url{http://dx.doi.org/10.1027/1614-2241/a000090}
 }
-\references{
-Ponocny, I. (2001) Nonparametric goodness-of-fit tests for the rasch model. Psychometrika,  Volume 66, Number 3\cr
-Verhelst, N. D. (2008) An Efficient MCMC Algorithm to Sample Binary
-Matrices with Fixed Marginals. Psychometrika, Volume 73, Number 4\cr
-Verhelst, N. D., Hatzinger, R., and Mair, P. (2007) The Rasch Sampler, Journal of Statistical Software, Vol. 20, Issue 4, Feb 2007
-}
-\author{
-Reinhold Hatzinger
-}
-%\note{
-%Maybe notes appear here
-%}
+\author{Reinhold Hatzinger}
 %\seealso{
 %  \code{\link{RaschSampler}}
 %}
@@ -216,7 +205,7 @@ tpb <- NPtest(X[, 1:5], method = "Tpbis", idxt = 1, idxs = 2:5)
 tpb
 
 
-###--- Martin-Loef -------------------------------------------------------------
+###--- Martin-Löf --------------------------------------------------------------
 \dontrun{
 # takes a while ...
 split <- rep(1:3, each = 10)

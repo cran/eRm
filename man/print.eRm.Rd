@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{print.eRm}
 \alias{print.eRm}
 \alias{summary.eRm}
@@ -8,7 +9,7 @@
 \alias{confint.eRm}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Methods for extended Rasch models}
-\description{Several methods for objects of class \code{eRm}.}
+\description{Several methods for objects of class \code{'eRm'}.}
 \usage{
 \method{print}{eRm}(x, ...)
 \method{summary}{eRm}(object, ...)

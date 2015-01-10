@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{rsextrobj}
 \alias{rsextrobj}
 \title{Extracting Encoded Sample Matrices}

@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{plotICC}
 \alias{plotICC}
 \alias{plotICC.Rm}

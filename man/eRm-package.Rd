@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{eRm-package}
 \alias{eRm-package}
 \alias{eRm}
@@ -13,16 +14,17 @@ and its linear extension (LPCM). The parameters are estimated by conditional max
 likelihood (CML). Missing values are allowed in the data matrix. Additional features
 are the estimation of the person parameters, LR-Model test, item-spefific Wald test,
 Martin-Loef test, nonparametric Monte-Carlo tests,
-itemfit and personfit statistics, various ICC plots. An eRm platform is provided at
-http://r-forge.r-project.org/projects/erm/.
+itemfit and personfit statistics, various ICC plots.
+
+An \pkg{eRm} platform is provided at \url{http://r-forge.r-project.org/projects/erm/}.
 }
-\details{
-\tabular{ll}{
-Package: \tab eRm\cr
-Type:    \tab Package\cr
-Version: \tab 0.15-4\cr
-Date:    \tab 2014-01-27\cr
-License: \tab GPL-2\cr
+\details{%
+\tabular{ll}{%
+Package: \tab{}eRm\cr%
+Type:    \tab{}Package\cr%
+Version: \tab{}\Sexpr[stage=build]{packageDescription("eRm")$Version}\cr%
+Date:    \tab{}\Sexpr[stage=build]{packageDescription("eRm")$Date}\cr%
+License: \tab{}\Sexpr[stage=build]{packageDescription("eRm")$License}\cr%
 }
 The basic input units for the functions are the person-item matrix X and the design matrix W.
 Missing values in X are coded with \code{NA}.
@@ -53,7 +55,7 @@ classes defined in the package and the functions depending on them see the packa
 We acknowledge Julian Gilbey for writing the \code{plotPWmap} function, Kathrin Gruber
 for the function \code{plotDIF}, and Thomas Rusch for \code{LLRA}, related utilities and
 functionality to calculate and plot item and test information.
-The \code{eRm} package contains functions from the packages \code{sna}, \code{gtools} and \code{ROCR}.
+The \pkg{eRm} package contains functions from the packages \pkg{sna}, \pkg{gtools} and \pkg{ROCR}.
 Thanks to Carter T. Butts, Gregory R. Warnes, and Tobias Sing et al.
 }
 \note{The fitting engine by default is \code{\link{nlm}} unless changed to \code{\link{optim}}.
@@ -61,18 +63,18 @@ Thanks to Carter T. Butts, Gregory R. Warnes, and Tobias Sing et al.
       \code{fitctrl <- "nlm"} or \code{fitctrl <- "optim"}.}
 
 
-\author{Patrick Mair, Reinhold Hatzinger, Marco Maier, and others
+\author{Patrick Mair, Reinhold Hatzinger, Marco J. Maier, and others.
 
-Maintainer: Patrick Mair <mair@fas.harvard.edu>}
+Maintainer: Patrick Mair (\email{mair@fas.harvard.edu})%
+}
 \references{
 Fischer, G. H., and Molenaar, I. (1995). Rasch Models - Foundations,
 Recent Developements, and Applications. Springer.
 
-Mair, P., and Hatzinger, R. (2007). Extended Rasch modeling: The eRm package for
+Mair, P., and Hatzinger, R. (2007). Extended Rasch modeling: The \pkg{eRm} package for
 the application of IRT models in R. Journal of Statistical Software, 20(9), 1-20.
 
 Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch models
-with the eRm package in R. Psychology Science, 49, 26-43.
+with the \pkg{eRm} package in R. Psychology Science, 49, 26-43.
 }
 \keyword{models}
-

@@ -1,6 +1,18 @@
 \name{NEWS}
 \title{News for Package \pkg{eRm}}
 \encoding{UTF-8}
+\section{Changes in Version 0.15-5}{
+  \itemize{
+    \item implemented an \code{anova()} method for all models (except \acronym{LLRA}s, which have their own: \code{anova.llra}). see \code{?anova.eRm}
+    \item added a function to compute separation reliability, as proposed in Wright & Stone (1999; see \code{?SepRel}).
+    \item \code{plotINFO()} accepts more arguments via \code{\dots} (see \code{?plotINFO}).
+    \item fixed a bug in \code{plotPWmap()}.
+    \item fixed a bug in the internal function \code{get_item_cats()} related to \code{NA}s (affecting \acronym{LLRA} and item-information functions).
+    \item switched encoding to \acronym{UTF}-8 to avoid problems with diacritics, etc. (e.g., Martin-Löf).
+		\item updated citations.
+    \item general improvements.
+  }
+}
 \section{Changes in Version 0.15-4}{
   \itemize{
     \item streamlining some functions, updating the vignette, etc.

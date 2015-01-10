@@ -5,7 +5,7 @@ function(object, pmap=FALSE, imap=TRUE, item.subset="all", person.subset="all",
                  tlab="Infit t statistic", pp=NULL, cex.gen=0.6, cex.pch=1,
                  person.pch=1, item.pch=16, personCI=NULL, itemCI=NULL, horiz=FALSE)
 {
-  def.par <- par(no.readonly = TRUE) ## save default, for resetting...
+#mjm  def.par <- par(no.readonly = TRUE) ## save default, for resetting...
 
   ## Pathway map currently only for RM, PCM and RSM
 
@@ -60,17 +60,33 @@ function(object, pmap=FALSE, imap=TRUE, item.subset="all", person.subset="all",
 
   ## We will be plotting the infit data versus the parameters for
   ## both items and persons
-  iloc<-tt[,1]
-  ise<-tt[,2]
-  ifit <- itemfit(pp)
+  # item fit
+  iloc  <- tt[, 1L]
+  ise   <- tt[, 2L]
+  ifit  <- itemfit(pp)
   ifitZ <- ifit$i.infitZ
 
-  ploc <- as.matrix(pp$theta.table['Person Parameter'])[,1]
-  pse <- unlist(pp$se.theta, recursive=FALSE)
+  # person fit
+  pfit       <- personfit(pp)
+  pfitZ      <- pfit$p.infitZ
+  if(length(pfit$excl_obs_num) > 0L){                  # mjm 2014-09-17
+    temp_namevec <- pfit$excl_obs_chr                  #
+    for(ex_pers in pfit$excl_obs_num){                 # workaround: add deleted persons and their names
+      pfitZ <- append(pfitZ, NA, ex_pers - 1L)         #
+      names(pfitZ)[ex_pers] <- temp_namevec[ex_pers]   #
+    }                                                  #
+    rm(temp_namevec)                                   #
+  }                                                    #
+  
+  ploc       <- as.matrix(pp$theta.table['Person Parameter'])[,1]
+
+  if(length(pfit$excl_obs_num) > 0L){   # mjm 2014-09-17
+    ploc[pfit$excl_obs_num] <- NA       # set all parameters of excluded obs NA
+  }                                     #
+  
+  pse        <- unlist(pp$se.theta, recursive=FALSE)
   names(pse) <- sub("^NAgroup[0-9]*\\.","",names(pse))
-  pse <- pse[names(ploc)]
-  pfit <- personfit(pp)
-  pfitZ <- pfit$p.infitZ
+  pse        <- pse[names(ploc)]
 
   ## We can now do item and person subsetting; the item subsetting is
   ## pretty ugly as there are multiple cases.  (We dare not do it earlier
@@ -149,7 +165,7 @@ function(object, pmap=FALSE, imap=TRUE, item.subset="all", person.subset="all",
       stop("person.subset misspecified. Use 'all' or vector of at least two valid person indices/names.")
   } else if (pmap) {
     ## Case 2: person subsetting by person numbers
-    if (length(person.subset)>1 && all(person.subset %in% 1:length(ploc))) {
+    if (length(person.subset)>1 && all(person.subset %in% seq_along(ploc))) {
       ploc  <- ploc[person.subset]
       pse   <- pse[person.subset]
       pfitZ <- pfitZ[person.subset]
@@ -163,8 +179,8 @@ function(object, pmap=FALSE, imap=TRUE, item.subset="all", person.subset="all",
   ## Need defaults for multiple of standard error for purpose of range
   ## calculation; these are zero as default is not to draw confidence
   ## intervals
-  pci=0
-  ici=0
+  pci <- 0
+  ici <- 0
 
   ## Our calculation is simplistic; we use the normal distribution to
   ## estimate our confidence interval from our standard error.  However,
@@ -210,7 +226,7 @@ function(object, pmap=FALSE, imap=TRUE, item.subset="all", person.subset="all",
     xrange <- xrange.imap
     yrange <- yrange.imap
     maintitle <- mainitem
-  } else {
+  } else if(pmap && imap){
     xrange <- numeric(2)
     yrange <- numeric(2)
     xrange[1] <- min(xrange.pmap[1], xrange.imap[1], na.rm = TRUE)
@@ -218,19 +234,19 @@ function(object, pmap=FALSE, imap=TRUE, item.subset="all", person.subset="all",
     yrange[1] <- min(yrange.pmap[1], yrange.imap[1], na.rm = TRUE)
     yrange[2] <- max(yrange.pmap[2], yrange.imap[2], na.rm = TRUE)
     maintitle <- mainboth
+  } else {
+    stop("error determining plot ranges.")
   }
 
 
-  par(mar=c(5,4,4,2))
+#mjm  par(mar=c(5,4,4,2))
 
   if (!horiz){  # rh 2010-12-09
-    plot(xrange,yrange, xlim=xrange, ylim=yrange, main=maintitle,
-         ylab=latdim, xlab=tlab, type="n")
-    abline(v=c(-2,2),col="lightgreen")
+    plot(xrange, yrange, xlim = xrange, ylim = yrange, main = maintitle, ylab = latdim, xlab = tlab, type = "n")
+    abline(v = c(-2, 2), col = "lightgreen")
   } else {
-    plot(yrange,xrange, xlim=yrange, ylim=xrange, main=maintitle,
-         ylab=tlab, xlab=latdim, type="n")
-    abline(h=c(-2,2),col="lightgreen")
+    plot(yrange, xrange, xlim = yrange, ylim = xrange, main = maintitle, ylab = tlab, xlab = latdim, type = "n")
+    abline(h = c(-2, 2), col = "lightgreen")
   }
 
   if (pmap) { ## person map
@@ -273,7 +289,7 @@ function(object, pmap=FALSE, imap=TRUE, item.subset="all", person.subset="all",
     }
   }
 
-  par(def.par)
+#mjm  par(def.par)
 
   invisible(NULL)
 }

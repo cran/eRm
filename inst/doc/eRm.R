@@ -1,18 +1,18 @@
 ### R code from vignette source 'eRm.Rnw'
+### Encoding: ISO8859-1
 
 ###################################################
-### code chunk number 1: eRm.Rnw:625-629
+### code chunk number 1: eRm.Rnw:634-637
 ###################################################
 library("eRm")
-data(raschdat1)
 res.rasch <- RM(raschdat1)
 pres.rasch <- person.parameter(res.rasch)
 
 
 ###################################################
-### code chunk number 2: eRm.Rnw:632-634
+### code chunk number 2: eRm.Rnw:640-642
 ###################################################
-lrres.rasch <- LRtest(res.rasch, splitcr = "mean", se = TRUE)
+lrres.rasch <- LRtest(res.rasch, splitcr = "mean")
 lrres.rasch
 
 
@@ -29,16 +29,15 @@ plotGOF(lrres.rasch, beta.subset=c(14,5,18,7,1), tlab="item", conf=list(ia=FALSE
 
 
 ###################################################
-### code chunk number 5: eRm.Rnw:655-659
+### code chunk number 5: eRm.Rnw:665-668
 ###################################################
-data(lltmdat2)
 W <- matrix(c(1,2,1,3,2,2,2,1,1,1),ncol=2)
 res.lltm <- LLTM(lltmdat2, W)
 summary(res.lltm)
 
 
 ###################################################
-### code chunk number 6: eRm.Rnw:668-671
+### code chunk number 6: eRm.Rnw:681-684
 ###################################################
 data(pcmdat2)
 res.rsm <- RSM(pcmdat2)
@@ -72,14 +71,14 @@ plotPImap(res.pcm, sorted = TRUE)
 
 
 ###################################################
-### code chunk number 11: eRm.Rnw:700-702
+### code chunk number 11: eRm.Rnw:714-716
 ###################################################
 pres.pcm <- person.parameter(res.pcm)
 itemfit(pres.pcm)
 
 
 ###################################################
-### code chunk number 12: eRm.Rnw:706-710
+### code chunk number 12: eRm.Rnw:720-724
 ###################################################
 lr<- 2*(res.pcm$loglik-res.rsm$loglik)
 df<- res.pcm$npar-res.rsm$npar
@@ -88,22 +87,21 @@ cat("LR statistic: ", lr, "  df =",df, "  p =",pvalue, "\n")
 
 
 ###################################################
-### code chunk number 13: eRm.Rnw:723-725
+### code chunk number 13: eRm.Rnw:741-742
 ###################################################
-data(lpcmdat)
 grouplpcm <- rep(1:2, each = 10)
 
 
 ###################################################
-### code chunk number 14: eRm.Rnw:728-730
+### code chunk number 14: eRm.Rnw:746-748
 ###################################################
 reslpcm <- LPCM(lpcmdat, mpoints = 2, groupvec = grouplpcm, sum0 = FALSE)
 model.matrix(reslpcm)
 
 
 ###################################################
-### code chunk number 15: eRm.Rnw:733-734
+### code chunk number 15: eRm.Rnw:751-752
 ###################################################
-reslpcm
+coef(reslpcm, parm="eta")
 
 

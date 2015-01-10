@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{summary.llra}
 \alias{summary.llra}
 \alias{print.summary.llra}
@@ -38,9 +39,7 @@ them nicely.
 
   \item{ci}{The upper and lower confidence interval borders.}
 }
-\author{
-Thomas Rusch
-}
+\author{Thomas Rusch}
 
 \seealso{
 The model fitting function \code{\link{LLRA}}.

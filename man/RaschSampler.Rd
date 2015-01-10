@@ -1,9 +1,10 @@
+\encoding{UTF-8}
 \name{RaschSampler}
 \alias{RaschSampler}
 %\docType{package}
 \title{Rasch Sampler Package}
 \description{
-The package implements an MCMC algorithm for sampling of
+The package implements an \acronym{MCMC} algorithm for sampling of
 binary matrices with fixed margins complying to the Rasch model.
 Its stationary distribution is uniform. The algorithm also allows
 for square matrices with fixed diagonal.\cr
@@ -22,7 +23,7 @@ tests for the Rasch model. \cr
 
 In the context of social network theories, where the structure of binary asymmetric
 relations is studied, for example,
-person \eqn{a} esteems person \eqn{b}, which correponds to a 1 in cell \eqn{(a, b)}
+person \eqn{a}{a} esteems person \eqn{b}{b}, which correponds to a 1 in cell \eqn{(a, b)}{(a, b)}
 of the associated adjacency matrix. If one wants to study
 the distribution of a statistic defined on the adjacency matrix and conditional
 on the marginal totals, one has to exclude the diagonal cells from consideration, i.e.,
@@ -58,7 +59,7 @@ on the control object \code{\link{RSctr}} which is obtained from using
 }
 \author{Reinhold Hatzinger, Patrick Mair, Norman D. Verhelst}
 \references{
-Verhelst, N. D. (2008) An Efficient MCMC Algorithm to Sample Binary Matrices with Fixed Marginals. Psychometrika, Volume 73, Number 4\cr
+Verhelst, N. D. (2008) An Efficient \acronym{MCMC} Algorithm to Sample Binary Matrices with Fixed Marginals. Psychometrika, Volume 73, Number 4\cr
 Verhelst, N. D., Hatzinger, R., and Mair, P. (2007) The Rasch Sampler, Journal of Statistical Software, Vol. 20, Issue 4, Feb 2007
 }
 \note{The current implementation allows for data matrices up to 4096 rows and 128 columns.

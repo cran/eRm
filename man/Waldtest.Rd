@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{Waldtest}
 \alias{Waldtest}
 \alias{Waldtest.Rm}

@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{summary.RSmpl}
 \alias{summary.RSmpl}
 \alias{summary.RSmplext}

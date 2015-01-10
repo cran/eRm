@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{plotDIF}
 \alias{plotDIF}
 \title{
@@ -76,9 +77,7 @@ Further options to be passed to \code{plot}.
 \code{plotCI} returns a list containing the confidence limits of each group in each \code{LRtest} object.
 }
 
-\author{
-Kathrin Gruber, Reinhold Hatzinger
-}
+\author{Kathrin Gruber, Reinhold Hatzinger}
 \seealso{\code{\link{LRtest}}, \code{\link{confint.threshold}}, \code{\link{thresholds}}}
 \examples{
 # the object used is the result of running   RM(raschdat1)

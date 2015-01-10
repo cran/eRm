@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{rstats}
 \alias{rstats}
 \title{Calculating Statistics for the Sampled Matrices}

@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{RM}
 \alias{RM}
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -45,9 +46,9 @@ RM(X, W, se = TRUE, sum0 = TRUE, etaStart)
 Fischer, G. H., and Molenaar, I. (1995). Rasch Models - Foundations,
 Recent Developements, and Applications. Springer.
 
-Mair, P., and Hatzinger, R. (2007). Extended Rasch modeling: The eRm package for the application of IRT models in R. Journal of Statistical Software, 20(9), 1-20.
+Mair, P., and Hatzinger, R. (2007). Extended Rasch modeling: The \pkg{eRm} package for the application of IRT models in R. Journal of Statistical Software, 20(9), 1-20.
 
-Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch models with the eRm package in R. Psychology Science, 49, 26-43.
+Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch models with the \pkg{eRm} package in R. Psychology Science, 49, 26-43.
 }
 \author{Patrick Mair, Reinhold Hatzinger}
 %\note{}

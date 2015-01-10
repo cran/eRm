@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{item_info}
 \alias{item_info}
 \alias{i_info}
@@ -38,9 +39,7 @@ i_info(hvec, itembeta, theta)
 Samejima, F. (1969) Estimation of latent ability using a response
 pattern of graded scores. \emph{Psychometric Monographs}, \bold{17}.  
 }
-\author{
-Thomas Rusch
-} 
+\author{Thomas Rusch} 
 \seealso{
 The function to calculate the test information, \code{\link{test_info}}
 and the plot function \code{\link{plotINFO}}.

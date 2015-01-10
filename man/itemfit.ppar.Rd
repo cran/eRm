@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{itemfit.ppar}
 \alias{itemfit.ppar}
 \alias{itemfit}

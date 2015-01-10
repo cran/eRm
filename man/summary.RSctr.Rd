@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{summary.RSctr}
 \alias{summary.RSctr}
 \title{Summary Method for Control Objects}

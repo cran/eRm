@@ -1,243 +1,265 @@
 News for Package 'eRm'
 
+Changes in Version 0.15-5:
+
+  � implemented an 'anova()' method for all models (except LLRAs, which
+    have their own: 'anova.llra'). see '?anova.eRm'
+
+  � added a function to compute separation reliability, as proposed in
+    Wright & Stone (1999; see '?SepRel').
+
+  � 'plotINFO()' accepts more arguments via '...' (see '?plotINFO').
+
+  � fixed a bug in 'plotPWmap()'.
+
+  � fixed a bug in the internal function 'get_item_cats()' related to
+    'NA's (affecting LLRA and item-information functions).
+
+  � switched encoding to UTF-8 to avoid problems with diacritics, etc.
+    (e.g., Martin-L�f).
+
+  � updated citations.
+
+  � general improvements.
+
 Changes in Version 0.15-4:
 
-  - streamlining some functions, updating the vignette, etc.
+  � streamlining some functions, updating the vignette, etc.
 
-  - warnings are now treated more consistently and can be suppressed
-    with ‘suppressWarnings()’
+  � warnings are now treated more consistently and can be suppressed
+    with 'suppressWarnings()'
 
-  - the ‘plotGOF()’ function was revamped and tidied up in a couple of
+  � the 'plotGOF()' function was revamped and tidied up in a couple of
     places, e.g.:
 
-    - the plotting order of elements in a non-interactive call has been
+    � the plotting order of elements in a non-interactive call has been
       changed to put confidence ellipses and lines in the background
       and text in the foreground.
 
-    - the x- and y-limits are now dynamically computed by default, so
+    � the x- and y-limits are now dynamically computed by default, so
       that confidence regions and ellipses are inside the plotting
       region.
 
-    - the leading “‘I’” before item numbers has been removed for better
+    � the leading "'I'" before item numbers has been removed for better
       legibility.
 
-  - moved ‘NEWS’ to the new fancy ‘NEWS.Rd’ file/format
+  � moved 'NEWS' to the new fancy 'NEWS.Rd' file/format
 
 Changes in eRm version 0.15-3:
 
-  - an error in ‘test_info()’ was fixed.
+  � an error in 'test_info()' was fixed.
 
-  - ‘eRm’ now depends on ‘R’ >= 3.0.0
+  � 'eRm' now depends on 'R' >= 3.0.0
 
 Changes in eRm version 0.15-2:
 
-  - an error in ‘Tpbis.stat’ was fixed.
+  � an error in 'Tpbis.stat' was fixed.
 
 Changes in eRm version 0.15-1:
 
-  - a bug in ‘person.parameter()’ has been fixed that caused the
+  � a bug in 'person.parameter()' has been fixed that caused the
     estimation to crash in some cases.
 
-  - a bug in ‘thresholds()’ has been fixed that caused the routine to
+  � a bug in 'thresholds()' has been fixed that caused the routine to
     crash.
 
 Changes in eRm version 0.15-0:
 
-  - the ‘RaschSampler’ package has been merged into ‘eRm’ for
+  � the 'RaschSampler' package has been merged into 'eRm' for
     convenience (still available as a separate package).
 
 Changes in eRm version 0.14-5:
 
-  - the package is now byte-compiled by default.
+  � the package is now byte-compiled by default.
 
-  - some statistics added to ‘NPtest()’, ‘T7’ and ‘T7a’ removed.
+  � some statistics added to 'NPtest()', 'T7' and 'T7a' removed.
 
-  - fixed a bug in ‘plotPWmap()’.
+  � fixed a bug in 'plotPWmap()'.
 
-  - fixed the ‘mplot’ argument in plotting routines.
+  � fixed the 'mplot' argument in plotting routines.
 
-  - fixed the split-criterion ‘"all.r"’ in ‘LRtest()’.
+  � fixed the split-criterion '"all.r"' in 'LRtest()'.
 
-  - deleted all usages of ‘data()’ in examples, since eRm uses “lazy
-    data.”
+  � deleted all usages of 'data()' in examples, since eRm uses "lazy
+    data."
 
 Changes in eRm version 0.14-4:
 
-  - when calling ‘NPtest()’, the ‘RaschSampler’ can now be controlled
-    more specifically (‘burn_in’, ‘step’, ‘seed’).
+  � when calling 'NPtest()', the 'RaschSampler' can now be controlled
+    more specifically ('burn_in', 'step', 'seed').
 
-  - various improvements and bugfixes for LLRA-related functions.
+  � various improvements and bugfixes for LLRA-related functions.
 
-  - person parameter values can be extracted now for all persons using
-    ‘coef()’.  Additionally, in-/exclusion of extrapolated values (for
+  � person parameter values can be extracted now for all persons using
+    'coef()'.  Additionally, in-/exclusion of extrapolated values (for
     0 and perfect scores) can be controlled via the argument
-    ‘extrapolated’.
+    'extrapolated'.
 
-  - LRtest now computes standard errors (‘se = TRUE’) by default.
+  � LRtest now computes standard errors ('se = TRUE') by default.
 
-  - plotDIF now plots “difficulties” for all models (formerly,
-    “easiness” parameters were plotted for Rasch models).
+  � plotDIF now plots "difficulties" for all models (formerly,
+    "easiness" parameters were plotted for Rasch models).
 
 Changes in eRm version 0.14-3:
 
-  - minor bug fixed in ‘plotGOF()’, where on rare occasions confidence
+  � minor bug fixed in 'plotGOF()', where on rare occasions confidence
     ellipses were plotted together with control lines (spotted by Peter
     Parker)
 
-  - improved labelling in ‘plotjointICC()’
+  � improved labelling in 'plotjointICC()'
 
 Changes in eRm version 0.14-2:
 
-  - warning regarding group assignment when using median or mean split
-    removed from ‘MLoef()’
+  � warning regarding group assignment when using median or mean split
+    removed from 'MLoef()'
 
-  - modification in ‘NPtest()’ to split long output lines
+  � modification in 'NPtest()' to split long output lines
 
-  - changed the delimiters of ‘plotDIF()’ confidence intervals to ‘pch
-    = 20’ (small bullet).
+  � changed the delimiters of 'plotDIF()' confidence intervals to 'pch
+    = 20' (small bullet).
 
 Changes in eRm version 0.14-1:
 
-  - new experimental functions to calculate and plot item and test
+  � new experimental functions to calculate and plot item and test
     information (by Thomas Rusch)
 
-  - bug fixed in the calculation of item and person Infit t and Outfit
+  � bug fixed in the calculation of item and person Infit t and Outfit
     t (hint from Rainer Alexandrowicz).
 
-  - ‘eRm’ no longer depends on the ‘RaschSampler’ package.  However, it
-    must be installed to use ‘NPtest()’.
+  � 'eRm' no longer depends on the 'RaschSampler' package.  However, it
+    must be installed to use 'NPtest()'.
 
-  - changed the delimiters of ‘plotDIF()’ confidence intervals to ‘pch
-    = 20’.
+  � changed the delimiters of 'plotDIF()' confidence intervals to 'pch
+    = 20'.
 
 Changes in eRm version 0.14-0:
 
-  - new (wrapper) function ‘LLRA()’ for fitting linear logistic models
+  � new (wrapper) function 'LLRA()' for fitting linear logistic models
     with relaxed assumptions including utilities for preparing data
-    (‘llra.datprep()’), setting up (‘build_W()’) and modifying
-    (‘collapse_W()’) design matrices, comparing LLRA models (‘anova()’)
-    and plotting results (‘plotTR()’ and ‘plotGR()’) (by Thomas Rusch).
+    ('llra.datprep()'), setting up ('build_W()') and modifying
+    ('collapse_W()') design matrices, comparing LLRA models ('anova()')
+    and plotting results ('plotTR()' and 'plotGR()') (by Thomas Rusch).
 
-  - “exact” version of the Martin-Löf test for binary items and
-    arbitrary splits added as method to ‘NPtest()’.
+  � "exact" version of the Martin-L�f test for binary items and
+    arbitrary splits added as method to 'NPtest()'.
 
-  - in ‘plotGOF()’ confidence ellipses can now be drawn for subsets of
+  � in 'plotGOF()' confidence ellipses can now be drawn for subsets of
     items, optionally using different colours
 
-  - new function ‘plotDIF()’ (by Kathrin Gruber): plots confidence
+  � new function 'plotDIF()' (by Kathrin Gruber): plots confidence
     intervals for item parameters estimated separately in subgroups,
     uses LR objects as input
 
-  - adapted the ‘MLoef()’ function to work with polytomous data and
+  � adapted the 'MLoef()' function to work with polytomous data and
     more than two item groups
 
-  - error checks in NPtest:
+  � error checks in NPtest:
 
    1. 0/full responses for items meaningless for NPtest,
 
-   2. group in ‘method = "T4"’ must be of type logical,
+   2. group in 'method = "T4"' must be of type logical,
 
    3. specifying all items for T4 gives meaningless results.
 
-  - warning regarding group assignment when using median split removed
-    from ‘LRtest()’ and ‘Waldtest()’.
+  � warning regarding group assignment when using median split removed
+    from 'LRtest()' and 'Waldtest()'.
 
-  - some modifications in ‘plotPWmap()’: horizontal plotting, different
+  � some modifications in 'plotPWmap()': horizontal plotting, different
     default plotting symbols, option to change size of plotting symbols
 
-  - bug in ‘MLoef()’ fixed (now using logs in calculating the person
+  � bug in 'MLoef()' fixed (now using logs in calculating the person
     contributions)
 
-  - ‘eRm’ now depends on ‘R’ >= 2.12.0
+  � 'eRm' now depends on 'R' >= 2.12.0
 
-  - Latin1 encoding removed
+  � Latin1 encoding removed
 
-  - bug in ‘plotICC()’ (always same title) fixed
+  � bug in 'plotICC()' (always same title) fixed
 
 Changes in eRm version 0.13-0:
 
-  - ‘LLTM()’, ‘LRSM()’, and ‘LPCM()’ work now for repeated measurement
+  � 'LLTM()', 'LRSM()', and 'LPCM()' work now for repeated measurement
     designs with treatment groups and missing values.
 
-  - Rename vignette to “eRm”.
+  � Rename vignette to "eRm".
 
 Changes in eRm version 0.12-2:
 
-  - new function ‘plotPWmap()’ to plot Bond-and-Fox style pathway maps
+  � new function 'plotPWmap()' to plot Bond-and-Fox style pathway maps
     for the data by Julian Gilbey.  Since calculation of the
     t-statistics requires calculation of the kurtosis of the
-    standardized residuals, according changes to ‘itemfit.ppar()’,
-    ‘personfit.ppar()’, ‘pifit.internal()’, ‘print.ifit()’, and
-    ‘print.pfit()’.
+    standardized residuals, according changes to 'itemfit.ppar()',
+    'personfit.ppar()', 'pifit.internal()', 'print.ifit()', and
+    'print.pfit()'.
 
-  - ‘plotPImap()’ patched by Julian Gilbey: length of ‘item.subset’ did
+  � 'plotPImap()' patched by Julian Gilbey: length of 'item.subset' did
     not match the documentation, warning stars did not all appear,
     pre-calculated person.parameter data can be passed to the function
     via pp, mis-ordered items can be coloured.  some minor bugs fixed.
 
-  - the optimizer can be changed to ‘optim()’ using ‘fitctrl <-
-    "optim"’ and reset to ‘nlm()’ (the default) with ‘fitctrl <- "nlm"’
+  � the optimizer can be changed to 'optim()' using 'fitctrl <-
+    "optim"' and reset to 'nlm()' (the default) with 'fitctrl <- "nlm"'
 
-  - value of ‘LRtest()’ now contains the list ‘fitobj’ which contains
-    the model objects according to the subgroups specified by ‘splitcr’
+  � value of 'LRtest()' now contains the list 'fitobj' which contains
+    the model objects according to the subgroups specified by 'splitcr'
 
-  - ‘MLoef()’ no longer supports missing values
+  � 'MLoef()' no longer supports missing values
 
 Changes in eRm version 0.12-1:
 
-  - function invalid from package ‘gtools’ integrated into ‘eRm’.
-    ‘eRm’ no longer depends on ‘gtools’.
+  � function invalid from package 'gtools' integrated into 'eRm'.
+    'eRm' no longer depends on 'gtools'.
 
 Changes in eRm version 0.12-0:
 
-  - for ‘RM()’, ‘RSM()’, and ‘PCM()’: eta parameters are now displayed
-    as difficulty parameters; ‘print()’ and ‘summary()’ methods changed
+  � for 'RM()', 'RSM()', and 'PCM()': eta parameters are now displayed
+    as difficulty parameters; 'print()' and 'summary()' methods changed
     accordingly.
 
-  - new labeling of eta parameters in ‘RM()’, ‘RSM()’, and ‘PCM()’.
+  � new labeling of eta parameters in 'RM()', 'RSM()', and 'PCM()'.
     they now are labeled according to the estimated parameters for
-    items (‘RM()’), items + categories (‘RSM()’), items x categories
-    (‘PCM()’)
+    items ('RM()'), items + categories ('RSM()'), items x categories
+    ('PCM()')
 
-  - function ‘MLoef()’ for Martin-Löf-Test added
+  � function 'MLoef()' for Martin-L�f-Test added
 
-  - ‘df’ in ‘personfit()’ and ‘itemfit()’ corrected
+  � 'df' in 'personfit()' and 'itemfit()' corrected
 
-  - the ‘logLik()’ functions now extract the log-likelhood and df into
-    objects of class ‘"logLik.eRm"’ and ‘"loglik.ppar"’ with elements
-    ‘loglik’ and ‘df’.  the corresponding print methods have been
+  � the 'logLik()' functions now extract the log-likelhood and df into
+    objects of class '"logLik.eRm"' and '"loglik.ppar"' with elements
+    'loglik' and 'df'.  the corresponding print methods have been
     modified accordingly.
 
-  - method ‘coef.ppar()’ to extract person parameter estimates added
+  � method 'coef.ppar()' to extract person parameter estimates added
 
-  - option for beta parameters added to coef.eRm
+  � option for beta parameters added to coef.eRm
 
-  - in confint.eRm: default ‘parm = "beta"’
+  � in confint.eRm: default 'parm = "beta"'
 
-  - minor modifications in the help file for ‘IC()’
+  � minor modifications in the help file for 'IC()'
 
-  - ‘plotPImap()’: revised rug added, bug concerning ‘item.subset’
+  � 'plotPImap()': revised rug added, bug concerning 'item.subset'
     fixed, minor modifications to enhance readability
 
-  - minor modifications in ‘plotjointICC()’: allows for main title and
-    colors, option ‘legpos = FALSE’ suppresses legends, dev.new
-    removed, ‘legend = FALSE’ produced incorrect labeling
+  � minor modifications in 'plotjointICC()': allows for main title and
+    colors, option 'legpos = FALSE' suppresses legends, dev.new
+    removed, 'legend = FALSE' produced incorrect labeling
 
-  - minor modifications in ‘plotICC()’: allows for main title and
-    colors, default coloring with ‘col = NULL’ instead of ‘NA’ for
-    compatibility, option ‘legpos = FALSE’ suppresses legends, ‘mplot’
-    is now ‘FALSE’ if only one item is specified
+  � minor modifications in 'plotICC()': allows for main title and
+    colors, default coloring with 'col = NULL' instead of 'NA' for
+    compatibility, option 'legpos = FALSE' suppresses legends, 'mplot'
+    is now 'FALSE' if only one item is specified
 
-  - plot.ppar: dev.new removed
+  � plot.ppar: dev.new removed
 
-  - option “visible” in print.ifit und print.pfit to allow for avoiding
+  � option "visible" in print.ifit und print.pfit to allow for avoiding
     overly long output and for extraction of infit and outfit values
     (maybe changed to a coef method later)
 
-  - ‘strwrap()’ for NPtest print methods to break long lines
+  � 'strwrap()' for NPtest print methods to break long lines
 
-  - new methods ‘IC.default()’ and ‘pmat.default()’ for enhanced error
+  � new methods 'IC.default()' and 'pmat.default()' for enhanced error
     messages
 
-  - lazy loading package and datafiles
+  � lazy loading package and datafiles
 

@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{LLTM}
 \alias{LLTM}
 \title{Estimation of linear logistic test models}

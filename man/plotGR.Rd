@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{plotGR}
 \alias{plotGR}
 
@@ -28,9 +29,7 @@ baseline.
 Currently, this function only works for a full item x treatment x
 timepoints LLRA. Collapsed effects will not be displayed properly. 
 }
-\author{
-Thomas Rusch
-}
+\author{Thomas Rusch}
 \seealso{
 The plot method for trend effects \code{\link{plotTR}}.
 }

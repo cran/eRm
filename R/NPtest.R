@@ -23,9 +23,9 @@ NPtest<-function(obj, n=NULL, method="T1", ...){
    nn<-names(dots)
    for (i in seq(along=dots)) assign(nn[i],dots[[i]])
 
-   if(!exists("burn_in")) burn_in <- 256
+   if(!exists("burn_in", inherits = FALSE)) burn_in <- 256
    if(!("step" %in% nn)) step<-32
-   if(!exists("seed")) seed<-0
+   if(!exists("seed", inherits = FALSE)) seed<-0
    if(is.null(n)) n <- 500
 
    if(is.matrix(obj) || is.data.frame(obj)){ # input is datamatrix -  RaschSampler object is generated
@@ -45,7 +45,7 @@ NPtest<-function(obj, n=NULL, method="T1", ...){
         stop("Input object must be data matrix/data frame or output from RaschSampler")
    }
 
-   if(exists("RSinfo")) if(get("RSinfo")) summary(obj)
+   if(exists("RSinfo", inherits = FALSE)) if(get("RSinfo")) summary(obj)
 
   switch(method,
     "T1"    = T1(obj, ...),
@@ -71,7 +71,7 @@ MLoef.x<-function(rsobj, splitcr=NULL, ...){
        LR<-MLoef(rmod,splitcr)$LR
        LR
      }
-     #if(!exists("splitcr")) splitcr="median"
+     #if(!exists("splitcr", inherits = FALSE)) splitcr="median"
      if(is.null(splitcr)) splitcr="median"
      res <- rstats(rsextrobj(rsobj, 2), MLexact, splitcr)
 

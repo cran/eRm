@@ -1,3 +1,4 @@
+\encoding{UTF-8}
 \name{RSctr}
 \alias{RSctr}
 \title{Control Object}
