@@ -1,5 +1,13 @@
 News for Package 'eRm'
 
+Changes in Version 0.15-6:
+
+  • 'plotGOF()': added arguments 'x_axis', 'y_axis', 'set_par', and
+    'reset_par' to ease customization of the plot.
+
+  • Imports functions from default packages packages, as required by
+    the new CRAN-check.
+
 Changes in Version 0.15-5:
 
   • implemented an 'anova()' method for all models (except LLRAs, which

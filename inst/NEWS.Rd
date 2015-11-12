@@ -1,6 +1,12 @@
 \name{NEWS}
 \title{News for Package \pkg{eRm}}
 \encoding{UTF-8}
+\section{Changes in Version 0.15-6}{
+  \itemize{
+	  \item \code{plotGOF()}: added arguments \code{x_axis}, \code{y_axis}, \code{set_par}, and \code{reset_par} to ease customization of the plot.
+		\item Imports functions from default packages packages, as required by the new CRAN-check.
+	}
+}
 \section{Changes in Version 0.15-5}{
   \itemize{
     \item implemented an \code{anova()} method for all models (except \acronym{LLRA}s, which have their own: \code{anova.llra}). see \code{?anova.eRm}

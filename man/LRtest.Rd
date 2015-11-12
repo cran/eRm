@@ -10,8 +10,9 @@
 \description{This LR-test is based on subject subgroup splitting.}
 \usage{\method{LRtest}{Rm}(object, splitcr = "median", se = TRUE)
 
-\method{plotGOF}{LR}(x, beta.subset = "all", main = "Graphical Model Check", xlab, ylab, tlab = "item",
-    xlim, ylim, type = "p", pos = 4, conf = NULL, ctrline = NULL, asp = 1, ...)}
+\method{plotGOF}{LR}(x, beta.subset = "all", main = "Graphical Model Check", xlab, ylab,
+    tlab = "item", xlim, ylim, type = "p", pos = 4, conf = NULL, ctrline = NULL,
+    asp = 1, x_axis = TRUE, y_axis = TRUE, set_par = TRUE, reset_par = TRUE, \dots)}
 \arguments{
   \item{object}{Object of class \code{"Rm"}.}
   \item{splitcr}{Split criterion for subject raw score splitting.
@@ -36,17 +37,21 @@
   \item{pos}{Position of the item label (see \code{\link[graphics]{text}}).}
   \item{conf}{for plotting confidence ellipses for the item parameters.
     If \code{conf = NULL} (the default) no ellipses are drawn.
-    Otherwise, \code{conf} must be specified as a list with optional elements: \code{gamma}, is the confidence level (numeric), \code{col} and \code{lty}, color and linetype (see \code{\link{par}}), \code{which} (numeric index vector) specifying for which items ellipses are drawn (must be a subset of \code{beta.subset}), and \code{ia}, logical, if the ellipses are to be drawn interactively (cf., \code{tlab = "identify"} above).
+    Otherwise, \code{conf} must be specified as a list with optional elements: \code{gamma}, is the confidence level (numeric), \code{col} and \code{lty}, color and linetype (see \code{\link[graphics:par]{par}}), \code{which} (numeric index vector) specifying for which items ellipses are drawn (must be a subset of \code{beta.subset}), and \code{ia}, logical, if the ellipses are to be drawn interactively (cf., \code{tlab = "identify"} above).
     For details about the default behavior, if \code{conf} is specified as a an empty list, see Details and Examples below.
     To use \code{conf}, the LR object \code{x} has to be generated using the option \code{se = TRUE} in \code{LRtest()}.
     For specification of \code{col} and \code{which} see Details and Examples below.}
   \item{ctrline}{for plotting confidence bands (control lines, cf. eg. Wright and Stone, 1999).
     If \code{ctrline = NULL} (the default) no lines are drawn.
-    Otherwise, \code{ctrline} must be specified as a list with optional elements: \code{gamma}, is the confidence level (numeric), \code{col} and \code{lty}, color and linetype (see \code{\link{par}}).
+    Otherwise, \code{ctrline} must be specified as a list with optional elements: \code{gamma}, is the confidence level (numeric), \code{col} and \code{lty}, color and linetype (see \code{\link[graphics:par]{par}}).
     If \code{ctrline} is specified as \code{ctrline = list()}, the default values \code{conf = list(gamma = 0.95, col = "blue", lty = "solid")} will be used.
     See examples below.
     To use \code{ctrline}, the LR object \code{x} has to be generated using the option \code{se = TRUE} in \code{LRtest()}.}
   \item{asp}{sets the \eqn{y/x}{y/x} ratio of the plot (see \code{\link[graphics]{plot.window}}).}
+  \item{x_axis}{if \code{TRUE}, the \eqn{x}{x}-axis will be plotted.}
+  \item{y_axis}{if \code{TRUE}, the \eqn{y}{y}-axis will be plotted.}
+  \item{set_par}{if \code{TRUE}, graphical parameters will be set by the function to optimize the plot's appearance. Unless \code{reset_par = FALSE}, these will be reset to the previous \code{\link[graphics:par]{par}} settings.}
+  \item{reset_par}{if \code{TRUE}, graphical parameters will be reset to defaults via \code{\link[graphics:par]{par}()} after plotting (only if \code{set_par = TRUE}). To make adjustments \emph{after} using \code{plotGOF}, this reset can be switched off. Note that the changed graphical parameters will remain in place unless they are redefined (using \code{\link[graphics:par]{par}()}) or the device is closed.}
   \item{...}{additional parameters.}
 }
 \details{
@@ -132,5 +137,18 @@ library("colorspace")
 my_colors <- rainbow_hcl(2)
 plotGOF(lrres2, beta.subset = c(14, 25, 24, 1),
         conf = list(which = c(1, 14), col = my_colors))}
+
+# first, save current graphical parameters in an object
+old_par <- par(mfrow = c(1, 2), no.readonly = TRUE)
+# plots
+plotGOF(lrres2, ctrline = list(gamma = 0.95, col = "red", lty = "dashed"),
+  xlim = c(-3, 3), x_axis = FALSE, set_par = FALSE)
+axis(1, seq(-3, 3, .5))
+
+plotGOF(lrres2, conf = list(), xlim = c(-3, 3), x_axis = FALSE, set_par = FALSE)
+axis(1, seq(-3, 3, .5))
+text(-2, 2, labels = "Annotation")
+# reset graphical parameters
+par(old_par)
 }
 \keyword{models}

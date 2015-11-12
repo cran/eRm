@@ -12,6 +12,10 @@ plotGOF.LR <- function(
   conf = NULL,
   ctrline = NULL,
   asp = 1,
+  x_axis = TRUE,
+  y_axis = TRUE,
+  set_par = TRUE,
+  reset_par = TRUE,
   ...
 ){
 # graphical model check
@@ -27,9 +31,9 @@ plotGOF.LR <- function(
 
   # save current options() and par() values and restore them on exit
   old_options <- options(locatorBell = FALSE)
-  old_par <- par(mar=c(4,4,3,0)+.5, no.readonly = TRUE)
+  if(set_par){ old_par <- par(mar=c(4,4,3,0)+.5, no.readonly = TRUE) }
   on.exit({
-    par(old_par)
+    if(set_par && reset_par){ par(old_par) }
     options(old_options)
   })
 
@@ -42,8 +46,8 @@ plotGOF.LR <- function(
   nparg2 <- length(x$betalist[[2L]])
   if(nparg1 != nparg2) stop("Unequal number of parameters in the subgroups! Plot cannot be produced, choose another split in LRtest!")
 
-  
-  
+
+
   beta1 <- -x$betalist[[1L]] # -1 to obtain difficulty parameters
   beta2 <- -x$betalist[[2L]]
 
@@ -121,9 +125,9 @@ plotGOF.LR <- function(
     ci1l <- beta1 - z*s1
     ci2u <- beta2 + z*s2
     ci2l <- beta2 - z*s2
-  }  
+  }
 ################################################################################
-  
+
 ###   95% control lines (Wright)   #############################################
 ###   COMPUTATIONS   ###########################################################
   if(is.list(ctrline)){
@@ -141,15 +145,15 @@ plotGOF.LR <- function(
     uppery <- d + z*se.d/2
   }
 ################################################################################
-  
+
   if(!exists("ci1l", inherits = FALSE)) ci1l <- NA
   if(!exists("ci1u", inherits = FALSE)) ci1u <- NA
   if(!exists("ci2l", inherits = FALSE)) ci2l <- NA
   if(!exists("ci2u", inherits = FALSE)) ci2u <- NA
-  
+
   if(!exists("upperx", inherits = FALSE)) upperx <- NA
   if(!exists("uppery", inherits = FALSE)) uppery <- NA
-  
+
   if(missing(xlim)){
     xlim <- range(beta1[beta.subset], ci1l, ci1u, upperx, uppery, na.rm = TRUE)
   }
@@ -160,9 +164,9 @@ plotGOF.LR <- function(
   plot.new()
   plot.window(xlim = xlim, ylim = ylim, asp = asp)
   title(main = main, xlab = xlab, ylab = ylab)
-  axis(1)
-  axis(2)
-  
+  if(x_axis) axis(1)
+  if(y_axis) axis(2)
+
   abline(0, 1)
 
 # confidence ellipses - if not interactive
@@ -182,7 +186,7 @@ plotGOF.LR <- function(
       }
     }
   }
-  
+
 # 95% control lines (Wright) - plotting
   if(is.list(ctrline)){
     lines(upperx, uppery, col = ctrline$col, lty = ctrline$lty)
@@ -192,18 +196,18 @@ plotGOF.LR <- function(
   if(exists("textlab", inherits = FALSE)){
     text(beta1[beta.subset], beta2[beta.subset], labels = textlab, pos = pos, ...)
   }
-  
+
   points(x = beta1[beta.subset], y = beta2[beta.subset], type = type, ...)
 
   if(exists("labs", inherits = FALSE)){
     xycoords <- cbind(beta1[beta.subset], beta2[beta.subset])
     nothing  <- identify(xycoords, labels = labs, atpen = TRUE, offset = 1)
   }
-  
+
   box()
 
 
-  
+
 # interactive confidence ellipses
   if(is.list(conf) && conf$ia){
     identifyEll <- function(x, y, ci1u, ci1l, ci2u,ci2l, v1, v2, conf, n=length(x), ...){

@@ -1,27 +1,28 @@
 Package: eRm
 Type: Package
 Title: Extended Rasch Modeling
-Version: 0.15-5
-Date: 2015-01-10
+Version: 0.15-6
+Date: 2015-11-12
 Authors@R: c(person(given="Patrick", family="Mair", email="mair@fas.harvard.edu", role=c("cre","aut")),
              person(given="Reinhold", family="Hatzinger", role="aut"),
              person(given=c("Marco", "J."), family="Maier", email="marco.maier@wu.ac.at", role="aut"),
              person(given="Thomas", family="Rusch", email="thomas.rusch@wu.ac.at", role="ctb"))
-Description: eRm fits Rasch models (RM), linear logistic test models (LLTM), rating scale model (RSM), linear rating scale models (LRSM), partial credit models (PCM), and linear partial credit models (LPCM).  Missing values are allowed in the data matrix.  Additional features are the ML estimation of the person parameters, Andersen's LR-test, item-specific Wald test, Martin-Löf-Test, nonparametric Monte-Carlo Tests, itemfit and personfit statistics including infit and outfit measures, various ICC and related plots, automated stepwise item elimination, simulation module for various binary data matrices.  An eRm platform is provided at R-forge (see URL).
+Description: The eRm package fits Rasch models (RM), linear logistic test models (LLTM), rating scale model (RSM), linear rating scale models (LRSM), partial credit models (PCM), and linear partial credit models (LPCM).  Missing values are allowed in the data matrix.  Additional features are the ML estimation of the person parameters, Andersen's LR-test, item-specific Wald test, Martin-Löf-Test, nonparametric Monte-Carlo Tests, itemfit and personfit statistics including infit and outfit measures, various ICC and related plots, automated stepwise item elimination, simulation module for various binary data matrices.  An eRm platform is provided at R-forge (see URL).
 License: GPL-2
 URL: http://r-forge.r-project.org/projects/erm/
-Imports: graphics, stats, methods, MASS, splines, Matrix, lattice
+Imports: graphics, grDevices, stats, methods, MASS, splines, Matrix,
+        lattice
 Depends: R (>= 3.0.0)
 Encoding: UTF-8
 LazyData: yes
 LazyLoad: yes
 ByteCompile: yes
 NeedsCompilation: yes
-Packaged: 2015-01-10 14:19:49 UTC; maier
+Packaged: 2015-11-12 09:31:27 UTC; maier
 Author: Patrick Mair [cre, aut],
   Reinhold Hatzinger [aut],
   Marco J. Maier [aut],
   Thomas Rusch [ctb]
 Maintainer: Patrick Mair <mair@fas.harvard.edu>
 Repository: CRAN
-Date/Publication: 2015-01-10 18:20:41
+Date/Publication: 2015-11-12 19:12:35

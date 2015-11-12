@@ -115,15 +115,15 @@ citEntry(
   title   = "{An Empirical Power Analysis of Quasi-Exact Tests for the Rasch Model: Measurement Invariance in Small Samples}",
   author  = c(IK, MJM, RH),
   year    = 2015,
-#  volume  = X,
-#  issue   = X,
-#  page    = "X--X",
+  volume  = 11,
+  issue   = 2,
+  page    = "45--54",
   journal = "{Methodology}",
   doi     = "10.1027/1614-2241/a000090",
   textVersion = paste0(
     "Koller, I., Maier, M. J., & Hatzinger, R. (2015). ",
     "An Empirical Power Analysis of Quasi-Exact Tests for the Rasch Model: Measurement Invariance in Small Samples. ",
-    "Methodology. ",
+    "Methodology, 11(2), 45-54. ",
     "http://dx.doi.org/10.1027/1614-2241/a000090"
   )
 )

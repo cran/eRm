@@ -1,6 +1,6 @@
 useDynLib("eRm")
 
-import("stats", "graphics", "methods", "lattice")
+import("stats", "graphics", "methods", "lattice", "grDevices")
 
 importFrom("splines", "interpSpline")
 importFrom("MASS", "mvrnorm")
