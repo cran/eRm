@@ -1,6 +1,11 @@
 \name{NEWS}
 \title{News for Package \pkg{eRm}}
 \encoding{UTF-8}
+\section{Changes in Version 0.15-7}{
+  \itemize{
+	  \item \code{LRtest.Rm()}: bugfix due to updates in base R.
+	}
+}
 \section{Changes in Version 0.15-6}{
   \itemize{
 	  \item \code{plotGOF()}: added arguments \code{x_axis}, \code{y_axis}, \code{set_par}, and \code{reset_par} to ease customization of the plot.

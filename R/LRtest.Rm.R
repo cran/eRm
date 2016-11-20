@@ -191,7 +191,8 @@ likpar <- likpar[-6,]
 if((length(del.pos) > 0) | ifelse(length(splitcr) == 1, splitcr == "all.r", FALSE)) {                  #re-estimate full model   ### MjM 2012-03-18
   pos <- length(Xlist.n)                    #position of the full model
   loglik.all <- likpar[1,pos][[1]]          #loglik full model
-  etapar.all <- rep(0,likpar[2,pos])         #etapar full model (filled with 0 for df computation)
+  # etapar.all <- rep(0,likpar[2,pos])         #etapar full model (filled with 0 for df computation)
+  etapar.all <- rep(0, unlist(likpar[2,pos]))         #etapar full model (filled with 0 for df computation)
   likpar <- likpar[,-pos]
   Xlist.n <- Xlist.n[-pos]
 } else {

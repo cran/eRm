@@ -1,5 +1,5 @@
 ### R code from vignette source 'eRm.Rnw'
-### Encoding: ISO8859-1
+### Encoding: UTF-8
 
 ###################################################
 ### code chunk number 1: eRm.Rnw:634-637

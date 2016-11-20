@@ -52,9 +52,5 @@ probabilistic test model]. Psychologische Beitraege, 12, 23-51.
 res <- RM(raschdat2)
 splitvec <- sample(1:2,25,replace=TRUE)
 Waldtest(res, splitcr = splitvec)
-
-#Wald test for RSM eliminates 4 items (with median split)
-res <- RSM(rsmdat)
-Waldtest(res)
 }
 \keyword{models}
