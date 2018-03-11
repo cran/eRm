@@ -11,6 +11,7 @@ plotGOF.LR <- function(
   pos = 4,
   conf = NULL,
   ctrline = NULL,
+  smooline = NULL,
   asp = 1,
   x_axis = TRUE,
   y_axis = TRUE,
@@ -18,17 +19,18 @@ plotGOF.LR <- function(
   reset_par = TRUE,
   ...
 ){
-# graphical model check
-# beta.subset...plot only a subset of beta-parameters; either "all" or an index vector
-# x...object of class LR (from LRtest)
-# tlab ... labelling: "item" abbreviated beta parameter name, "number" number from beta par list,
-#            "identify" interactive, "none"
-# pos ... (where the textlabel appears)
-# conf ... confidence ellipses: NULL or
-#              list(gamma=0.95, col="red", ia=TRUE, lty="dashed", which=all items in beta.subset)
-# ctrline ... control lines (confidence bands): NULL or list(gamma=0.95,lty="solid", col="blue")
-# ...     additional graphic parameters
-
+  # graphical model check
+  # beta.subset...plot only a subset of beta-parameters; either "all" or an index vector
+  # x...object of class LR (from LRtest)
+  # tlab ... labelling: "item" abbreviated beta parameter name, "number" number from beta par list,
+  #            "identify" interactive, "none"
+  # pos ... (where the textlabel appears)
+  # conf ... confidence ellipses: NULL or
+  #              list(gamma=0.95, col="red", ia=TRUE, lty="dashed", which=all items in beta.subset)
+  # ctrline ... control lines (confidence bands): NULL or list(gamma=0.95,lty="solid", col="blue")
+  # smooline ... smoothed control lines (confidence bands): NULL or list(gamma=0.95,lty="solid", col="blue", spar=0.5)
+  # ...     additional graphic parameters
+  
   # save current options() and par() values and restore them on exit
   old_options <- options(locatorBell = FALSE)
   if(set_par){ old_par <- par(mar=c(4,4,3,0)+.5, no.readonly = TRUE) }
@@ -36,43 +38,43 @@ plotGOF.LR <- function(
     if(set_par && reset_par){ par(old_par) }
     options(old_options)
   })
-
+  
   if(length(x$likgroup) > 2L) warning("Only the parameters for the first two subgroups are plotted!")
-
+  
   if(missing(xlab)) xlab <- paste0("Beta for Group: ", x$spl.gr[1L])
   if(missing(ylab)) ylab <- paste0("Beta for Group: ", x$spl.gr[2L])
-
+  
   nparg1 <- length(x$betalist[[1L]])
   nparg2 <- length(x$betalist[[2L]])
   if(nparg1 != nparg2) stop("Unequal number of parameters in the subgroups! Plot cannot be produced, choose another split in LRtest!")
-
-
-
+  
+  
+  
   beta1 <- -x$betalist[[1L]] # -1 to obtain difficulty parameters
   beta2 <- -x$betalist[[2L]]
-
+  
   if(is.character(beta.subset)) {
     if(beta.subset == "all"){
       beta.subset <- seq_along(beta1)
       #textlab <- names(beta1)
       switch(EXPR = tlab,
-        item     = textlab <- gsub("^beta\\ I", "", names(beta1)), # remove "beta I" from names
-        number   = textlab <- seq_along(beta1),
-        identify = labs    <- gsub("^beta\\ I", "", names(beta1))
+             item     = textlab <- gsub("^beta\\ I", "", names(beta1)), # remove "beta I" from names
+             number   = textlab <- seq_along(beta1),
+             identify = labs    <- gsub("^beta\\ I", "", names(beta1))
       )
     } else {
       textlab <- beta.subset
     }
   } else {
     switch(EXPR = tlab,
-      item     = textlab <- gsub("^beta\\ I", "", names(beta1)[beta.subset]), # remove "beta I" from names
-      number   = textlab <- beta.subset,
-      identify = labs    <- gsub("^beta\\ I", "", names(beta1)[beta.subset])
+           item     = textlab <- gsub("^beta\\ I", "", names(beta1)[beta.subset]), # remove "beta I" from names
+           number   = textlab <- beta.subset,
+           identify = labs    <- gsub("^beta\\ I", "", names(beta1)[beta.subset])
     )
   }
-
-# se's needed for ellipses and control lines
-  if(is.list(conf) || is.list(ctrline)){
+  
+  # se's needed for ellipses and control lines
+  if(is.list(conf) || is.list(ctrline) || is.list(smooline)){
     if(any(is.na(unlist(x$selist)))) {
       warning('Confidence ellipses or control lines cannot be plotted.\n  LR object without standard errors.\n  Use option "se = TRUE" in LRtest()')
       conf <- ctrline <- NULL
@@ -84,21 +86,21 @@ plotGOF.LR <- function(
       suspicious.se <- any(cbind(s1, s2)[beta.subset] > 10)
       if(suspicious.se) warning("Suspicious size of standard error(s).\n  Check model specification, split criterion, data.")
     }
-
+    
     #if(any(abs(cbind(beta1,beta2)[beta.subset])>8)){
     #   warning("Suspicious size of parameter estimate(s).\n  Check model specification, split criterion, data.")
     #   if(is.null(conf)) conf$ia <- FALSE
   }
-
-###   confidence ellipses   ####################################################
-###   COMPUTATIONS   ###########################################################
+  
+  ###   confidence ellipses   ####################################################
+  ###   COMPUTATIONS   ###########################################################
   if(is.list(conf)){
     # simple ellipse to replace the function ellipse() from the car package
     simple_ellipse <- function(center, a, b, n = 200L, border_col){
       angle_t <- seq(0, 2*pi, length.out = n)[-1L]
       polygon(center[1L] + a * cos(angle_t), center[2L] + b * sin(angle_t), lwd = 1.0, border = border_col)
     }
-
+    
     # select items for which ellipses are drawn  ## rh 2011-05-31
     if(is.null(conf$which)) conf$which <- beta.subset#seq_along(beta.subset)
     if(!all(conf$which %in% beta.subset)) stop("Incorrect item number(s) for which ellipses are to be drawn")
@@ -114,29 +116,29 @@ plotGOF.LR <- function(
       }
     }
     conf$col <- conf$c
-
+    
     if(is.null(conf$gamma)) conf$gamma <- 0.95
     if(is.null(conf$lty)) conf$lty <- "dotted"
     if(is.null(conf$ia)) conf$ia <- FALSE
-
+    
     z <- qnorm((1.0-conf$gamma)/2.0, lower.tail = FALSE)
-
+    
     ci1u <- beta1 + z*s1
     ci1l <- beta1 - z*s1
     ci2u <- beta2 + z*s2
     ci2l <- beta2 - z*s2
   }
-################################################################################
-
-###   95% control lines (Wright)   #############################################
-###   COMPUTATIONS   ###########################################################
+  ################################################################################
+  
+  ###   95% control lines (Wright)   #############################################
+  ###   COMPUTATIONS   ###########################################################
   if(is.list(ctrline)){
     if(is.null(ctrline$gamma)) ctrline$gamma <- 0.95
     if(is.null(ctrline$col))   ctrline$col <- "blue"
     if(is.null(ctrline$lty))   ctrline$lty <- "solid"
-
+    
     z <- qnorm((1.0 - ctrline$gamma)/2.0, lower.tail = FALSE)
-
+    
     d      <- (beta1 + beta2)/2
     se.d   <- sqrt(v1 + v2)
     d      <- sort(d)
@@ -144,32 +146,54 @@ plotGOF.LR <- function(
     upperx <- d - z*se.d/2
     uppery <- d + z*se.d/2
   }
-################################################################################
-
+  ################################################################################
+  
+  
+  ################################################################################
+  
+  ###   95% smooth control lines (Wright)   ######################################
+  ###   COMPUTATIONS   ###########################################################
+  if(is.list(smooline)){
+    if(is.null(smooline$gamma)) smooline$gamma <- 0.95
+    if(is.null(smooline$col))   smooline$col <- "blue"
+    if(is.null(smooline$lty))   smooline$lty <- "solid"
+    if(is.null(smooline$spar))   smooline$spar <- 0.5
+    
+    z <- qnorm((1.0 - smooline$gamma)/2.0, lower.tail = FALSE)
+    
+    d      <- (beta1 + beta2)/2
+    se.d   <- sqrt(v1 + v2)
+    d      <- sort(d)
+    se.d   <- se.d[order(d)]
+    upperx <- d - z*se.d/2
+    uppery <- d + z*se.d/2
+  }
+  ################################################################################
+  
   if(!exists("ci1l", inherits = FALSE)) ci1l <- NA
   if(!exists("ci1u", inherits = FALSE)) ci1u <- NA
   if(!exists("ci2l", inherits = FALSE)) ci2l <- NA
   if(!exists("ci2u", inherits = FALSE)) ci2u <- NA
-
+  
   if(!exists("upperx", inherits = FALSE)) upperx <- NA
   if(!exists("uppery", inherits = FALSE)) uppery <- NA
-
+  
   if(missing(xlim)){
     xlim <- range(beta1[beta.subset], ci1l, ci1u, upperx, uppery, na.rm = TRUE)
   }
   if(missing(ylim)){
     ylim <- range(beta2[beta.subset], ci2l, ci2u, upperx, uppery, na.rm = TRUE)
   }
-
+  
   plot.new()
   plot.window(xlim = xlim, ylim = ylim, asp = asp)
   title(main = main, xlab = xlab, ylab = ylab)
   if(x_axis) axis(1)
   if(y_axis) axis(2)
-
+  
   abline(0, 1)
-
-# confidence ellipses - if not interactive
+  
+  # confidence ellipses - if not interactive
   if(is.list(conf) && !conf$ia){
     # non-interactive: plot of all ellipses at once
     x <- beta1
@@ -186,34 +210,43 @@ plotGOF.LR <- function(
       }
     }
   }
-
-# 95% control lines (Wright) - plotting
+  
+  # 95% control lines (Wright) - plotting
   if(is.list(ctrline)){
     lines(upperx, uppery, col = ctrline$col, lty = ctrline$lty)
     lines(uppery, upperx, col = ctrline$col, lty = ctrline$lty)
   }
-
+  
+  # 95% smooth lines (Wright) - plotting
+  if(is.list(smooline)){
+    lines(smooth.spline(upperx, uppery, spar = smooline$spar), col = smooline$col, lty = smooline$lty)
+    lines(smooth.spline(uppery, upperx, spar = smooline$spar), col = smooline$col, lty = smooline$lty)
+  }
+  
+  
+  
+  
   if(exists("textlab", inherits = FALSE)){
     text(beta1[beta.subset], beta2[beta.subset], labels = textlab, pos = pos, ...)
   }
-
+  
   points(x = beta1[beta.subset], y = beta2[beta.subset], type = type, ...)
-
+  
   if(exists("labs", inherits = FALSE)){
     xycoords <- cbind(beta1[beta.subset], beta2[beta.subset])
     nothing  <- identify(xycoords, labels = labs, atpen = TRUE, offset = 1)
   }
-
+  
   box()
-
-
-
-# interactive confidence ellipses
+  
+  
+  
+  # interactive confidence ellipses
   if(is.list(conf) && conf$ia){
     identifyEll <- function(x, y, ci1u, ci1l, ci2u,ci2l, v1, v2, conf, n=length(x), ...){
-    ## source: example from help("identify")
-    ## a function to use identify to select points, and overplot the
-    ## points with a confidence ellipse as they are selected
+      ## source: example from help("identify")
+      ## a function to use identify to select points, and overplot the
+      ## points with a confidence ellipse as they are selected
       xy <- xy.coords(x, y)
       x <- xy$x
       y <- xy$y
@@ -237,8 +270,8 @@ plotGOF.LR <- function(
       #res
     }
     identifyEll(beta1[beta.subset],beta2[beta.subset],
-                        ci1u[beta.subset], ci1l[beta.subset], ci2u[beta.subset], ci2l[beta.subset],
-                        v1[beta.subset], v2[beta.subset], conf)
+                ci1u[beta.subset], ci1l[beta.subset], ci2u[beta.subset], ci2l[beta.subset],
+                v1[beta.subset], v2[beta.subset], conf)
   }
-
+  
 }

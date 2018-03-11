@@ -100,17 +100,17 @@ if (!is.numeric(splitcr)) {
 
 if (is.numeric(splitcr)) {                                 #manual raw score split
   spl.nam<-deparse(substitute(splitcr))
-  if (length(splitcr)!=dim(object$X)[1]){
-    stop("Mismatch between length of split vector and number of persons!")
-  } else {
-    rvind <- splitcr
-    Xlist <- by(object$X,rvind, function(x) x)
-    names(Xlist) <- as.list(sort(unique(splitcr)))
-    if(is.null(spl.gr)){
-      spl.lev<-names(Xlist)
-      spl.gr<-paste(spl.nam,spl.lev,sep=" ")
-    }
+  if (length(splitcr)!=dim(object$X)[1]) stop("Mismatch between length of split vector and number of persons!")
+  if (any(is.na(splitcr))) stop("Split vector should not contain NA's")
+  
+  rvind <- splitcr
+  Xlist <- by(object$X,rvind, function(x) x)
+  names(Xlist) <- as.list(sort(unique(splitcr)))
+  if(is.null(spl.gr)){
+    spl.lev<-names(Xlist)
+    spl.gr<-paste(spl.nam,spl.lev,sep=" ")
   }
+  
 }
 
 #----------item to be deleted---------------

@@ -11,8 +11,9 @@
 \usage{\method{LRtest}{Rm}(object, splitcr = "median", se = TRUE)
 
 \method{plotGOF}{LR}(x, beta.subset = "all", main = "Graphical Model Check", xlab, ylab,
-    tlab = "item", xlim, ylim, type = "p", pos = 4, conf = NULL, ctrline = NULL,
-    asp = 1, x_axis = TRUE, y_axis = TRUE, set_par = TRUE, reset_par = TRUE, \dots)}
+    tlab = "item", xlim, ylim, type = "p", pos = 4, conf = NULL, ctrline = NULL, 
+    smooline = NULL, asp = 1, x_axis = TRUE, y_axis = TRUE, set_par = TRUE, 
+    reset_par = TRUE, \dots)}
 \arguments{
   \item{object}{Object of class \code{"Rm"}.}
   \item{splitcr}{Split criterion for subject raw score splitting.
@@ -47,6 +48,7 @@
     If \code{ctrline} is specified as \code{ctrline = list()}, the default values \code{conf = list(gamma = 0.95, col = "blue", lty = "solid")} will be used.
     See examples below.
     To use \code{ctrline}, the LR object \code{x} has to be generated using the option \code{se = TRUE} in \code{LRtest()}.}
+  \item{smooline}{spline smoothed confidence bands; must be specified as a list with optional elements: \code{gamma}, is the confidence level (numeric), \code{col} and \code{lty}, color and linetype, \code{spar} as smoothing parameter (see \code{\link{smooth.spline}}).}  
   \item{asp}{sets the \eqn{y/x}{y/x} ratio of the plot (see \code{\link[graphics]{plot.window}}).}
   \item{x_axis}{if \code{TRUE}, the \eqn{x}{x}-axis will be plotted.}
   \item{y_axis}{if \code{TRUE}, the \eqn{y}{y}-axis will be plotted.}
@@ -92,7 +94,7 @@ Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch model
 
 Wright, B.D., and Stone, M.H. (1999). Measurement essentials. Wide Range Inc., Wilmington. (\url{http://www.rasch.org/measess/me-all.pdf} 28Mb).
 }
-\author{Patrick Mair, Reinhold Hatzinger, Marco J. Maier}
+\author{Patrick Mair, Reinhold Hatzinger, Marco J. Maier, Adrian Bruegger}
 \seealso{\code{\link{Waldtest}}, \code{\link{MLoef}}}
 \examples{
 # the object used is the result of running ... RM(raschdat1)

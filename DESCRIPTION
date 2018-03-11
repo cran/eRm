@@ -1,13 +1,13 @@
 Package: eRm
 Type: Package
 Title: Extended Rasch Modeling
-Version: 0.15-7
-Date: 2016-11-20
+Version: 0.16-0
+Date: 2018-03-08
 Authors@R: c(person(given="Patrick", family="Mair", email="mair@fas.harvard.edu", role=c("cre","aut")),
              person(given="Reinhold", family="Hatzinger", role="aut"),
              person(given=c("Marco", "J."), family="Maier", email="marco.maier@wu.ac.at", role="aut"),
              person(given="Thomas", family="Rusch", email="thomas.rusch@wu.ac.at", role="ctb"))
-Description: Fits Rasch models (RM), linear logistic test models (LLTM), rating scale model (RSM), linear rating scale models (LRSM), partial credit models (PCM), and linear partial credit models (LPCM).  Missing values are allowed in the data matrix.  Additional features are the ML estimation of the person parameters, Andersen's LR-test, item-specific Wald test, Martin-Löf-Test, nonparametric Monte-Carlo Tests, itemfit and personfit statistics including infit and outfit measures, various ICC and related plots, automated stepwise item elimination, simulation module for various binary data matrices.
+Description: Fits Rasch models (RM), linear logistic test models (LLTM), rating scale model (RSM), linear rating scale models (LRSM), partial credit models (PCM), and linear partial credit models (LPCM).  Missing values are allowed in the data matrix.  Additional features are the ML estimation of the person parameters, Andersen's LR-test, item-specific Wald test, Martin-Loef-Test, nonparametric Monte-Carlo Tests, itemfit and personfit statistics including infit and outfit measures, various ICC and related plots, automated stepwise item elimination, simulation module for various binary data matrices.
 License: GPL-2
 URL: http://r-forge.r-project.org/projects/erm/
 Imports: graphics, grDevices, stats, methods, MASS, splines, Matrix,
@@ -18,11 +18,11 @@ LazyData: yes
 LazyLoad: yes
 ByteCompile: yes
 NeedsCompilation: yes
-Packaged: 2016-11-20 18:02:22 UTC; patrick
+Packaged: 2018-03-09 20:18:46 UTC; root
 Author: Patrick Mair [cre, aut],
   Reinhold Hatzinger [aut],
   Marco J. Maier [aut],
   Thomas Rusch [ctb]
 Maintainer: Patrick Mair <mair@fas.harvard.edu>
 Repository: CRAN
-Date/Publication: 2016-11-20 20:11:43
+Date/Publication: 2018-03-11 08:16:03 UTC

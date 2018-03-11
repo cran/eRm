@@ -1,6 +1,17 @@
 \name{NEWS}
 \title{News for Package \pkg{eRm}}
 \encoding{UTF-8}
+\section{Changes in Version 0.16-0}{
+  \itemize{
+	  \item \code{PersonMisfit()} incl. S3 added.
+	}
+}
+\section{Changes in Version 0.15-8}{
+  \itemize{
+	 \item sanity check for missings in split vector in \code{LRtest.Rm()} added.
+	 \item smoother confidence bands added in \code{plotGOF()}.
+	}
+}
 \section{Changes in Version 0.15-7}{
   \itemize{
 	  \item \code{LRtest.Rm()}: bugfix due to updates in base R.

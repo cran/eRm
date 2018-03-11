@@ -1,2 +1,19 @@
-plotGOF <- function(x, ...) UseMethod("plotGOF")
-
+`plotGOF` <- function(x,
+                      beta.subset = "all",
+                      main = "Graphical Model Check",
+                      xlab,
+                      ylab,
+                      tlab = "item",
+                      xlim,
+                      ylim,
+                      type = "p",
+                      pos = 4,
+                      conf = NULL,
+                      ctrline = NULL,
+                      smooline = NULL,
+                      asp = 1,
+                      x_axis = TRUE,
+                      y_axis = TRUE,
+                      set_par = TRUE,
+                      reset_par = TRUE,
+                      ...) UseMethod("plotGOF")
