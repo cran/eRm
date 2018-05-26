@@ -1,8 +1,8 @@
 Package: eRm
 Type: Package
 Title: Extended Rasch Modeling
-Version: 0.16-0
-Date: 2018-03-08
+Version: 0.16-1
+Date: 2018-05-25
 Authors@R: c(person(given="Patrick", family="Mair", email="mair@fas.harvard.edu", role=c("cre","aut")),
              person(given="Reinhold", family="Hatzinger", role="aut"),
              person(given=c("Marco", "J."), family="Maier", email="marco.maier@wu.ac.at", role="aut"),
@@ -18,11 +18,11 @@ LazyData: yes
 LazyLoad: yes
 ByteCompile: yes
 NeedsCompilation: yes
-Packaged: 2018-03-09 20:18:46 UTC; root
+Packaged: 2018-05-25 22:50:21 UTC; root
 Author: Patrick Mair [cre, aut],
   Reinhold Hatzinger [aut],
   Marco J. Maier [aut],
   Thomas Rusch [ctb]
 Maintainer: Patrick Mair <mair@fas.harvard.edu>
 Repository: CRAN
-Date/Publication: 2018-03-11 08:16:03 UTC
+Date/Publication: 2018-05-26 14:41:02 UTC

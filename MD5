@@ -1,4 +1,4 @@
-7a2990506fe0cc0c67b13cf55cbfa279 *DESCRIPTION
+e638aa5384788b208f563e061c7b0ba1 *DESCRIPTION
 e7b76ab77fdfaafc6ac517b65ca5a1e9 *NAMESPACE
 1212ac1b95ae050901d96389ce7ca292 *NEWS
 d2d22f8b2176c97ca7df720f7a089794 *R/IC.default.R
@@ -134,8 +134,7 @@ a6419721b8ee926aa7c97c9810fa0de9 *R/thresholds.eRm.r
 3c6f6ec631aeacf22e73fadf8074fc12 *R/thresholds.r
 54259c5861ddc4a41474b0f47dc7ff13 *R/vcov.eRm.R
 68dade378c849fd1b1e7f539aaf0f1e5 *R/zzz.R
-8bdda70b6577608e2c3ba552c84bfd68 *build/partial.rdb
-f75e9e57442c584aee1e231694cd5e0b *build/vignette.rds
+96872a98914cb085a302e57f8837f91c *build/vignette.rds
 460165565169b8896f2b34d3bcb8b384 *data/llraDat1.rda
 6eff759b3773b364f2b80dfc1dfd48c2 *data/llraDat2.rda
 75011d511f7f8ef5815d3dd46e3b01b9 *data/llradat3.rda
@@ -158,10 +157,9 @@ d6ef4432484b6f07a9fb2178baa4a879 *data/xmpl.RData
 9839b61e6271f99586b5993f1ba4c599 *inst/CITATION
 1e64a9faead94b2292b406fa04f35408 *inst/NEWS.Rd
 4d6d70f06d012eb2f1f3d8c2de188a25 *inst/NEWS.pdf
-f2f1dde1411e624090270f2d52c77dfc *inst/NEWSRd2txt.R
 501fb62b99b337a884bbb8b21edd84c6 *inst/doc/eRm.R
 9f0d0175f42da4e7b4021e9cec1b9146 *inst/doc/eRm.Rnw
-93d0361efae94b245db9b61776783f01 *inst/doc/eRm.pdf
+c285f5fa3982210c1040344073bb16e3 *inst/doc/eRm.pdf
 bba1ee0605c426e109144ecad35d39be *man/IC.Rd
 1524720959c29130b6eff3641ab62cc3 *man/LLRA.Rd
 4640617a3b1d2bab3ee71f94fbb04c21 *man/LLTM.Rd
@@ -183,7 +181,6 @@ de7f86cbe19f2c3537b5373f8abcfdf0 *man/anova.eRm.Rd
 37f5d40e0adc158ed2b99135ed04d033 *man/anova.llra.Rd
 70e29891a48ddf8f4877ca19cdb95a7a *man/build_W.Rd
 526f7588a3558f213e3af11644b02d86 *man/collapse_W.Rd
-496fe6d296fe4b53e31261b68bb8e922 *man/eRm-package.Rd
 0fcd3bce302e222d026d1c5ee809c719 *man/eRm.data.Rd
 0ba205dca37c394b8ae21e0c970b626f *man/gofIRT.Rd
 b1288ed170917aec3479bccfecfbfe7e *man/item_info.Rd
@@ -226,7 +223,6 @@ b318d7bfff0ba1eccadc86d34e1f0c5f *src/geodist.c
 c44d6148a344eb9e3deb558f5d453d8c *src/geodist.h
 7c22b1b500cab25872924e218f1645f5 *src/registerDynamicSymbol.c
 2c08e25aef0443820778321885461ba0 *vignettes/UCML.pdf
-bf9f1c8ecc2038ca20a5964c62101641 *vignettes/UCML.svg
 9f0d0175f42da4e7b4021e9cec1b9146 *vignettes/eRm.Rnw
 61d680540f93d252561fa615bd95511b *vignettes/eRm_object_tree.pdf
 8fc81af9e3f5bbbee5393869304292f1 *vignettes/eRmvig.bib
