@@ -44,7 +44,7 @@ function with equal length as the list.
 \references{
 Hatzinger, R. and Rusch, T. (2009) IRT models with relaxed assumptions
 in eRm: A manual-like instruction. \emph{Psychology Science Quarterly},
-  \bold{51}, pp. 87--120, \url{http://erm.r-forge.r-project.org/psq_1_2009_06_87-120.pdf}
+  \bold{51}, pp. 87--120.
 }
 \author{Thomas Rusch}
 \seealso{
