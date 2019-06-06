@@ -1,6 +1,13 @@
 \name{NEWS}
 \title{News for Package \pkg{eRm}}
 \encoding{UTF-8}
+\section{Changes in Version 1.0-0}{
+  \itemize{
+	  \item Additional tests in \code{NPtest()} added.
+	  \item Toy datasets stored as data frames.
+	}
+}
+
 \section{Changes in Version 0.16-0}{
   \itemize{
 	  \item \code{PersonMisfit()} incl. S3 added.

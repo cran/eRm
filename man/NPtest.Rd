@@ -107,11 +107,18 @@
     \item{\emph{Martin-Löf}}{%
       The \sQuote{exact} version of the \emph{Martin-Löf} statistic is specified via \code{method = "MLoef"} and optionally \code{splitcr} (see \code{\link{MLoef}}).%
     }
+	%  added in version 0.16-3
+	\item{\eqn{Q_{3h}}{Q_3h}:}{\code{method = "Q3h"}\cr%
+      Checks for local dependence by detecting an increased correlation of inter-item residuals. Low p-values correspond to a high ("h") correlation between two items.
+    }
+	\item{\eqn{Q_{3l}}{Q_3l}:}{\code{method = "Q3l"}\cr%
+      Checks for local dependence by detecting a decreased correlation of inter-item residuals. Low p-values correspond to a low ("l") correlation between two items.
+    }
   }
 }
 \value{
 Depending on the \code{method} argument, a list is returned which has one of the following classes:
-\code{'T1obj'}, \code{'T1mobj'}, \code{'T1lobj'}, \code{'Tmdobj'}, \code{'T2obj'}, \code{'T2mobj'}, \code{'T4obj'}, \code{'T10obj'}, \code{'T11obj'}, or \code{'Tpbisobj'}.
+\code{'T1obj'}, \code{'T1mobj'}, \code{'T1lobj'}, \code{'Tmdobj'}, \code{'T2obj'}, \code{'T2mobj'}, \code{'T4obj'}, \code{'T10obj'}, \code{'T11obj'}, \code{'Tpbisobj'}, \code{'Q3hobj'} or \code{'Q3lobj'}.
 
 The main output element is \code{prop} giving the one-sided \eqn{p}{p}-value, i.e., the number of statistics from the sampled matrices which are equal or exceed the statistic based on the observed data.
 For \eqn{T_1}{T_1}, \eqn{T_{1m}}{T_1m}, and \eqn{T_{1l}}{T_1l}, \code{prop} is a vector.
@@ -129,7 +136,10 @@ Verhelst, N., Hatzinger, R., & Mair, P. (2007). The Rasch sampler. \emph{Journal
 Koller, I., & Hatzinger, R. (2013). Nonparametric tests for the Rasch model: Explanation, development, and application of quasi-exact tests for small samples. \emph{Interstat, 11}, 1--16. \url{http://interstat.statjournals.net/YEAR/2013/abstracts/1311002.php}
 
 Koller, I., Maier, M. J., & Hatzinger, R. (2015). An Empirical Power Analysis of Quasi-Exact Tests for the Rasch Model: Measurement Invariance in Small Samples. \emph{Methodology, 11}(2), 45--54. \url{http://dx.doi.org/10.1027/1614-2241/a000090}
+
+Debelak, R., & Koller, I. (2019). Testing the Local Independence Assumption of the Rasch Model With Q3-Based Nonparametric Model Tests. \emph{Applied Psychological Measurement} \url{https://doi.org/10.1177/0146621619835501}
 }
+
 \author{Reinhold Hatzinger}
 %\seealso{
 %  \code{\link{RaschSampler}}
@@ -138,15 +148,15 @@ Koller, I., Maier, M. J., & Hatzinger, R. (2015). An Empirical Power Analysis of
 ### Preparation:
 
 # data for examples below
-X <- raschdat1
+X <- as.matrix(raschdat1)
 
 # generate 100 random matrices based on original data matrix
 rmat <- rsampler(X, rsctrl(burn_in = 100, n_eff = 100, seed = 123))
 
 ## the following examples can also directly be used by setting
-## rmat <- raschdat1
-## without calling rsampler() first, e.g.,
-t1 <- NPtest(raschdat1, n = 100, method = "T1")
+## rmat <- as.matrix(raschdat1)
+## without calling rsampler() first
+t1 <- NPtest(rmat, n = 100, method = "T1")
 
 
 ### Examples ###################################################################

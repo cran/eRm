@@ -15,7 +15,9 @@ NPtest<-function(obj, n=NULL, method="T1", ...){
 #   argument liste
 # - check des input objekts
 #-------------------------------------------------
-
+# changes: 2019-04-05
+#-------------------------------------------------
+# Neue nonparametrische Tests Q3h und Q3l (Debelak & Koller, 2019)
 
 #   require(RaschSampler)   # removed as RaschSampler is a part of eRm since 0.15-0
 
@@ -60,7 +62,9 @@ NPtest<-function(obj, n=NULL, method="T1", ...){
     "T10"   = T10(obj, ...),
     "T11"   = T11(obj, ...),
     "Tpbis" = Tpbis(obj, ...),
-    "MLoef" = MLoef.x(obj, ...)
+    "MLoef" = MLoef.x(obj, ...),
+	"Q3h" = Q3h(obj, ...),
+	"Q3l" = Q3l(obj, ...)
   )
 }
 
@@ -479,6 +483,95 @@ T11<-function(rsobj, ...){
       result
 }
 
+## The following two functions were included in version 0.16-3
+Q3h<-function(rsobj, ...){
+    Q3h.stat <- function(x){
+      as.vector(x)
+    }
+  
+    calcQ3h.stat <- function(x, exp=exp) { ## Calculates Q3h based on observed matrix and expected values
+      # Calculates Q3
+	  i <- ncol(x)
+      mat <- x - exp
+      res <- matrix(nrow=i,ncol=i)
+      for(a in 1:(i-1)) {
+        for(b in (a+1):i) {
+          res[b,a] <- res[a,b] <- -cor(mat[,a],mat[,b])
+        }
+      }
+      return(res)
+    }
+
+    n_eff<-rsobj$n_eff                         # number of simulated matrices
+    n_tot<-rsobj$n_tot                         # number of simulated matrices
+    k <- rsobj$k                               # number of columns of matrices
+	n <- rsobj$n                               # number of rows of matrices
+
+	# 1st step of calculating Q3h: Calculate the expected values
+    res <- rstats(rsobj,Q3h.stat) # res contains vector with 1st column, 2nd column etc of each matrix as entries
+    datmat <- matrix(unlist(res),nrow=k*n) # Contains the entries (columns-wise) of each matrix in each column
+    exp <- matrix(apply(datmat, 1, mean), nrow=n, ncol=k)
+  
+    # 2nd step: Calculate Q3h based on the simulated matrices and the expected values 
+    res <- rstats(rsobj, calcQ3h.stat, exp=exp)
+
+	# 3rd step: Calculate p-values (analogous to T1, T1m and T1l)
+	res<-do.call(cbind, lapply(res,as.vector)) # converts result list to matrix
+    Q3hvec<-apply(res, 1, function(x) sum(x[2:(n_tot)]<x[1])/n_eff)
+    Q3hmat<- matrix(Q3hvec, ncol=k)
+    Q3hmat[upper.tri(Q3hmat)] <- NA # For consistency with other nonparametric tests
+    Q3hvec <- as.vector(Q3hmat)
+	  Q3hvec <- Q3hvec[!is.na(Q3hvec)]# For consistency with other nonparametric tests
+    result<-list(n_eff=n_eff, prop=Q3hvec, Q3hmat=Q3hmat) # Q3hobj
+    class(result)<-"Q3hobj"
+    return(result)
+}
+
+Q3l<-function(rsobj, ...){
+    Q3l.stat <- function(x){
+      as.vector(x)
+    }
+  
+    calcQ3l.stat <- function(x, exp=exp) { ## Calculates Q3l based on observed matrix and expected values
+      # Calculates Q3
+	  i <- ncol(x)
+      mat <- x - exp
+      res <- matrix(nrow=i,ncol=i)
+      for(a in 1:(i-1)) {
+        for(b in (a+1):i) {
+          res[b,a] <- res[a,b] <- cor(mat[,a],mat[,b])
+        }
+      }
+      return(res)
+    }
+
+    n_eff<-rsobj$n_eff                         # number of simulated matrices
+    n_tot<-rsobj$n_tot                         # number of simulated matrices
+    k <- rsobj$k                               # number of columns of matrices
+	n <- rsobj$n                               # number of rows of matrices
+
+	# 1st step of calculating Q3l: Calculate the expected values
+    res <- rstats(rsobj,Q3l.stat) # res contains vector with 1st column, 2nd column etc of each matrix as entries
+    datmat <- matrix(unlist(res),nrow=k*n) # Contains the entries (columns-wise) of each matrix in each column
+    exp <- matrix(apply(datmat, 1, mean), nrow=n, ncol=k)
+  
+    # 2nd step: Calculate Q3l based on the simulated matrices and the expected values 
+    res <- rstats(rsobj, calcQ3l.stat, exp=exp)
+
+	# 3rd step: Calculate p-values (analogous to T1, T1m and T1l)
+	res<-do.call(cbind, lapply(res,as.vector)) # converts result list to matrix
+	Q3lvec<-apply(res, 1, function(x) sum(x[2:(n_tot)]<x[1])/n_eff)
+	Q3lmat<- matrix(Q3lvec, ncol=k)
+	Q3lmat[upper.tri(Q3lmat)] <- NA # For consistency with other nonparametric tests
+	Q3lvec <- as.vector(Q3lmat)
+	Q3lvec <- Q3lvec[!is.na(Q3lvec)]# For consistency with other nonparametric tests
+	result<-list(n_eff=n_eff, prop=Q3lvec, Q3lmat=Q3lmat) # Q3lobj
+  class(result)<-"Q3lobj"
+  return(result)
+}
+
+## End of code included in version 0.16-3
+
 print.MLobj<-function(x,...){
   print(x$MLres)
   cat("'exact' p-value =", x$prop, " (based on", x$n_eff, "sampled matrices)\n\n")
@@ -658,3 +751,37 @@ print.T11obj<-function(x,...){
 #  cat("    (proportion of sampled sums GE observed)\n\n")
 }
 
+## The following code was in included in version 0.16-3
+print.Q3hobj<-function(x,alpha=0.05,...){
+  txt1<-"\nNonparametric RM model test: Q3h (local dependence - increased correlation of inter-item residuals)\n"
+  writeLines(strwrap(txt1, exdent=4))
+  cat("Number of sampled matrices:", x$n_eff,"\n")
+  cat("Number of Item-Pairs tested:", length(x$prop),"\n")
+  cat("Item-Pairs with one-sided p <", alpha,"\n")
+  Q3hmat<-x$Q3hmat
+  idx<-which(Q3hmat<alpha,arr.ind=TRUE)
+  val<-Q3hmat[which(Q3hmat<alpha)]
+  names(val)<-apply(idx,1,function(x) paste("(",x[2],",",x[1],")",sep="",collapse=""))
+  if (length(val)>0)
+     print(round(val,digits=3))
+  else
+     cat("none\n\n")
+}
+
+print.Q3lobj<-function(x,alpha=0.05,...){
+  txt1<-"\nNonparametric RM model test: Q3l (local dependence - decreased correlation of inter-item residuals)\n"
+  writeLines(strwrap(txt1, exdent=4))
+  cat("Number of sampled matrices:", x$n_eff,"\n")
+  cat("Number of Item-Pairs tested:", length(x$prop),"\n")
+  cat("Item-Pairs with one-sided p <", alpha,"\n")
+  Q3lmat<-x$Q3lmat
+  idx<-which(Q3lmat<alpha,arr.ind=TRUE)
+  val<-Q3lmat[which(Q3lmat<alpha)]
+  names(val)<-apply(idx,1,function(x) paste("(",x[2],",",x[1],")",sep="",collapse=""))
+  if (length(val)>0)
+    print(round(val,digits=3))
+  else
+    cat("none\n\n")
+}
+
+## End of new code

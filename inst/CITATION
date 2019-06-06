@@ -8,6 +8,7 @@ RH  <- person("Reinhold", "Hatzinger")
 MJM <- person(c("Marco", "Johannes"), "Maier")
 TR  <- person("Thomas", "Rusch")
 IK  <- person("Ingrid", "Koller")
+RD  <- person("Rudolf", "Debelak")
 
 # Package Citation
 citEntry(
@@ -125,5 +126,22 @@ citEntry(
     "An Empirical Power Analysis of Quasi-Exact Tests for the Rasch Model: Measurement Invariance in Small Samples. ",
     "Methodology, 11(2), 45-54. ",
     "http://dx.doi.org/10.1027/1614-2241/a000090"
+  )
+)
+
+# NPar Q3 Tests 2019
+citEntry(
+  header  = paste0("\n", paste0(rep("#", getOption("width")-1L), collapse=""), "\nArticle about the Performance of the nonparametric Q3 Tests in eRm:\n"),
+  entry   = "ARTICLE",
+  title   = "{Testing the Local Independence Assumption of the Rasch Model With Q3-Based Nonparametric Model Tests}",
+  author  = c(RD, IK),
+  year    = 2019,
+  journal = "{Applied Psychological Measurement}",
+  doi     = "10.1177/0146621619835501",
+  textVersion = paste0(
+    "Debelak, R., & Koller, I. (2019). ",
+    "Testing the Local Independence Assumption of the Rasch Model With Q3-Based Nonparametric Model Tests. ",
+    "Applied Psychological Measurement ",
+    "https://doi.org/10.1177/0146621619835501"
   )
 )

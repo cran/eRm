@@ -92,6 +92,7 @@
 %\note{}
 \seealso{\code{\link{plotGOF}}}
 \examples{
+\dontrun{
 # Rating scale model, ICC plot for all items
 rsm.res <- RSM(rsmdat)
 thresholds(rsm.res)
@@ -118,5 +119,6 @@ plotICC(rm8.res, item.subset=c(2,3,7,8), empICC=list("raw"), empCI=list())
 # Joint ICC plot for items 2, 6, 8, and 15 for a Rasch model
 res <- RM(raschdat1)
 plotjointICC(res, item.subset = c(2,6,8,15), legpos = "left")
+}
 }
 \keyword{models}
