@@ -1,6 +1,14 @@
 \name{NEWS}
 \title{News for Package \pkg{eRm}}
 \encoding{UTF-8}
+\section{Changes in Version 1.0-1}{
+  \itemize{
+	  \item Legend in plotjointICC now uses proper item labels (and better default colors).
+	  \item Corrected item-test correlations added to itemfit.
+	  \item Sort option in print method for itemfit added.
+	}
+}
+
 \section{Changes in Version 1.0-0}{
   \itemize{
 	  \item Additional tests in \code{NPtest()} added.

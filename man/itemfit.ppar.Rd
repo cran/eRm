@@ -15,14 +15,16 @@
 \description{\code{pmat} computes the theoretical person-item matrix with solving
 probabilities for each category (except 0th). \code{residuals} computes the squared and standardized residuals based on
 the observed and the expected person-item matrix. Chi-square based itemfit and personfit
-statistics can be obtained by using \code{itemfit} and \code{personfit}.
+statistics can be obtained by using \code{itemfit} and \code{personfit}. Corrected item-test correlations in \code{itemfit} are computed using the approach from Cureton (1966). 
 }
 \usage{
 \method{pmat}{ppar}(object)
 \method{residuals}{ppar}(object,...)
 \method{itemfit}{ppar}(object)
 \method{personfit}{ppar}(object)
-\method{print}{ifit}(x, visible = TRUE, ...)
+\method{print}{ifit}(x, visible = TRUE, 
+sort_by = c("none", "p", "outfit_MSQ", "infit_MSQ", "outfit_t", "infit_t", "discrim"), 
+decreasing = FALSE, digits = 3,...)
 \method{print}{pfit}(x, visible = TRUE, ...)
 \method{print}{resid}(x, ...)
 }
@@ -30,7 +32,10 @@ statistics can be obtained by using \code{itemfit} and \code{personfit}.
 \arguments{
   \item{object}{Object of class \code{ppar}, derived from \code{person.parameter}.}
   \item{x}{Object of class \code{ifit}, \code{pfit}, or \code{resid}.}
-  \item{visible}{if \code{FALSE}, returns the matrix of fit statistics that otherwise would be printed.}
+  \item{visible}{If \code{FALSE}, returns the matrix of fit statistics that otherwise would be printed.}
+  \item{sort_by}{Optionally the itemfit output can be sorted by one of these criteria.}
+  \item{decreasing}{If \code{sort_by} is set, whether the output should be sorted in increasing or decreasing order.}
+  \item{digits}{How many digits should be printed.}
   \item{...}{Further arguments passed to or from other methods. They are ignored in this function.}
 }
 %\details{}
@@ -44,6 +49,7 @@ statistics can be obtained by using \code{itemfit} and \code{personfit}.
   \item{st.res}{Standardized residuals (from function \code{itemfit}).}
   \item{i.outfitMSQ}{Outfit mean-square statistics (from function \code{itemfit}).}
   \item{i.infitMSQ}{Infit mean-square statistics (from function \code{itemfit}).}
+  \item{i.disc}{Corrected item-test correlations (from function \code{itemfit}).}
 
 %Function \code{personfit} returns a list of class \code{pfit} with components:
   \item{p.fit}{Chi-squared personfit statistics (from function \code{personfit}).}
@@ -58,9 +64,12 @@ Smith Jr., E. V., and Smith, R. M. (2004). Introduction to Rasch Measurement.
 JAM press.
 
 Wright, B.D., and Masters, G.N. Computation of OUTFIT and INFIT Statistics.
-Rasch Measurement Transactions, 1990, 3:4 p.84-5
+Rasch Measurement Transactions, 1990, 3:4 p.84-85
+
+Cureton, E. E. (1966). Corrected item-test correlations. Psychometrika, 31, 93-96
 }
-\author{Patrick Mair, Reinhold Hatzinger}
+
+\author{Patrick Mair, Reinhold Hatzinger, Moritz Heene}
 %\note{}
 \seealso{\code{\link{person.parameter}}
 }

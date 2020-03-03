@@ -18,13 +18,13 @@ citEntry(
   author = c(PM, RH, MJM),
   year   = year,
   note   = vers,
-  url    = "http://erm.r-forge.r-project.org/",
+  url    = "https://cran.r-project.org/package=eRm",
   textVersion = paste0(
     "Mair, P., Hatzinger, R., & Maier M. J. (",
     year,
     "). eRm: Extended Rasch Modeling. ",
     vers,
-    ". http://erm.r-forge.r-project.org/"
+    ". https://cran.r-project.org/package=eRm"
   )
 )
 

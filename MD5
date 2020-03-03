@@ -1,5 +1,5 @@
-50a66d5035f1902aeadc2c4c8fe67858 *DESCRIPTION
-e7b76ab77fdfaafc6ac517b65ca5a1e9 *NAMESPACE
+8b85be4c30c3257c2eb601505d0be78b *DESCRIPTION
+9eca4235a2fa3370675598a48efe1c67 *NAMESPACE
 d2d22f8b2176c97ca7df720f7a089794 *R/IC.default.R
 2bedf16f88332f159bfad9cdb36f4689 *R/IC.ppar.r
 2e4b547352dd7af179635bc46f9cdf87 *R/IC.r
@@ -48,7 +48,7 @@ f9850156706dcad20dfedfc80c220b04 *R/hoslem.R
 71212f4c14003458fc3e30638f339629 *R/invalid.R
 8dbe4006ccd80c5ef48f4a20cd34f70a *R/item_info.R
 e2acfcf0f69a54046e7500f37b11cce7 *R/itemfit.R
-19b775ca4bcc82372376ae4db53800c1 *R/itemfit.ppar.R
+4316db130afb259b399966aac32b051f *R/itemfit.ppar.R
 d12c6019315fbc11dca8ce109e1883ab *R/labeling.internal.r
 b442d226c694aed7bc57103a009bc7ef *R/likLR.R
 9c56aa9ca79069fd2fa2a02f14d8e7b4 *R/llra.datprep.R
@@ -77,9 +77,9 @@ c65fe90a731609939b208064669aa5c6 *R/plotICC.R
 70fe5fa87bdce761a6f918b8164d767c *R/plotINFO.R
 e9b4f3c4e961531fbd204c4e52e056a4 *R/plotPImap.R
 a30b60f631c21127a6c19aa07bb5d2ea *R/plotPWmap.R
-a345184af2d832d0441725524bb35bfc *R/plotTR.R
+174d96eea6f45dba27f4b701573da45b *R/plotTR.R
 f3331bb586c29beaa1c691caf9a4f50e *R/plotjointICC.R
-bd2e30e5cc15ad9b2ad961dac5a75de0 *R/plotjointICC.dRm.R
+e50b7c7339afc9e95ceb7507bdf6d3c4 *R/plotjointICC.dRm.R
 503d39882ff1519f9a9c822525df881b *R/pmat.R
 978c189f51d4c525f6a1d53377c72fab *R/pmat.default.R
 3b8b125515c56d967e0184d9bae4fe87 *R/pmat.ppar.R
@@ -91,7 +91,7 @@ baa854c72760319d47628d9cdeab5847 *R/print.MLoef.r
 6321ea71362e6d0e7baa24913ffaf7cc *R/print.PersonMisfit.R
 4fab83773c727ff7382af7fdf6788656 *R/print.eRm.R
 c5312a2efff02316933e78574a2d7072 *R/print.gof.R
-1a8e26e12c84b76aac1cccc7ecafd6c0 *R/print.ifit.R
+10dc2f8c8802ab9c867cba7bfecab589 *R/print.ifit.R
 eceef6e388090c985b69bb7495fd898b *R/print.llra.R
 37817e03ebd0e3395fb011928892e97b *R/print.logLik.eRm.R
 e7e35e2b4d5cfd70f341b852793c0e4b *R/print.logLik.ppar.r
@@ -133,7 +133,7 @@ a6419721b8ee926aa7c97c9810fa0de9 *R/thresholds.eRm.r
 3c6f6ec631aeacf22e73fadf8074fc12 *R/thresholds.r
 54259c5861ddc4a41474b0f47dc7ff13 *R/vcov.eRm.R
 68dade378c849fd1b1e7f539aaf0f1e5 *R/zzz.R
-22e37a6eaec6168ed49b80235a055a85 *build/vignette.rds
+e88a267cb0972311ee089e8dc3d9248b *build/vignette.rds
 460165565169b8896f2b34d3bcb8b384 *data/llraDat1.rda
 6eff759b3773b364f2b80dfc1dfd48c2 *data/llraDat2.rda
 75011d511f7f8ef5815d3dd46e3b01b9 *data/llradat3.rda
@@ -153,13 +153,13 @@ aa5135b65eec3a05a1c6c6f23ffd45fb *data/raschdat4.rda
 fe698696f11b30133fd7667a28bf7dbe *data/rsmdat.rda
 d6ef4432484b6f07a9fb2178baa4a879 *data/xmpl.RData
 5ef84c3ef4febfaac942d321d43d40da *data/xmplbig.RData
-0b0e72b55a5cc02abc6872fe12a1cf92 *inst/CITATION
-cbed68e711b87fe9d22cd6f03aff2df2 *inst/NEWS.Rd
+232d669bd56595a22d6a121758b4bcc6 *inst/CITATION
+bad429a8d06ce49b4035f2b110c20e26 *inst/NEWS.Rd
 4d6d70f06d012eb2f1f3d8c2de188a25 *inst/NEWS.pdf
 f2f1dde1411e624090270f2d52c77dfc *inst/NEWSRd2txt.R
 501fb62b99b337a884bbb8b21edd84c6 *inst/doc/eRm.R
 9f0d0175f42da4e7b4021e9cec1b9146 *inst/doc/eRm.Rnw
-efd8df7becbafbe84dc28a5c2f014092 *inst/doc/eRm.pdf
+a43d87eed6562a728de45c257b465e88 *inst/doc/eRm.pdf
 bba1ee0605c426e109144ecad35d39be *man/IC.Rd
 724c551b635b05f35a0a6386e82661ba *man/LLRA.Rd
 4640617a3b1d2bab3ee71f94fbb04c21 *man/LLTM.Rd
@@ -184,7 +184,7 @@ f8e70c65f43a56d7a3e500e373d88af7 *man/build_W.Rd
 0fcd3bce302e222d026d1c5ee809c719 *man/eRm.data.Rd
 0ba205dca37c394b8ae21e0c970b626f *man/gofIRT.Rd
 b1288ed170917aec3479bccfecfbfe7e *man/item_info.Rd
-263c3737c328d83bbf2897015a970294 *man/itemfit.ppar.Rd
+8f22c5f73ef0e2c1696e6f88126b1685 *man/itemfit.ppar.Rd
 63a16723424c844e2bc2679707a460cd *man/llra.datprep.Rd
 de6e211ae11b35af2daf45e775d9ba75 *man/llraDat1.Rd
 cff20d696570c3ef5e77ee168536e6b6 *man/llraDat2.Rd

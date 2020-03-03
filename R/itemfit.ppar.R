@@ -34,7 +34,20 @@ function(object)
   i.outfitZ <- (i.outfitMSQ^(1/3) - 1)*(3/q.outfitMSQ)+(q.outfitMSQ/3) # corr. rh 2011-06-15
   i.infitZ  <- (i.infitMSQ^(1/3)  - 1)*(3/q.infitMSQ) +(q.infitMSQ/3)  # hint from rainer alexandrowicz
 
-  result <- list(i.fit=ifit,i.df=idf,st.res=st.res,i.outfitMSQ=i.outfitMSQ,i.infitMSQ=i.infitMSQ,i.outfitZ=i.outfitZ,i.infitZ=i.infitZ)
+  ## estimate part-whole corrected item discriminations according to CTT
+  R <- cor(object$X.ex, use = "pairwise.complete.obs")
+  if (any(is.na(R))) {
+    warning("Corrected item-test correlations cannot be computed due to NA pattern in data.\n")
+    item.disc <- NA
+  } else {
+    diag(R) <- smc(R)    ## Correct for item overlap by using squared multiple correlation 
+    Vtc <- sum(R, na.rm = TRUE)
+    item.disc <- colSums(R, na.rm = TRUE)/sqrt(Vtc)
+  }
+  
+  
+  result <- list(i.fit=ifit,i.df=idf,st.res=st.res,i.outfitMSQ=i.outfitMSQ,i.infitMSQ=i.infitMSQ,
+                 i.outfitZ=i.outfitZ,i.infitZ=i.infitZ, i.disc = item.disc)
 
   class(result) <- "ifit"
   result

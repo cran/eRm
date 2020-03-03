@@ -1,10 +1,11 @@
 useDynLib("eRm", .registration = TRUE)
 
-import("stats", "graphics", "methods", "lattice", "grDevices")
+import("stats", "graphics", "methods", "lattice", "grDevices", "colorspace")
 
 importFrom("splines", "interpSpline")
 importFrom("MASS", "mvrnorm")
 importFrom("Matrix", "bdiag")
+importFrom("psych", "smc")
 
 export(RM)
 export(LLTM)

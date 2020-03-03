@@ -42,8 +42,7 @@ plotjointICC.dRm <- function(
   text.ylab <- p.mat[(1:length(theta))[theta==median(theta)],]
 
   if(is.null(main)) main=""
-  if(is.null(col)) col=1:(dim(p.mat)[2])
-  #pmICCs<-cbind(sort(theta),p.mat[th.ord,])
+  if(is.null(col)) col <- rainbow_hcl(dim(p.mat)[2])
   matplot(sort(theta),p.mat[th.ord,],type="l",lty=lty,col=col,
           main=main,xlim=xlim,ylim=ylim,xlab=xlab,ylab=ylab,...)
   if(length(object$betapar)>20) old_par <- par(cex=0.7) else old_par <- par(cex=1)
@@ -55,7 +54,8 @@ plotjointICC.dRm <- function(
       x  <- qlogis(sq,sort(-object$betapar))
       text(x=x,y=sq,labels=it.legend[order(-object$betapar)],col=col[order(-object$betapar)],...)
     } else {
-      legend(legpos,legend=paste("Item",it.legend[order(-object$betapar)]),lty=lty, col=col[order(-object$betapar)],...)
+      #legend(legpos,legend=paste("Item",it.legend[order(-object$betapar)]),lty=lty, col=col[order(-object$betapar)],...)
+      legend(legpos,legend= colnames(object$X)[order(-object$betapar)],lty=lty, col=col[order(-object$betapar)],...)
     }
   }
 }
