@@ -31,7 +31,7 @@
 %
 %
 \details{
-  Returns the person separation reliability \eqn{\frac{\mathrm{SSD}-\mathrm{MSE}}{\mathrm{SSD}}}{(SSD-MSE)/SSD} where SSD is the squared standard deviation and MSE the mean squared error.
+  Returns the person separation reliability \eqn{\frac{\mathrm{SSD}-\mathrm{MSE}}{\mathrm{SSD}}}{(SSD-MSE)/SSD} where SSD is the squared standard deviation and MSE the mean squared error. Note that persons with raw scores of 0 or k are ignored in the computation. 
   \subsection{Caveats}{%
     Please note that the concept of \emph{reliability} and associated problems are fundamentally different between \acronym{IRT} and \acronym{CTT} (Classical Test Theory).
     Separation reliability is more like a workaround to make the \dQuote{change} from \acronym{CTT} to \acronym{IRT} easier for users by providing something \dQuote{familiar.}
@@ -63,7 +63,7 @@
 %
 %
 \references{%
-  Wright, B.D., and Stone, M.H. (1999). \emph{Measurement essentials.} Wide Range Inc., Wilmington. (\url{http://www.rasch.org/measess/me-all.pdf} 28Mb).%
+  Wright, B.D., and Stone, M.H. (1999). \emph{Measurement essentials.} Wide Range Inc., Wilmington. (\url{https://www.rasch.org/measess/me-all.pdf} 28Mb).%
 }
 \author{Original code by Adrian Brügger (\email{Adrian.Bruegger@imu.unibe.ch}), adapted by Marco J. Maier}
 %\note{}

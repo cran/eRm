@@ -127,17 +127,17 @@ Besides other elements, it contains a \code{prop} vector and \code{MLres}, the o
 }
 \note{The \pkg{RaschSampler} package is no longer required to use \code{NPtest} since \pkg{eRm} version 0.15-0.}
 \references{%
-Ponocny, I. (2001). Nonparametric goodness-of-fit tests for the Rasch model. \emph{Psychometrika, 66}(3), 437--459. \url{http://dx.doi.org/10.1007/BF02294444}
+Ponocny, I. (2001). Nonparametric goodness-of-fit tests for the Rasch model. \emph{Psychometrika, 66}(3), 437--459. \doi{10.1007/BF02294444}
 
-Verhelst, N. D. (2008). An efficient \acronym{MCMC} algorithm to sample binary matrices with fixed marginals. \emph{Psychometrika, 73}(4), 705--728. \url{http://dx.doi.org/10.1007/s11336-008-9062-3}
+Verhelst, N. D. (2008). An efficient \acronym{MCMC} algorithm to sample binary matrices with fixed marginals. \emph{Psychometrika, 73}(4), 705--728. \doi{10.1007/s11336-008-9062-3}
 
-Verhelst, N., Hatzinger, R., & Mair, P. (2007). The Rasch sampler. \emph{Journal of Statistical Software, 20}(4), 1--14. \url{http://www.jstatsoft.org/v20/i04}
+Verhelst, N., Hatzinger, R., & Mair, P. (2007). The Rasch sampler. \emph{Journal of Statistical Software, 20}(4), 1--14. \url{https://www.jstatsoft.org/v20/i04}
 
 Koller, I., & Hatzinger, R. (2013). Nonparametric tests for the Rasch model: Explanation, development, and application of quasi-exact tests for small samples. \emph{Interstat, 11}, 1--16. \url{http://interstat.statjournals.net/YEAR/2013/abstracts/1311002.php}
 
-Koller, I., Maier, M. J., & Hatzinger, R. (2015). An Empirical Power Analysis of Quasi-Exact Tests for the Rasch Model: Measurement Invariance in Small Samples. \emph{Methodology, 11}(2), 45--54. \url{http://dx.doi.org/10.1027/1614-2241/a000090}
+Koller, I., Maier, M. J., & Hatzinger, R. (2015). An Empirical Power Analysis of Quasi-Exact Tests for the Rasch Model: Measurement Invariance in Small Samples. \emph{Methodology, 11}(2), 45--54. \doi{10.1027/1614-2241/a000090}
 
-Debelak, R., & Koller, I. (2019). Testing the Local Independence Assumption of the Rasch Model With Q3-Based Nonparametric Model Tests. \emph{Applied Psychological Measurement} \url{https://doi.org/10.1177/0146621619835501}
+Debelak, R., & Koller, I. (2019). Testing the Local Independence Assumption of the Rasch Model With Q3-Based Nonparametric Model Tests. \emph{Applied Psychological Measurement} \doi{10.1177/0146621619835501}
 }
 
 \author{Reinhold Hatzinger}

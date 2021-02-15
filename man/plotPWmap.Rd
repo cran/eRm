@@ -82,11 +82,11 @@ plotPWmap(object, pmap = FALSE, imap=TRUE,
 \references{
   Bond T.G., Fox C.M. (2007) \emph{Applying the Rasch Model: Fundamental Measurement in the Human Sciences} (2nd ed.) chapter 3, Lawrence Erlbaum Associates, Inc.
 
-  Linacre J.M., Wright B.D. (1994) Dichotomous Infit and Outfit Mean-Square Fit Statistics / Chi-Square Fit Statistics. \emph{Rasch Measurement Transactions} \bold{8:2} p. 350, \url{http://www.rasch.org/rmt/rmt82a.htm}
+  Linacre J.M., Wright B.D. (1994) Dichotomous Infit and Outfit Mean-Square Fit Statistics / Chi-Square Fit Statistics. \emph{Rasch Measurement Transactions} \bold{8:2} p. 350, \url{https://www.rasch.org/rmt/rmt82a.htm}
 
-  Linacre J.M. (2002) What do Infit and Outfit, Mean-square and Standardized mean? \emph{Rasch Measurement Transactions} \bold{16:2} p. 878, \url{http://www.rasch.org/rmt/rmt162f.htm}
+  Linacre J.M. (2002) What do Infit and Outfit, Mean-square and Standardized mean? \emph{Rasch Measurement Transactions} \bold{16:2} p. 878, \url{https://www.rasch.org/rmt/rmt162f.htm}
 
-  Wright B.D., Masters G.N. (1990) Computation of OUTFIT and INFIT Statistics. \emph{Rasch Measurement Transactions} \bold{3:4} p. 84--85, \url{http://www.rasch.org/rmt/rmt34e.htm}
+  Wright B.D., Masters G.N. (1990) Computation of OUTFIT and INFIT Statistics. \emph{Rasch Measurement Transactions} \bold{3:4} p. 84--85, \url{https://www.rasch.org/rmt/rmt34e.htm}
 }
 \author{Julian Gilbey}
 %\note{}

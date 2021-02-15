@@ -92,7 +92,7 @@ Mair, P., and Hatzinger, R. (2007). Extended Rasch modeling: The \pkg{eRm} packa
 
 Mair, P., and Hatzinger, R. (2007). CML based estimation of extended Rasch models with the \pkg{eRm} package in R. Psychology Science, 49, 26-43.
 
-Wright, B.D., and Stone, M.H. (1999). Measurement essentials. Wide Range Inc., Wilmington. (\url{http://www.rasch.org/measess/me-all.pdf} 28Mb).
+Wright, B.D., and Stone, M.H. (1999). Measurement essentials. Wide Range Inc., Wilmington. (\url{https://www.rasch.org/measess/me-all.pdf} 28Mb).
 }
 \author{Patrick Mair, Reinhold Hatzinger, Marco J. Maier, Adrian Bruegger}
 \seealso{\code{\link{Waldtest}}, \code{\link{MLoef}}}

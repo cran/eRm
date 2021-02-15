@@ -1,6 +1,14 @@
 \name{NEWS}
 \title{News for Package \pkg{eRm}}
 \encoding{UTF-8}
+\section{Changes in Version 1.0-2}{
+  \itemize{
+      \item \code{NPtest()} can now be applied to matrices up to 256 columns (Fortran code changed). 
+	  \item More flexibility for the legend in \code{plotINFO()} added.
+	  \item Full and 0 response patterns are not taken into account in \code{SepRel()}. 
+	}
+}
+
 \section{Changes in Version 1.0-1}{
   \itemize{
 	  \item Legend in plotjointICC now uses proper item labels (and better default colors).

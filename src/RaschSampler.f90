@@ -43,7 +43,7 @@ subroutine sampler(n,k,inputmat,tfixed,burn_in,n_eff,step,seed,outputvec,ier)
       character(len=10)               :: timevec
 
       !integer(kind=4),parameter       :: nmax=1024,kmax=64,n_effmax=8191  !!!!!! kmax changed to 2**7 nmax changed to 2**12
-      integer(kind=4),parameter       :: nmax=4096,kmax=128,n_effmax=8191
+      integer(kind=4),parameter       :: nmax=4096,kmax=256,n_effmax=8191
       integer(kind=4), allocatable    :: a(:),b(:),aold(:),bold(:),a_kol(:),b_kol(:),iwork(:)
       integer(kind=4)                 :: i,j,m,kk2,kk3,it,krand,k2,k3,nhex,k2old,k3old,nhexold
       integer(kind=4)                 :: x1,x2  ! x1 and x2 are reserved for the random generator
