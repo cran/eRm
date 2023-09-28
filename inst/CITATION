@@ -1,147 +1,82 @@
-citHeader("To cite package 'eRm' in publications use:")
-year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date)
-vers <- meta$Version
-note <- sprintf("R package version %s", meta$Version)
-
-PM  <- person("Patrick", "Mair")
-RH  <- person("Reinhold", "Hatzinger")
-MJM <- person(c("Marco", "Johannes"), "Maier")
-TR  <- person("Thomas", "Rusch")
-IK  <- person("Ingrid", "Koller")
-RD  <- person("Rudolf", "Debelak")
-
-# Package Citation
-citEntry(
-  header = paste0("\n", paste0(rep("#", getOption("width")-1L), collapse=""), "\nThe current Package Version:\n"),
-  entry  = "MANUAL",
-  title  = "{eRm: Extended Rasch Modeling}",
-  author = c(PM, RH, MJM),
-  year   = year,
-  note   = vers,
-  url    = "https://cran.r-project.org/package=eRm",
-  textVersion = paste0(
-    "Mair, P., Hatzinger, R., & Maier M. J. (",
-    year,
-    "). eRm: Extended Rasch Modeling. ",
-    vers,
-    ". https://cran.r-project.org/package=eRm"
-  )
-)
-
-# JSS 2007
-citEntry(
-  header  = paste0("\n", paste0(rep("#", getOption("width")-1L), collapse=""), "\nThe original JSS Article:\n"),
-  entry   = "ARTICLE",
-  title   = "{Extended Rasch modeling: The eRm package for the application of IRT models in R}",
-  author  = c(PM, RH),
-  year    = 2007,
+bibentry(bibtype="Article",
+  title   = "Extended Rasch modeling: The eRm package for the application of IRT models in R",
+  author = c(person(given = "Patrick", family = "Mair", email = "mair@fas.harvard.edu", comment = c(ORCID = "0000-0003-0100-6511")),
+             person(given = "Reinhold", family = "Hatzinger")),
+  journal = "Journal of Statistical Software",
+  year    = "2007",
   page    = "1--20",
-  journal = "{Journal of Statistical Software}",
-  volume  = 20,
-  issue   = 9,
-  url     = "https://www.jstatsoft.org/v20/i09",
-  textVersion = paste0(
-    "Mair, P., & Hatzinger, R. (2007). ",
-    "Extended Rasch modeling: The eRm package for the application of IRT models in R. ",
-    "Journal of Statistical Software, 20(9), 1-20. ",
-    "https://www.jstatsoft.org/v20/i09"
-  )
+  volume  = "20",
+  issue   = "9",
+  doi = "10.18637/jss.v020.i09",
+  mheader = "The original JSS article:"
 )
 
-# PS 2007
-citEntry(
-  header  = paste0("\n", paste0(rep("#", getOption("width")-1L), collapse=""), "\nArticle about CML Estimation in eRm:\n"),
-  entry   = "ARTICLE",
-  title   = "{CML based estimation of extended Rasch models with the eRm package in R}",
-  author  = c(PM, RH),
-  year    = 2007,
+bibentry(bibtype="Article",
+  title   = "CML based estimation of extended Rasch models with the eRm package in R",
+  author = c(person(given = "Patrick", family = "Mair", email = "mair@fas.harvard.edu", comment = c(ORCID = "0000-0003-0100-6511")),
+             person(given = "Reinhold", family = "Hatzinger")),
+  journal = "Psychology Science",
+  year    = "2007",
   page    = "26--43",
-  journal = "{Psychology Science}",
-  volume  = 49,
-  issue   = 1,
-  textVersion = paste0(
-    "Mair, P., & Hatzinger, R. (2007). ",
-    "CML based estimation of extended Rasch models with the eRm package in R. ",
-    "Psychology Science, 49(1), 26-43."
-  )
+  volume  = "49",
+  issue   = "1",
+  doi = "10.18637/jss.v020.i09",
+  mheader = "Article about CML Estimation in eRm:"
 )
 
-# PSQ 2009
-citEntry(
-  header  = paste0("\n", paste0(rep("#", getOption("width")-1L), collapse=""), "\nArticle about LLRAs in eRm:\n"),
-  entry   = "ARTICLE",
-  title   = "{IRT models with relaxed assumptions in eRm: A manual-like instruction}",
-  author  = c(RH, TR),
-  year    = 2009,
+bibentry(bibtype="Article",
+  title   = "IRT models with relaxed assumptions in eRm: A manual-like instruction",
+  author = c(person(given = "Reinhold", family = "Hatzinger"),
+             person(given = "Thomas", family = "Rusch", email = "thomas.rusch@wu.ac.at")),
+  journal = "Psychology Science Quarterly",
+  year    = "2009",
   page    = "87--120",
-  journal = "{Psychology Science Quarterly}",
-  volume  = 51,
-  issue   = 1,
-  textVersion = paste0(
-    "Hatzinger, R., & Rusch, T. (2009). ",
-    "IRT models with relaxed assumptions in eRm: A manual-like instruction. ",
-    "Psychology Science Quarterly, 51(1), 87-120."
-  )
+  volume  = "51",
+  issue   = "1",
+  mheader = "Article about LLRAs in eRm:"
 )
 
-# LLRA Springer 2013
-citEntry(
-  header  = paste0("\n", paste0(rep("#", getOption("width")-1L), collapse=""), "\nBook Chapter about LLRAs:\n"),
-  entry   = "INPROCEEDINGS",
-  title   = "{Linear logistic models with relaxed assumptions in R}",
-  author  = c(TR, MJM, RH),
-  booktitle = "{Algorithms from and for Nature and Life}",
+bibentry(bibtype="InProceedings",
+  title   = "Linear logistic models with relaxed assumptions in R",
+  author = c(person(given = "Thomas", family = "Rusch", email = "thomas.rusch@wu.ac.at"),
+             person(given = "Marco", family = "Maier"),
+             person(given = "Reinhold", family = "Hatzinger")),
+  booktitle = "Algorithms from and for Nature and Life",
   editor  = c(person("Berthold", "Lausen"), person("Dirk", "van den Poel"), person("Alfred", "Ultsch")),
-  series  = "{Studies in Classification, Data Analysis, and Knowledge Organization}",
+  series  = "Studies in Classification, Data Analysis, and Knowledge Organization",
   year    = 2013,
   page    = "337--347",
-  address = "{New York}",
-  publisher = "{Springer}",
+  address = "New York",
+  publisher = "Springer",
   doi     = "10.1007/978-3-319-00035-0_34",
-  textVersion = paste0(
-    "Rusch T., Maier M. J., & Hatzinger R. (2013). ",
-    "Linear logistic models with relaxed assumptions in R. ",
-    "In: B. Lausen, D. van den Poel, & A. Ultsch (Eds.) ",
-    "Algorithms from and for Nature and Life.",
-    "New York: Springer. 337-347. ",
-    "http://dx.doi.org/10.1007/978-3-319-00035-0_34"
-  )
+  mheader = "Book Chapter about LLRAs:"
 )
 
 
-# NPar Tests 2015
-citEntry(
-  header  = paste0("\n", paste0(rep("#", getOption("width")-1L), collapse=""), "\nArticle about the performance of Quasi-Exact Tests in eRm:\n"),
-  entry   = "ARTICLE",
-  title   = "{An Empirical Power Analysis of Quasi-Exact Tests for the Rasch Model: Measurement Invariance in Small Samples}",
-  author  = c(IK, MJM, RH),
-  year    = 2015,
-  volume  = 11,
-  issue   = 2,
+bibentry(bibtype="Article",
+  title   = "An empirical power analysis of quasi-exact tests for the Rasch model: Measurement invariance in small samples",
+  author = c(person(given = "Ingrid", family = "Koller"),
+             person(given = "Marco", family = "Maier"),
+             person(given = "Reinhold", family = "Hatzinger")),
+  journal = "Methodology",
+  year    = "2015",
   page    = "45--54",
-  journal = "{Methodology}",
-  doi     = "10.1027/1614-2241/a000090",
-  textVersion = paste0(
-    "Koller, I., Maier, M. J., & Hatzinger, R. (2015). ",
-    "An Empirical Power Analysis of Quasi-Exact Tests for the Rasch Model: Measurement Invariance in Small Samples. ",
-    "Methodology, 11(2), 45-54. ",
-    "http://dx.doi.org/10.1027/1614-2241/a000090"
-  )
+  volume  = "11",
+  issue   = "2",
+  doi = "10.1027/1614-2241/a000090",
+  mheader = "Article about the performance of Quasi-Exact Tests in eRm:"
 )
 
-# NPar Q3 Tests 2019
-citEntry(
-  header  = paste0("\n", paste0(rep("#", getOption("width")-1L), collapse=""), "\nArticle about the Performance of the nonparametric Q3 Tests in eRm:\n"),
-  entry   = "ARTICLE",
-  title   = "{Testing the Local Independence Assumption of the Rasch Model With Q3-Based Nonparametric Model Tests}",
-  author  = c(RD, IK),
-  year    = 2019,
-  journal = "{Applied Psychological Measurement}",
-  doi     = "10.1177/0146621619835501",
-  textVersion = paste0(
-    "Debelak, R., & Koller, I. (2019). ",
-    "Testing the Local Independence Assumption of the Rasch Model With Q3-Based Nonparametric Model Tests. ",
-    "Applied Psychological Measurement ",
-    "https://doi.org/10.1177/0146621619835501"
-  )
+bibentry(bibtype="Article",
+  title   = "Testing the local independence assumption of the Rasch model with Q3-based nonparametric model tests",
+  author = c(person(given = "Rudolf", family = "Debelak"),
+             person(given = "Ingrid", family = "Koller")),
+  journal = "Applied Psychological Measurement",
+  year    = "2019",
+  page    = "103--117",
+  volume  = "44",
+  issue   = "2",
+  doi = "10.1177/0146621619835501",
+  mheader = "Article about the Performance of the nonparametric Q3 Tests in eRm:"
 )
+

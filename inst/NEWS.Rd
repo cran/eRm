@@ -1,6 +1,21 @@
 \name{NEWS}
 \title{News for Package \pkg{eRm}}
 \encoding{UTF-8}
+
+\section{Changes in Version 1.0-4}{
+  \itemize{
+      \item Fortran code for matrix sampling updated.
+	  \item Bug in \code{item_info()} fixed.
+	}
+}
+
+
+\section{Changes in Version 1.0-3}{
+  \itemize{
+      \item Bug in \code{person.parameter.eRm()} for RSM fixed.  
+	}
+}
+
 \section{Changes in Version 1.0-2}{
   \itemize{
       \item \code{NPtest()} can now be applied to matrices up to 256 columns (Fortran code changed). 

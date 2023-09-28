@@ -2,7 +2,7 @@ plotDIF <- function(object, item.subset=NULL, gamma = 0.95, main=NULL,
              xlim=NULL, xlab=" ", ylab=" ", col=NULL, distance,
              splitnames=NULL, leg=FALSE, legpos="bottomleft", ...){
 
-  if(class(object)=="LR"){   ## added rh 11-03-17
+  if("LR" %in% class(object)){   
     object <- list(object)             
   } else if(is.list(object)) {
       checklr <- sapply(object,class)

@@ -10,7 +10,7 @@ performance <- function(prediction.obj, measure,
     default.values <- envir.list$default.values
     
     ## abort in case of misuse
-    if (class(prediction.obj) != 'prediction' ||
+    if (!('prediction' %in% class(prediction.obj)) ||
         !exists(measure, where=long.unit.names, inherits=FALSE) ||
         !exists(x.measure, where=long.unit.names, inherits=FALSE)) {
       stop(paste("Wrong argument types: First argument must be of type",

@@ -52,7 +52,7 @@ function(object, pmap=FALSE, imap=TRUE, item.subset="all", person.subset="all",
 
   if(is.null(pp)){
     suppressWarnings(pp<-person.parameter(object))
-  } else if(class(pp) != "ppar" || !identical(pp$X,object$X)){
+  } else if((!("ppar" %in% class(pp))) || !identical(pp$X,object$X)){
     stop("pp is not a person.parameter object which matches the main Rasch data object!")
   }
   

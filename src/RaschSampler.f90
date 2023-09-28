@@ -32,31 +32,31 @@ subroutine sampler(n,k,inputmat,tfixed,burn_in,n_eff,step,seed,outputvec,ier)
       ! if tfixed and n.eq.k, the main diagonal is condidered as fixed.
       ! if tfixed and n!=k, the case is treated as a rectangular matrix without constraints
       ! the Markov chain transition matrix used is Q**step
-
-      integer(kind=4), dimension(n*(k+31)/32*(n_eff+1)),intent(out)::outputvec
-      integer(kind=4), intent(out)     :: ier
-      integer(kind=4), intent(in)      :: n,k,burn_in,n_eff,step
-      integer(kind=4), dimension(n,k),intent(in) :: inputmat
-      integer(kind=4)                 :: seed
-      logical(kind=4), intent(in)     :: tfixed
+      integer,parameter :: logical1=selected_int_kind(1)                          !***new
+      integer(kind(1)), dimension(n*(k+31)/32*(n_eff+1)),intent(out)::outputvec   !***
+      integer(kind(1)), intent(out)     :: ier                                    !***
+      integer(kind(1)), intent(in)      :: n,k,burn_in,n_eff,step                 !***
+      integer(kind(1)), dimension(n,k),intent(in) :: inputmat                     !***
+      integer(kind(1))                 :: seed                                    !***
+      logical(kind(1)), intent(in)     :: tfixed                                  !***
 
       character(len=10)               :: timevec
 
-      !integer(kind=4),parameter       :: nmax=1024,kmax=64,n_effmax=8191  !!!!!! kmax changed to 2**7 nmax changed to 2**12
-      integer(kind=4),parameter       :: nmax=4096,kmax=256,n_effmax=8191
-      integer(kind=4), allocatable    :: a(:),b(:),aold(:),bold(:),a_kol(:),b_kol(:),iwork(:)
-      integer(kind=4)                 :: i,j,m,kk2,kk3,it,krand,k2,k3,nhex,k2old,k3old,nhexold
-      integer(kind=4)                 :: x1,x2  ! x1 and x2 are reserved for the random generator
-      integer(kind=4)                 :: words_per_row, offset
-      integer(kind=4),allocatable     :: hexmat(:,:),hexmatold(:,:)
+      !integer(kind(1)),parameter       :: nmax=1024,kmax=64,n_effmax=8191  !!!!!! kmax changed to 2**7 nmax changed to 2**12   !***
+      integer(kind(1)),parameter       :: nmax=4096,kmax=128,n_effmax=8191                          !***
+      integer(kind(1)), allocatable    :: a(:),b(:),aold(:),bold(:),a_kol(:),b_kol(:),iwork(:)      !***
+      integer(kind(1))                 :: i,j,m,kk2,kk3,it,krand,k2,k3,nhex,k2old,k3old,nhexold     !***
+      integer(kind(1))                 :: x1,x2  ! x1 and x2 are reserved for the random generator  !***
+      integer(kind(1))                 :: words_per_row, offset                                     !***
+      integer(kind(1)),allocatable     :: hexmat(:,:),hexmatold(:,:)                                !***
 
-      real(kind=4)                    :: tijd
-
-      logical(kind=1),parameter       :: t=.true.,f=.false.
-      logical(kind=1),allocatable     :: t_in(:,:)
-      logical(kind=1),dimension(3,3)  :: hexa,hexb
-      logical(kind=1),allocatable     :: twa(:),twb(:),tw(:),tng(:),tngold(:),col1(:),col2(:) !tng = non-guttman pair
-      logical(kind=1)                 :: t_eff,tfixnow
+      real(kind(1.0))                    :: tijd                                                    !***
+                                                                                                    !***
+      logical(logical1),parameter       :: t=.true.,f=.false.                                       !***
+      logical(logical1),allocatable     :: t_in(:,:)                                                !***
+      logical(logical1),dimension(3,3)  :: hexa,hexb                                                !***
+      logical(logical1),allocatable     :: twa(:),twb(:),tw(:),tng(:),tngold(:),col1(:),col2(:) !tng = non-guttman pair     !***
+      logical(logical1)                 :: t_eff,tfixnow                                            !***
 
       data hexa/f,f,t,t,f,f,f,t,f/,hexb/f,t,f,f,f,t,t,f,f/
 
@@ -236,8 +236,8 @@ subroutine sampler(n,k,inputmat,tfixed,burn_in,n_eff,step,seed,outputvec,ier)
       contains
 
       subroutine pack_matrix(vec)
-        integer(kind=4) vec(*)
-        integer(kind=4) :: i,j,ib,ie,it,iw
+        integer(kind(1)) vec(*)                !***
+        integer(kind(1)) :: i,j,ib,ie,it,iw    !***
         do i=1,n
           ib=1
           do iw=1,words_per_row
@@ -256,9 +256,9 @@ subroutine sampler(n,k,inputmat,tfixed,burn_in,n_eff,step,seed,outputvec,ier)
       end subroutine pack_matrix
 
       subroutine findab(ta,tb,i,j,a,b)
- !!!!!  logical(kind=1):: ta(n),tb(n)
-        logical(kind=1):: ta(n),tb(n),test(n)
-        integer(kind=4)::a,b,i,j
+ !!!!!  logical(logical1):: ta(n),tb(n)           !***
+        logical(logical1):: ta(n),tb(n),test(n)   !***
+        integer(kind(1))::a,b,i,j                 !***
         tw=(ta.neqv.tb)
         if(tfixnow)then
           tw(i)=.false.
@@ -274,8 +274,8 @@ subroutine sampler(n,k,inputmat,tfixed,burn_in,n_eff,step,seed,outputvec,ier)
 
 
       subroutine pick_a_pair(it)
-        integer(kind=4),intent(out)::it
-        integer(kind=4) ::i,m
+        integer(kind(1)),intent(out)::it          !***
+        integer(kind(1)) ::i,m                    !***
         call rand_integer42(it,k2,x1,x2,krand)
         m=count(tng(1:it))
         if(m.eq.it)return
@@ -290,10 +290,10 @@ subroutine sampler(n,k,inputmat,tfixed,burn_in,n_eff,step,seed,outputvec,ier)
       end subroutine pick_a_pair
 
       subroutine make_matrix(it)
-        integer(kind=4),intent(in)::it
-        integer(kind=4)           ::m,i,j,ii,jj
-!!!!!       logical(kind=1),allocatable     :: test(:)
-        logical(kind=1) :: test(n)
+        integer(kind(1)),intent(in)::it                     !***
+        integer(kind(1))           ::m,i,j,ii,jj            !***
+!!!!!       logical(logical1),allocatable     :: test(:)    !***
+        logical(logical1) :: test(n)                        !***
 
         ii=a_kol(it)
         jj=b_kol(it)
@@ -351,8 +351,8 @@ subroutine sampler(n,k,inputmat,tfixed,burn_in,n_eff,step,seed,outputvec,ier)
       end subroutine make_matrix
 
       subroutine make_matrix3(it)
-        integer(kind=4), intent(in)::it
-        integer(kind=4)            ::i,j,ii,jj
+        integer(kind(1)), intent(in)::it            !***
+        integer(kind(1))            ::i,j,ii,jj     !***
         do i=1,2
           ii=hexmat(i,it)
           do j=i+1,3
@@ -367,9 +367,9 @@ subroutine sampler(n,k,inputmat,tfixed,burn_in,n_eff,step,seed,outputvec,ier)
         ! generate a random combination of k objects out of n
         ! the result is stored in the logical n-vector tx
         ! ix is a working array
-        integer(kind=4) ::n,k,kk,ii,iu,nnu
-        integer(kind=4) ::ix(n)
-        logical(kind=1) ::tx(n)
+        integer(kind(1)) ::n,k,kk,ii,iu,nnu       !***
+        integer(kind(1)) ::ix(n)                  !***
+        logical(logical1) ::tx(n)                 !***
 
         ix(1:n)=(/(ii,ii=1,n)/)
         tx(1:n)=.false.
@@ -385,8 +385,8 @@ subroutine sampler(n,k,inputmat,tfixed,burn_in,n_eff,step,seed,outputvec,ier)
       end subroutine combine
 
       subroutine update_pairs(i,j)
-        integer(kind=4),intent(in) :: i,j
-        integer(kind=4):: jt,m
+        integer(kind(1)),intent(in) :: i,j       !***
+        integer(kind(1)):: jt,m                  !***
         do m=1,i-1
           if(m.eq.j)cycle
           jt=(i-1)*(i-2)/2+m
@@ -402,8 +402,8 @@ subroutine sampler(n,k,inputmat,tfixed,burn_in,n_eff,step,seed,outputvec,ier)
       end subroutine update_pairs
 
       subroutine update_pairs3(i,j,l)
-        integer(kind=4),intent(in) :: i,j,l
-        integer(kind=4):: jt,m
+        integer(kind(1)),intent(in) :: i,j,l     !***
+        integer(kind(1)):: jt,m                  !***
         do m=1,i-1
           if(m.eq.j)cycle
           if(m.eq.l)cycle
@@ -421,9 +421,9 @@ subroutine sampler(n,k,inputmat,tfixed,burn_in,n_eff,step,seed,outputvec,ier)
       end subroutine update_pairs3
 
       subroutine hexagon
-        logical(kind=1),dimension(3,3):: c
-        integer(kind=4),dimension(3)  :: v
-        integer(kind=4)               :: i,j,m
+        logical(logical1),dimension(3,3):: c       !***
+        integer(kind(1)),dimension(3)   :: v       !***
+        integer(kind(1))                :: i,j,m   !***
         nhex=0
         do i=1,n-2
           v(1)=i
@@ -444,7 +444,7 @@ subroutine sampler(n,k,inputmat,tfixed,burn_in,n_eff,step,seed,outputvec,ier)
 
       subroutine rand1(x)
         ! see Ripley, B.D., Stochastic Simulation. New-York:Wiley, 1987, pp. 37-39. (generator 4)
-        integer(kind=4) x,p,q,r,a,b,c
+        integer(kind(1)) x,p,q,r,a,b,c    !***
 
         data a,b,c,p/127773,16807,2836,2147483647/     ! generator 4
         q=x/a
@@ -462,8 +462,8 @@ subroutine sampler(n,k,inputmat,tfixed,burn_in,n_eff,step,seed,outputvec,ier)
         ! Notice that zero as result of the draw leads to rejection (see !***)
         ! The routine calls RAND2 with the K-th set of coefficients
 
-        integer(kind=4) iu,a,x1,x2,bound,k
-        integer(kind=4),parameter :: p = 2147483646
+        integer(kind(1)) iu,a,x1,x2,bound,k               !***
+        integer(kind(1)),parameter :: p = 2147483646      !***
                             ! P is the number of values X can take: 2**31 - 2,
                             ! because 0 is excluded
         bound=(p/a)*a
@@ -484,9 +484,9 @@ subroutine sampler(n,k,inputmat,tfixed,burn_in,n_eff,step,seed,outputvec,ier)
         ! To compute the formulae, the method in the referenced article is used. B(K) is the table as published
         ! A(K)=P/B(K) and C(K)=P-A(K)*B(K), P = 2**31 -1
 
-        integer (kind=4)::k
-        integer (kind=4)::x1,x2,p,q,r,y
-        integer (kind=4), dimension(25)::b,c,a
+        integer (kind(1))::k                          !***
+        integer (kind(1))::x1,x2,p,q,r,y              !***
+        integer (kind(1)), dimension(25)::b,c,a       !***
 
         data b/26403,33236,36673,40851,43693,27149,33986,36848,40961, &
                44314,29812,34601,37097,42174,44530,30229,36098,37877, &
@@ -515,36 +515,33 @@ subroutine sampler(n,k,inputmat,tfixed,burn_in,n_eff,step,seed,outputvec,ier)
 
       end subroutine sampler
 
-
-
       subroutine unpack(vec,words_per_row,t_out,n,k)
 
+        integer(kind(1)) offset,words_per_row,n,k                !***
+        integer(kind(1)),dimension(n*words_per_row)::vec         !***
+        integer(kind(1)) i,j,it,ib,ie,ioff                       !***
+        ! matrix t_in is not needed
+        !logical(logical1),dimension(n,k) :: t_in                !***
+        integer(kind(1)),dimension(n,k) :: t_out                 !***
 
-      integer(kind=4) offset,words_per_row,n,k
-      integer(kind=4),dimension(n*words_per_row)::vec
-      integer(kind=4) i,j,it,ib,ie,ioff
-      ! matrix t_in is not needed
-      !logical(kind=1),dimension(n,k) :: t_in
-      integer(kind=4),dimension(n,k) :: t_out
+        t_out=0 ! intialize t_out
+        ioff=0
+        do i=1,n
+          ib=1
 
-      t_out=0 ! intialize t_out
-      ioff=0
-      do i=1,n
-        ib=1
-
-        do iw=1,words_per_row
-          ioff=ioff+1
-          ie=min(ib+31,k)
-          it=-1
-          do j=ib,ie
-            it=it+1
-            !t_in(i,j)=btest(vec(ioff),it)
-            !replace the preceding statement by
-            if(btest(vec(ioff),it)) t_out(i,j)=1
+          do iw=1,words_per_row
+            ioff=ioff+1
+            ie=min(ib+31,k)
+            it=-1
+            do j=ib,ie
+              it=it+1
+              !t_in(i,j)=btest(vec(ioff),it)
+              !replace the preceding statement by
+              if(btest(vec(ioff),it)) t_out(i,j)=1
+            end do
+            ib=ie+1
           end do
-          ib=ie+1
-        end do
 
-      end do
+        end do
 
       end subroutine unpack

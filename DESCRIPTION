@@ -1,13 +1,13 @@
 Package: eRm
 Type: Package
 Title: Extended Rasch Modeling
-Version: 1.0-2
-Date: 2021-02-11
+Version: 1.0-4
+Date: 2023-09-27
 Authors@R: c(person(given="Patrick", family="Mair", email="mair@fas.harvard.edu", role=c("cre","aut")),
+             person(given="Thomas", family="Rusch", email="thomas.rusch@wu.ac.at", role="aut"),
              person(given="Reinhold", family="Hatzinger", role="aut"),
-             person(given=c("Marco", "J."), family="Maier", email="marco.maier@wu.ac.at", role="aut"),
-             person(given="Thomas", family="Rusch", email="thomas.rusch@wu.ac.at", role="ctb"),
-			 person(given="Rudolf", family="Debelak", email="rudolf.debelak@psychologie.uzh.ch", role="ctb"))
+             person(given=c("Marco", "J."), family="Maier", role="aut"),
+             person(given="Rudolf", family="Debelak", email="rudolf.debelak@psychologie.uzh.ch", role="ctb"))
 Description: Fits Rasch models (RM), linear logistic test models (LLTM), rating scale model (RSM), linear rating scale models (LRSM), partial credit models (PCM), and linear partial credit models (LPCM).  Missing values are allowed in the data matrix.  Additional features are the ML estimation of the person parameters, Andersen's LR-test, item-specific Wald test, Martin-Loef-Test, nonparametric Monte-Carlo Tests, itemfit and personfit statistics including infit and outfit measures, ICC and other plots, automated stepwise item elimination, simulation module for various binary data matrices.
 License: GPL-3
 Imports: graphics, grDevices, stats, methods, MASS, splines, Matrix,
@@ -18,12 +18,12 @@ LazyData: yes
 LazyLoad: yes
 ByteCompile: yes
 NeedsCompilation: yes
-Packaged: 2021-02-12 15:13:37 UTC; patrick
+Packaged: 2023-09-27 20:08:43 UTC; patrick
 Author: Patrick Mair [cre, aut],
+  Thomas Rusch [aut],
   Reinhold Hatzinger [aut],
   Marco J. Maier [aut],
-  Thomas Rusch [ctb],
   Rudolf Debelak [ctb]
 Maintainer: Patrick Mair <mair@fas.harvard.edu>
 Repository: CRAN
-Date/Publication: 2021-02-15 11:03:06 UTC
+Date/Publication: 2023-09-28 07:33:53 UTC

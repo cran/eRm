@@ -3,14 +3,18 @@
 \alias{plotINFO}
 \title{Plot Information For \code{'eRm'} objects
 }
-\description{Calculates and plots the individual or summed item information by Samejima (1969)}
+\description{Calculates and plots the individual item-category information
+  (type='category'), item information (type='item') or test/scale information (i.e., summed item information, type='scale' or 'test') ) as defined by Samejima (1969)}
 \usage{
 plotINFO(ermobject, type = "both", theta = seq(-6, 6, length.out = 1001L), 
-legpos = "right", ...)
+legpos = "topright", ...)
 }
 \arguments{
   \item{ermobject}{An object of class \code{'eRm'}.}
-  \item{type}{A string denoting the type of information to be plotted. Currently supports \code{"item"}, \code{"test"} and \code{"both"} (default).}
+  \item{type}{A string denoting the type of information to be
+    plotted. Currently supports \code{"category"}, \code{"item"},
+    \code{"test"}, \code{"scale"} and \code{"both"} (which gives item
+    and scale information; default).}
   \item{theta}{Supporting or sampling points on the latent trait.}
   \item{legpos}{Defines the positioning of the legend, as in \code{\link[eRm]{plotICC}}.}
   \item{...}{%

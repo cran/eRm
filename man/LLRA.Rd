@@ -90,8 +90,7 @@ developments and applications} (pp. 157--181), New York: Springer.
 
 Glueck, J. and Spiel, C. (1997) Item response models for repeated
 measures designs: Application and limitations of four different
-approaches. \emph{Methods of Psychological
-  Research}, \bold{2}. \url{https://www.dgps.de/fachgruppen/methoden/mpr-online/issue2/art6/article.html}
+approaches. \emph{Methods of Psychological  Research}, \bold{2}.
 
 Hatzinger, R. and Rusch, T. (2009) IRT models with relaxed assumptions
 in eRm: A manual-like instruction. \emph{Psychology Science Quarterly}, \bold{51},

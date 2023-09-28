@@ -6,7 +6,7 @@
 \title{Calculate Item Information for 'eRm' objects
 }
 \description{
-Calculates Samejima's (1969) information for all items
+Calculates Samejima's (1969) information for all items.
 }
 \usage{
 item_info(ermobject, theta = seq(-5, 5, 0.01))
@@ -28,7 +28,7 @@ i_info(hvec, itembeta, theta)
   does the same for a single item (and is called by \code{item_info}).  
 }
 \value{
-  Returns a list (\code{i_info}) or a list of lists (where each element
+  Returns a list (\code{i_info}) or a list of lists (where each list element
   corresponds to an item, \code{item_info}) and contains
    \item{c.info}{Matrix of category information in columns for the
     different theta values in rows.}

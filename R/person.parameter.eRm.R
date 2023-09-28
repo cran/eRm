@@ -47,7 +47,8 @@
     gmemb1  <- gmemb
   }
 
-  mt_vek <- apply(X, 2L, max, na.rm = TRUE)   #number of categories - 1 for each item
+  #mt_vek <- apply(X, 2L, max, na.rm = TRUE)   #number of categories - 1 for each item
+  mt_vek <- apply(object$X, 2L, max, na.rm = TRUE)   ## FIX: to be tested
   mt_ind <- rep(1L:length(mt_vek), mt_vek)    #index i for items
 
   indvec <- NULL                              #establish matrix with unique raw scores
@@ -132,7 +133,7 @@
 
           ind.h   <- 0L:(length(beta.i)-1L)
           theta.h <- ind.h %*% t(theta)         #n. categories times theta
-          #!!!FIXME
+          
           term1 <- (theta.h + beta.i) * x01.i0  #category-person matrix
           t1.i  <- sum(colSums(term1))          #sum over categories and persons
           #print(t1.i)
@@ -265,14 +266,7 @@
 
 
 
-  #---------------------- theta.table new ----------------------   ## MM2012-02-01 START
-  #thetavec <- unlist(thetapar)
-  #ind.orig <- as.vector(unlist(tapply(1:length(gmemb1), gmemb1, function(ind) {ind})))
-  #theta.orig <- tapply(thetavec, ind.orig, function(ii) return(ii))   #original order theta parameter
-  #theta.table <- data.frame(theta.orig, gmemb1)
-  #colnames(theta.table) <- c("Person Parameter","NAgroup")
-  #rownames(theta.table) <- rownames(X.ex)
-
+  #---------------------- theta.table new ----------------------   
   if(length(NAgroup_exclude) > 0L){
     selector <- gmemb.X %in% gmemb_reduced
   } else {
@@ -298,8 +292,7 @@
   theta.table[selector, "NAgroup"] <- gmemb.X_final
                             
   if(length(pers.exe) > 0) theta.table[pers.exe,"Interpolated"] <- TRUE
-                                                                   ## MM2012-02-01 END
-  
+                                                                   
 
   result <- list(X = X.n, X01 = object$X01, X.ex = X.ex, W = object$W, model = object$model,
                  loglik = loglik, loglik.cml = object$loglik, npar = npar, iter = niter, betapar = object$betapar,

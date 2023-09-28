@@ -1,25 +1,4 @@
 NPtest<-function(obj, n=NULL, method="T1", ...){
-#npt<-function(obj, n=NULL, method="T1", ...){
-#-------------------------------------------------
-# changes: 2011-12-06
-#-------------------------------------------------
-# in ... koennen ausser den spezifikationen fuer die
-# einzelnen statistiken wie z.B. idx=, stat=, etc.
-# nun zusaetzlich step=, burn_in=, und seed=
-# angegeben werden
-# ausserdem mit RSinfo=TRUE wird eine summary des
-# RaschSampler output objects geprintet
-#-------------------------------------------------
-# Aenderung im Code:
-# - alle methods bei switch haben jetzt ... in der
-#   argument liste
-# - check des input objekts
-#-------------------------------------------------
-# changes: 2019-04-05
-#-------------------------------------------------
-# Neue nonparametrische Tests Q3h und Q3l (Debelak & Koller, 2019)
-
-#   require(RaschSampler)   # removed as RaschSampler is a part of eRm since 0.15-0
 
    dots<-as.list(substitute(list(...)))[-1]
    nn<-names(dots)
@@ -43,7 +22,7 @@ NPtest<-function(obj, n=NULL, method="T1", ...){
       obj<-rsampler(obj,rsctrl(burn_in=burn_in, n_eff=n, step=step, seed=seed))
 #browser()
 
-   } else if(class(obj)!="RSmpl"){
+   } else if(!("RSmpl" %in% class(obj))){
         stop("Input object must be data matrix/data frame or output from RaschSampler")
    }
 

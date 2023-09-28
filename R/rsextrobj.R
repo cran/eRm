@@ -2,9 +2,9 @@
 function(RSobj,start=1,end=8192)
 {
     obj.name <- deparse(substitute(RSobj))
-    if (!(class(RSobj)=="RSmpl" || class(RSobj)=="RSmplext")){
-         err.text<-paste(obj.name,"not a sample object - see help(\"rsextrobj\")",sep ="",collapse="")
-         stop(err.text)
+    if (!("RSmpl" %in% class(RSobj) || "RSmplext" %in% class(RSobj))){
+      err.text<-paste(obj.name," is not a sample object - see help(\"rsextrobj\")",sep ="",collapse="")
+      stop(err.text)
     }
 
     n_tot  <- RSobj$n_tot

@@ -43,7 +43,7 @@ function(object, item.subset="all", sorted = FALSE, main="Person-Item Map",
     # person parameters unlist in case of several for NA groups
     if (is.null(pp))
       suppressWarnings(pp<-person.parameter(object))
-    else if (class(pp) != "ppar" || !identical(pp$X,object$X))
+    else if ((!("ppar" %in% class(pp))) || !identical(pp$X,object$X))
       stop("pp is not a person.parameter object which matches the main Rasch data object!")
 
     theta<-unlist(pp$thetapar)
