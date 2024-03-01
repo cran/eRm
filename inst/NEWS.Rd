@@ -2,6 +2,14 @@
 \title{News for Package \pkg{eRm}}
 \encoding{UTF-8}
 
+\section{Changes in Version 1.0-5}{
+  \itemize{
+      \item is.R() in \code{plotCI()} removed.
+	}
+}
+
+
+
 \section{Changes in Version 1.0-4}{
   \itemize{
       \item Fortran code for matrix sampling updated.

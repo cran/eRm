@@ -88,14 +88,14 @@ plotCI <- function (x,
      {
        if(is.null(ylim))
          ylim <- range(c(y, ui, li), na.rm=TRUE)
-       if(is.null(xlim) && !is.R() )
+       if(is.null(xlim))
          xlim <- range( x, na.rm=TRUE)
      }
    else if(err=="x")
      {
        if(is.null(xlim))
          xlim <- range(c(x, ui, li), na.rm=TRUE)
-       if(is.null(ylim) && !is.R() )
+       if(is.null(ylim))
          ylim <- range( x, na.rm=TRUE)
      }
 
@@ -111,8 +111,8 @@ plotCI <- function (x,
           text(x, y, label=labels, col=col, ... )
         }
     }
-  if(is.R())
-    myarrows <- function(...) arrows(...)
+  
+   myarrows <- function(...) arrows(...)
 # works only using R!!
 # else
 #   myarrows <- function(x1,y1,x2,y2,angle,code,length,...)
