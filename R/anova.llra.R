@@ -1,4 +1,4 @@
-anova.llra <- function(object, ...) UseMethod("anova.llra")
+#anova.llra <- function(object, ...) UseMethod("anova.llra")
 
 anova.llra <- function(object,...)
   {

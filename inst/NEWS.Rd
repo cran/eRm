@@ -2,13 +2,17 @@
 \title{News for Package \pkg{eRm}}
 \encoding{UTF-8}
 
+\section{Changes in Version 1.0-6}{
+  \itemize{
+      \item duplicated top-level assingments removed.
+	}
+}
+
 \section{Changes in Version 1.0-5}{
   \itemize{
       \item is.R() in \code{plotCI()} removed.
 	}
 }
-
-
 
 \section{Changes in Version 1.0-4}{
   \itemize{

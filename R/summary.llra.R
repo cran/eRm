@@ -1,4 +1,4 @@
-summary.llra <- function(object, ...) UseMethod("summary.llra")
+#summary.llra <- function(object, ...) UseMethod("summary.llra")
 
 summary.llra <- function(object, level=0.95, ...)
   #summary for class llra

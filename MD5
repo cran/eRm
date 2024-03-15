@@ -1,4 +1,4 @@
-22edc94dccb0ec488d198f04740489c0 *DESCRIPTION
+d8deae0565d1c3ea5251c99fcbbbe6de *DESCRIPTION
 9719bdf13eb405b815399845a578d879 *NAMESPACE
 d2d22f8b2176c97ca7df720f7a089794 *R/IC.default.R
 2bedf16f88332f159bfad9cdb36f4689 *R/IC.ppar.r
@@ -21,7 +21,7 @@ bc7be7af543fb355b3452bade6befcef *R/Rsquared.R
 f2527f30f48fcf4cfda14c9951186ead *R/Waldtest.R
 e3cc111546e6458ff6baa890d1e54e7c *R/Waldtest.Rm.R
 0c232a63ae4fb206d91678d2b9c30f1a *R/anova.eRm.R
-ba403c28ae655f2a76c605d43123512c *R/anova.llra.R
+10452aef65f99ff7044adeced1fb1163 *R/anova.llra.R
 b2e5064d8aa93edded5747f9f64f315c *R/build_W.R
 a8aa6e591ab2b76117211cdef4cdcf52 *R/checkdata.R
 40e9100130fde20aa73a04818d9909b3 *R/cldeviance.R
@@ -125,7 +125,7 @@ bb58a9a1c07452f36f935b101a61e52a *R/summary.RSmpl.R
 c164f97f003fe597393346ebc34ed98f *R/summary.RSmplext.R
 e6db9b0df7e9ea045e8b57d0f7a13f8b *R/summary.eRm.R
 a201d1040cd729f62e09a45ff0402957 *R/summary.gof.R
-c03bb3ccc34c43a90ce88a799cda8cc3 *R/summary.llra.R
+1684f6f3c48febf9506319603fbc1a55 *R/summary.llra.R
 bde67b4f83ca342816e87e9c39fde213 *R/summary.ppar.R
 d28668718027ba4f7d4210dcac0c6b76 *R/summary.threshold.r
 a00c44137f3f341aa1a71db916a38a85 *R/test_info.R
@@ -133,8 +133,8 @@ a6419721b8ee926aa7c97c9810fa0de9 *R/thresholds.eRm.r
 3c6f6ec631aeacf22e73fadf8074fc12 *R/thresholds.r
 54259c5861ddc4a41474b0f47dc7ff13 *R/vcov.eRm.R
 68dade378c849fd1b1e7f539aaf0f1e5 *R/zzz.R
-8faf250d78a120ba4c7ea2186efddd24 *build/partial.rdb
-c58545645e752ad211b8ac8a23de2454 *build/vignette.rds
+20c8d3f97d93e2e318a22508275b5a02 *build/partial.rdb
+73b97c33ddfc8d1f728c4c4d08d86d26 *build/vignette.rds
 460165565169b8896f2b34d3bcb8b384 *data/llraDat1.rda
 6eff759b3773b364f2b80dfc1dfd48c2 *data/llraDat2.rda
 75011d511f7f8ef5815d3dd46e3b01b9 *data/llradat3.rda
@@ -155,12 +155,12 @@ fe698696f11b30133fd7667a28bf7dbe *data/rsmdat.rda
 d6ef4432484b6f07a9fb2178baa4a879 *data/xmpl.RData
 5ef84c3ef4febfaac942d321d43d40da *data/xmplbig.RData
 28dcdf86eab731c9707c482030b07721 *inst/CITATION
-a73d07f9bc066e94dc172ba6c9e8dab8 *inst/NEWS.Rd
+c2b2f8919248a0c00183dc7819d81a50 *inst/NEWS.Rd
 4d6d70f06d012eb2f1f3d8c2de188a25 *inst/NEWS.pdf
 f2f1dde1411e624090270f2d52c77dfc *inst/NEWSRd2txt.R
 247474716eb4357e4b4cf92c55cab612 *inst/doc/eRm.R
 9f0d0175f42da4e7b4021e9cec1b9146 *inst/doc/eRm.Rnw
-fa1d4e3a34d4dd2c82360e99058dc8bb *inst/doc/eRm.pdf
+c8052f9f1429605a809366c633636e69 *inst/doc/eRm.pdf
 bba1ee0605c426e109144ecad35d39be *man/IC.Rd
 195afb5068e99c072ee2b01abefd25ea *man/LLRA.Rd
 4640617a3b1d2bab3ee71f94fbb04c21 *man/LLTM.Rd
