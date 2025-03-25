@@ -19,7 +19,7 @@
   \item{splitcr}{Split criterion for subject raw score splitting.
     \code{"all.r"} corresponds to a full raw score split, \code{"median"} uses the median as split criterion, \code{"mean"} performs a mean split.
     Optionally \code{splitcr} can also be a vector which assigns each person to a certain subgroup (e.g., following an external criterion).
-    This vector can be numeric, character or a factor.}
+    This vector can be numeric or a factor.}
   \item{se}{controls computation of standard errors in the submodels (default: \code{TRUE}).}
 
   \item{x}{Object of class \code{"LR"}. Also used for visualizing the fit of single items.}

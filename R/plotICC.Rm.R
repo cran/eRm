@@ -125,7 +125,8 @@ plotICC.Rm <- function(
       if(emp.plot){
          freq.table <- as.matrix(table(rowSums(X), X[,i]))
          rel.freq   <- freq.table[,2]/rowSums(freq.table)
-         idx        <- as.numeric(rownames(freq.table))
+         #idx        <- as.numeric(rownames(freq.table))
+         idx        <- as.numeric(rownames(freq.table)) - min(rowSums(X))
          xy         <- cbind(th.est$pred.list[[1]]$y[idx+1], rel.freq)
 
          if(empICC[[1]]=="loess")  if(!is.null(empICC$smooth)) smooth <- empICC$smooth else smooth <- 0.75

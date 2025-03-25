@@ -47,6 +47,7 @@ export(test_info)
 export(i_info)
 export(SepRel)
 export(PersonMisfit)
+export(coef.ppar)
 
 S3method(print, eRm)
 S3method(summary, eRm)

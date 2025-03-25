@@ -28,9 +28,14 @@ thresholds.eRm <- function(object)                # uses matrix approach
   
   names(threshpar) <- paste("thresh", names(betapar))
   
-  vc.beta   <- object$W %*% solve(object$hessian) %*% t(object$W) # VC matrix beta's
-  se.thresh <- sqrt(diag( T_mat %*% vc.beta %*% t(T_mat) ))       # standard errors of thresholds - fix: MM 2010-02-20
-  names(se.thresh) <- names(threshpar)
+  if (all(is.na((object$se.eta)))) {                                ## if se's where not computed
+    se.thresh <- rep(NA, length(threshpar))
+    names(se.thresh) <- names(threshpar)
+  } else {
+    vc.beta   <- object$W %*% solve(object$hessian) %*% t(object$W) # VC matrix beta's
+    se.thresh <- sqrt(diag( T_mat %*% vc.beta %*% t(T_mat) ))       # standard errors of thresholds - fix: MM 2010-02-20
+    names(se.thresh) <- names(threshpar)
+  }
 
   blocks  <- rep(1L:vecrep, each = length(mt_vek1))
   thblock <- split(threshpar, blocks)                 #block of threshholds (as in design matrix)

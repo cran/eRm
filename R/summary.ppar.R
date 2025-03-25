@@ -8,6 +8,15 @@ function(object,...)
   } else {
     thetaind <- rownames(object$X)
   }
+  
+  if (length(object$pers.ex) > 0) {    
+    X <- object$X[-object$pers.ex,]                                        #list with raw scores
+    sumlist <- by(object$X[-object$pers.ex,],object$gmemb,rowSums,na.rm=TRUE)
+  } else {
+    X <- object$X
+    sumlist <- by(object$X,object$gmemb,rowSums,na.rm=TRUE)
+  }
+  
     
   if (any(is.na(object$X))) {                                       #recompute gmemb without persons excluded
     dichX <- ifelse(is.na(object$X),1,0)
@@ -22,9 +31,10 @@ function(object,...)
   for (i in 1:length(object$thetapar)) {
     cat("\n\n")
     if (length(object$thetapar) > 1) {
-      cat("Subject NA Group:",i,"\n")
-      xvec <- rbind(object$X[gmemb==i,])[1,]                    #determine NA pattern
-      xvec[!is.na(xvec)] <- "x"
+      cat("Person NA Group:",i,"\n")
+      xvec <- rep(NA, (dim(X)[2]))
+      notNApos <- which(!is.na(as.vector(rbind(X[object$gmemb == i,])[1,])))
+      xvec[notNApos] <- "x"
       cat("NA pattern:",xvec,"\n")
       }
     cat("Collapsed log-likelihood:",object$loglik[[i]],"\n")

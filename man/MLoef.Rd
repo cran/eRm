@@ -5,7 +5,7 @@
 \alias{summary.MLoef}
 \title{Martin-Löf's Likelihood-Ratio-Test}
 \description{This Likelihood-Ratio-Test is based on item subgroup splitting.}
-\usage{MLoef(robj, splitcr = "median")}
+\usage{MLoef(robj, splitcr = "median", etaStart = NULL)}
 \arguments{
   \item{robj}{
     An object of class \code{'Rm'}.
@@ -14,6 +14,9 @@
     Split criterion to define the item groups.
     \code{"median"} and \code{"mean"} split items in two groups based on their items' raw scores.\cr%
     \code{splitcr} can also be a vector of length \eqn{k}{k} (where \eqn{k}{k} denotes the number of items) that takes two or more distinct values to define groups used for the Martin-Löf Test.
+  }
+  \item{etaStart}{
+    Optional list of starting values (eta parameters).
   }
 }
 \details{
@@ -51,17 +54,15 @@ Rost, J. (2004). \emph{Lehrbuch Testtheorie -- Testkonstruktion.} Bern: Huber.
 \author{Marco J. Maier, Reinhold Hatzinger}
 \seealso{\code{\link{LRtest}}, \code{\link{Waldtest}}}
 \examples{
-# Martin-Löf-test on dichotomous Rasch model using "median" and a user-defined
+# Martin-Loef-test on dichotomous Rasch model using "median" and a user-defined
 # split vector. Note that group indicators can be of character and/or numeric.
 splitvec <- c(1, 1, 1, "x", "x", "x", 0, 0, 1, 0)
 
 res <- RM(raschdat1[,1:10])
 
-MLoef.1 <- MLoef(res, splitcr = "median")
-MLoef.2 <- MLoef(res, splitcr = splitvec)
-
-MLoef.1
-
-summary(MLoef.2)
+MLoef_1 <- MLoef(res, splitcr = "median")
+MLoef_1
+MLoef_2 <- MLoef(res, splitcr = splitvec)
+summary(MLoef_2)
 }
 \keyword{models}

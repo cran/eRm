@@ -66,27 +66,6 @@
       \code{alternative} specifies the alternative hypothesis and can be: \code{"high"} or \code{"low"}.\cr%
       Checks for group anomalies (\acronym{DIF}) via too high (low) raw scores on item(s) for specified group.
     }
-%  removed in version 0.14-5
-%     \item{\bold{T7:}}{\code{method = "T7", idx = NULL}}\cr
-%     \code{idx} \ldots vector of indices specifying items which define a subscale, e.g., \code{idx = c(1, 5, 7)}\cr
-%     Checks for lower discrimination (2PL) in item subscale via counting cases with response 1 on more
-%     difficult and 0 on easier items. The test is global for the subscale, i.e. all subscale items are evaluated
-%     using a single statistic.
-%
-%     \item{\bold{T7a:}}{\code{method = "T7a", idx = NULL}}\cr
-%     \code{idx} \ldots vector of indices specifying items to investigate, e.g., \code{idx = c(1, 5, 7)}\cr
-%     Checks for lower discrimination (2PL) of an item compared to another item  via counting cases with response 1 on more
-%     difficult and 0 on easier item. The test is performed pairwise, i.e. a statistic is calculated for each item pair.
-%     # Examples
-%     ##---- T7, T7a --------------------------------------------------
-%     # simultaenous test for all items in subscale
-%     t7<-NPtest(rmat,method="T7",idx=1:3)
-%     t7
-%
-%     # test for item-pairs
-%     t7a<-NPtest(rmat,method="T7a",idx=c(1,3,5)) # test for item-pairs
-%     t7a
-
     \item{\eqn{T_{10}}{T_10}:}{\code{method = "T10", splitcr = "median"}\cr%
       \code{splitcr} defines the split criterion for subject raw score splitting.
       \code{"median"} uses the median as split criterion, \code{"mean"} performs a mean-split.
@@ -131,9 +110,9 @@ Ponocny, I. (2001). Nonparametric goodness-of-fit tests for the Rasch model. \em
 
 Verhelst, N. D. (2008). An efficient \acronym{MCMC} algorithm to sample binary matrices with fixed marginals. \emph{Psychometrika, 73}(4), 705--728. \doi{10.1007/s11336-008-9062-3}
 
-Verhelst, N., Hatzinger, R., & Mair, P. (2007). The Rasch sampler. \emph{Journal of Statistical Software, 20}(4), 1--14. \url{https://www.jstatsoft.org/v20/i04}
+Verhelst, N., Hatzinger, R., & Mair, P. (2007). The Rasch sampler. \emph{Journal of Statistical Software, 20}(4), 1--14. \doi{10.18637/jss.v020.i04}
 
-Koller, I., & Hatzinger, R. (2013). Nonparametric tests for the Rasch model: Explanation, development, and application of quasi-exact tests for small samples. \emph{Interstat, 11}, 1--16. \url{http://interstat.statjournals.net/YEAR/2013/abstracts/1311002.php}
+Koller, I., & Hatzinger, R. (2013). Nonparametric tests for the Rasch model: Explanation, development, and application of quasi-exact tests for small samples. \emph{Interstat, 11}, 1--16. 
 
 Koller, I., Maier, M. J., & Hatzinger, R. (2015). An Empirical Power Analysis of Quasi-Exact Tests for the Rasch Model: Measurement Invariance in Small Samples. \emph{Methodology, 11}(2), 45--54. \doi{10.1027/1614-2241/a000090}
 

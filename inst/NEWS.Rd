@@ -2,6 +2,28 @@
 \title{News for Package \pkg{eRm}}
 \encoding{UTF-8}
 
+\section{Changes in Version 1.0-9}{
+  \itemize{
+      \item Option to set starting values in \code{MLoef()} added (thanks to Rainer Alexandrowicz).
+	}
+}
+
+\section{Changes in Version 1.0-8}{
+  \itemize{
+      \item Bug in \code{thresholds.eRm()} fixed for models fitted with \code{se = FALSE}.
+	}
+}
+
+\section{Changes in Version 1.0-7}{
+  \itemize{
+      \item \code{coef.ppar()} exported.
+      \item Standard errors added to \code{theta.table} object in \code{person.parameter.eRm}.
+      \item NA pattern labelling fixed in \code{summary.ppar}.
+      \item Bug in \code{plotICC()} fixed.
+	}
+}
+
+
 \section{Changes in Version 1.0-6}{
   \itemize{
       \item duplicated top-level assingments removed.

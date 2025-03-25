@@ -57,10 +57,9 @@
     collapse.vec <- which(!duplicated(rowSums(rbind(X[gmemb==i,]), na.rm = TRUE)))
     indvec       <- c(indvec, gmemb.ind[collapse.vec])
   }
-  #for (i in unique(gmemb)) indvec <- c(indvec,!duplicated(rowSums(rbind(X[gmemb==i,]),na.rm = TRUE)))
-
+  
   indvec <- sort(indvec)
-  X      <- X[indvec,]     #collapsing X
+  X <- X[indvec,]     #collapsing X
 
   beta.all <- object$betapar
 
@@ -79,14 +78,10 @@
 
   X01 <- object$X01
   if(length(pers.exe) > 0L) X01 <- X01[-pers.exe,]   #if persons excluded due to 0/full response
-
   X01           <- X01[indvec,]                      #collapsed version
   gmemb         <- gmemb[indvec]                     #collapsed version
   rownames(X01) <- rownames(X)
-
   rowvec <- 1L:nrow(X01)
-
-
 
   fitlist <- tapply(rowvec, gmemb, function(rind){      #list with nlm outputs
 
@@ -193,8 +188,6 @@
     hessian[[i]]  <- fitlist[[i]]$hessian
   }
 
-
-
   if(interpolation){   #cubic spline interpolation for 0 and full raw scores
     x     <- rowSums(X, na.rm = TRUE)
     xlist <- split(x, gmemb)
@@ -241,9 +234,32 @@
                      rval
                    }  
                  }, xlist, thetapar, max.rs.NAgroups, NAgroups.min, NAgroups.max)
+    
+    pred.list_se <- Map(function(xx, yy, rs, NAmin, NAmax){   # Map(...)  is  mapply(..., SIMPLFY = FALSE)
+      y    <- tapply(yy, xx, function(xy){ xy[1] })
+      x    <- unique(sort(xx))
+      from <- ifelse(NAmin == 0, 0, min(x))
+      to   <- ifelse(NAmax == rs, rs, max(x))
+      if((length(x) > 3) || (length(y) > 3)){   #otherwise splinereg is not admissible
+        fm1 <- interpSpline(x,y)
+        if((from == 0) | (to == rs)){
+          pred.val <- unclass(predict(fm1, unique(c(from, x, to))))
+        } else {
+          list(x=unname(x),y=unname(y))   #MM2012-02-01
+        }
+      } else {
+        splineMessage <- TRUE   # so that the message is only printed once
+        rval <- list(x=unname(x),y=unname(y))   #MM2012-02-01
+        if(from == 0){  rval$x <- c(0, rval$x)
+        rval$y <- c(NA, rval$y) }
+        if(to == rs){  rval$x <- c(rval$x, rs)
+        rval$y <- c(rval$y, NA) }
+        rval
+      }  
+    }, xlist, se.theta, max.rs.NAgroups, NAgroups.min, NAgroups.max)
+    
     X.n <- object$X
-  #  if (any(sapply(pred.list,is.null)))  pred.list <- NULL    #no spline interpolation applicable   #MM2012-02-01
-
+ 
     if(splineMessage) message("Spline interpolation in some subgroups not performed!\n  Less than 4 different person parameters estimable!\n  Perhaps NAs in subgroup(s).")
   }
 
@@ -264,8 +280,6 @@
   #--------------- end expand, labeling ---------------------------
 
 
-
-
   #---------------------- theta.table new ----------------------   
   if(length(NAgroup_exclude) > 0L){
     selector <- gmemb.X %in% gmemb_reduced
@@ -281,14 +295,20 @@
   }
 
   theta.table <- data.frame("Person Parameter" = rep(NA, nrow(object$X)),
+                            "Std.Error" = rep(NA, nrow(object$X)),
                             "NAgroup" = NA,
                             "Interpolated" = FALSE,
                             row.names=rownames(object$X),
                             check.names = FALSE)
-
+  
   theta.table[selector, "Person Parameter"] <- mapply(function(rs, NAgroup){
                                                  pred.list[[NAgroup]]$y[which(pred.list[[NAgroup]]$x == rs)]
                                                }, rowSums(object$X, na.rm=T)[selector], gmemb.X_final)
+  
+  theta.table[selector, "Std.Error"] <- mapply(function(rs, NAgroup){
+    pred.list_se[[NAgroup]]$y[which(pred.list_se[[NAgroup]]$x == rs)]
+  }, rowSums(object$X, na.rm=T)[selector], gmemb.X_final)
+  
   theta.table[selector, "NAgroup"] <- gmemb.X_final
                             
   if(length(pers.exe) > 0) theta.table[pers.exe,"Interpolated"] <- TRUE

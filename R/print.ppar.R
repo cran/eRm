@@ -25,10 +25,6 @@ function(x,...)
                            return(smth)
                          },sumlist,x$thetapar,x$se,SIMPLIFY=FALSE)
   } else {                                                          #if spline Interpolation
-    #TFvec <- sapply(x$pred.list,is.null)                            #for these NA groups no spline interpolation was computed
-    #predind <- (1:length(x$pred.list))[!TFvec]
-    #x$pred.list <- x$pred.list[predind]
-    
     coef.list <- mapply(function(sm,pl,se) {
                             se.u <- tapply(se,sm, function(ss) {ss[1]})
                             sm.u <- unique(sort(sm))
@@ -46,14 +42,6 @@ function(x,...)
     coef.list <- lapply(coef.list,function(cl) {cbind(cl,NA)})
   }
   
- # if (any(is.na(x$X))) {                                       #recompute gmemb without persons excluded
- #   dichX <- ifelse(is.na(x$X),1,0)
- #   strdata <- apply(dichX,1,function(x) {paste(x,collapse="")})
- #   gmemb <- as.vector(data.matrix(data.frame(strdata)))
- # } else {
- #   gmemb <- rep(1,dim(x$X)[1])
- # }
-   
   for (i in 1:length(x$thetapar)) {
     cat("\n")
     if (length(x$thetapar) > 1) {

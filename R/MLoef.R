@@ -1,4 +1,4 @@
-MLoef <- function(robj, splitcr="median")
+MLoef <- function(robj, splitcr="median", etaStart=NULL)
 {
 # performs the Martin-Loef LR-test
 # robj... object of class RM
@@ -7,8 +7,8 @@ MLoef <- function(robj, splitcr="median")
 #            scores.
 #            a vector of length k (number of items) containing two different
 #            elements signifying group membership of items can be supplied.
+# etaStart ... list of starting values
 
-  ### no test with missing values rh 19-05-10
   if(any(is.na(robj$X))) stop("Martin-Loef Test with NA currently not available\n")
 
   wrning <- NULL   # initialize an object for warnings
@@ -17,20 +17,10 @@ MLoef <- function(robj, splitcr="median")
     if(splitcr == "median"){
       raw.scores <- colSums(robj$X,na.rm=T)
       numsplit <- as.numeric(raw.scores > median(raw.scores,na.rm=T))
-      ## removed for the time being 2011-09-08 rh
-      #if( any(raw.scores == median(raw.scores,na.rm=T)) ){   # Only if one item's raw score == the median, a warning is issued
-      #  wrning <- which(raw.scores == median(raw.scores,na.rm=T))   # append a warning-slot to the object for print and summary methods
-      #  cat("Item(s)",paste(names(wrning),collapse=", "),"with raw score equal to the median assigned to the lower raw score group!\n")
-      #}
     }
     if(splitcr=="mean"){
       raw.scores <- colSums(robj$X,na.rm=T)
       numsplit <- as.numeric(raw.scores > mean(raw.scores,na.rm=T))
-      ## removed for the time being 2011-09-08 rh
-      #if( any(raw.scores == mean(raw.scores,na.rm=T)) ){   # Only if one item's raw score == the mean, a warning is issued
-      #  wrning <- which(raw.scores == mean(raw.scores,na.rm=T))   # append a warning-slot to the object for print and summary methods
-      #  cat("Item(s)",paste(names(wrning),collapse=", "),"with raw score equal to the mean assigned to the lower raw score group!\n")
-      #}
     }
   } else {   # check if the submitted split-vector is appropriate
     if(length(splitcr) != ncol(robj$X)) stop("Split vector too long/short.")
@@ -49,26 +39,19 @@ MLoef <- function(robj, splitcr="median")
   # check if one group contains subject with <=1 valid responses
   if(any(unlist(lapply(i.groups, function(g){ any(rowSums(!is.na(robj$X[,g])) <= 1) })))) stop("Groups contain subjects with less than two valid responses.")
 
-  ### possible missing patterns and classification of persons into groups
-#  MV.X <- apply(matrix(as.numeric(is.na(robj$X01)),ncol=ncol(robj$X01)),1,paste,collapse="")
-#  MV.p <- sort(unique(MV.X))
-#  MV.g <- numeric(length=length(MV.X))
-#  g <- 1
-#  for(i in MV.p){
-#    MV.g[MV.X == i] <- g;
-#    g <- g + 1
-#  }
-#  na.X01 <- list()
-#  for(i in 1:length(MV.p)){
-#    na.X01[[i]] <- matrix(robj$X01[which(MV.g == i),], ncol=ncol(robj$X01))
-#  }
-
-#  res1 <- RM(robj$X01[,i.groups[[1]]])
-#  res2 <- RM(robj$X01[,i.groups[[2]]])
-
   # fitting the submodels
-  subModels <- lapply(i.groups, function(g){ PCM(robj$X[,g]) })
-
+  #subModels <- lapply(i.groups, function(g){ PCM(robj$X[,g]) })
+  subModels <- list()
+  G <- length(i.groups)
+  for (g in 1:G) {
+    if(is.null(etaStart)) {
+      eta0 <- rep(0,length(i.groups[[g]])-1)
+    } else {
+      eta0 <- etaStart[[g]]
+    }
+    subModels[[g]] <- PCM(robj$X[,i.groups[[g]]],etaStart=eta0)
+  }
+  
   ### calculating the numerator and denominator
   sub.tabs <- as.data.frame(sapply(subModels, function(M){
                 rowSums(M$X, na.rm=T)
