@@ -20,7 +20,7 @@
   }
 }
 \details{
-  This function implements a generalization of the Martin-Löf test for polytomous items as proposed by Christensen, Bjørner, Kreiner & Petersen (2002), but does currently not allow for missing values.
+  This function implements a generalization of the Martin-Löf test for polytomous items as proposed by Christensen, Bjørner, Kreiner & Petersen (2002).
 
   If the split criterion is \code{"median"} or \code{"mean"} and one or more items' raw scores are equal the median resp. mean, \code{MLoef} will assign those items to the lower raw score group.
   \code{summary.MLoef} gives detailed information about the allocation of all items.

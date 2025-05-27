@@ -40,16 +40,20 @@ MLoef <- function(robj, splitcr="median", etaStart=NULL)
   if(any(unlist(lapply(i.groups, function(g){ any(rowSums(!is.na(robj$X[,g])) <= 1) })))) stop("Groups contain subjects with less than two valid responses.")
 
   # fitting the submodels
-  #subModels <- lapply(i.groups, function(g){ PCM(robj$X[,g]) })
   subModels <- list()
   G <- length(i.groups)
   for (g in 1:G) {
     if(is.null(etaStart)) {
-      eta0 <- rep(0,length(i.groups[[g]])-1)
+      ## eta0 <- rep(0,length(i.groups[[g]])-1)
+      eta0 <- NA  
     } else {
       eta0 <- etaStart[[g]]
     }
-    subModels[[g]] <- PCM(robj$X[,i.groups[[g]]],etaStart=eta0)
+    if (robj$model == "RSM") {
+      subModels[[g]] <- RSM(robj$X[,i.groups[[g]]],etaStart=eta0)
+    } else {
+      subModels[[g]] <- PCM(robj$X[,i.groups[[g]]],etaStart=eta0)
+    }
   }
   
   ### calculating the numerator and denominator
@@ -66,52 +70,13 @@ MLoef <- function(robj, splitcr="median", etaStart=NULL)
   full.tab  <- table(rowSums(robj$X, na.rm=T))
   full.term <- sum(na.omit(as.numeric( full.tab * (log(full.tab) - log(nrow(robj$X))) )))
 
-  ML.LR <- 2 * (
-             sub.term  + sum(unlist(lapply(subModels, `[[`, "loglik")))
-           - full.term - robj$loglik
-           )
-
+  ML.LR <- 2*(sub.term  + sum(unlist(lapply(subModels, `[[`, "loglik")))-full.term - robj$loglik)
   df <- prod(unlist(sub.max)+1) - (sum(apply(robj$X, 2, max))+1) - length(sp.groups) + 1
-
-#  ml.num <- ml.den <- df <- numeric()
-
-#  for(i in 1:length(MV.p)){
-#    .temp.num <- table(rowSums(na.X01[[i]],na.rm=T))
-#    .temp.num <- .temp.num[.temp.num > 0]   ### rh
-#    ml.num[i] <- sum( (log(.temp.num)-log(sum(.temp.num)))*.temp.num )
-#
-#    if(nrow(na.X01[[i]]) > 1){
-#      .temp.den <- table(rowSums(na.X01[[i]][,i.groups[[1]]],na.rm=T),
-#                         rowSums(na.X01[[i]][,i.groups[[2]]],na.rm=T))
-#    }
-#    else{
-#      .temp.den <- table(sum(na.X01[[i]][,i.groups[[1]]],na.rm=T),
-#                         sum(na.X01[[i]][,i.groups[[2]]],na.rm=T))
-#    }
-#    .temp.den <- .temp.den[.temp.den > 0]   ### rh
-#    ml.den[i] <- sum( (log(.temp.den)-log(sum(.temp.den)))*.temp.den )
-#
-#    k1 <- sum(!is.na(na.X01[[i]][1,i.groups[[1]]])) ### rh
-#    k2 <- sum(!is.na(na.X01[[i]][1,i.groups[[2]]])) ### rh
-#    df[i] <- k1 * k2 -1                              ### rh
-#  }
-#
-#  a <- sum(ml.num)
-#  b <- sum(ml.den)
-#  k <- c(length(i.groups[[1]]),length(i.groups[[2]]))
-#
-#  ML.LR <- -2*( (a + robj$loglik) - (b + res1$loglik + res2$loglik) )
-#  DF <- prod(k) - 1
   p.value <- 1 - pchisq(ML.LR, df)
 
-  result <- list(LR=ML.LR, df=df, p.value=p.value,
-                 fullModel=robj, subModels=subModels,
-                 Lf=robj$loglik,  Ls=lapply(subModels, `[[`, "loglik"),
-#                 theta.table.RM=table(rowSums(robj$X01)),                        # both used for the plotting
-#                 theta.table.MLoef=table(rowSums(res1$X01),rowSums(res2$X01)),   # routine plot.MLoef
-                 i.groups=i.groups,
-#                 items1=i.groups[[1]], items2=i.groups[[2]], k=k,
-                 splitcr=splitcr, split.vector=numsplit, warning=wrning, call=match.call())
+  result <- list(LR = ML.LR, df = df, p.value = p.value, fullModel = robj, subModels = subModels,
+                 Lf = robj$loglik, Ls = lapply(subModels, `[[`, "loglik"), i.groups = i.groups,
+                 splitcr = splitcr, split.vector = numsplit, warning = wrning, call = match.call())
   class(result) <- "MLoef"
   return(result)
 }

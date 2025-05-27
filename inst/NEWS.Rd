@@ -2,6 +2,13 @@
 \title{News for Package \pkg{eRm}}
 \encoding{UTF-8}
 
+\section{Changes in Version 1.0-10}{
+  \itemize{
+      \item \code{MLoef()} bug for missings fix, RSM option added (thanks to Rainer Alexandrowicz).
+	}
+}
+
+
 \section{Changes in Version 1.0-9}{
   \itemize{
       \item Option to set starting values in \code{MLoef()} added (thanks to Rainer Alexandrowicz).
